@@ -589,6 +589,20 @@
                             <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
                         </div>
                     </div>
+                    <div onclick="openDetailModal('katsuren')" class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm hover:shadow-md hover:border-ocean/40 hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-ocean/10 text-ocean text-xs font-bold px-2.5 py-0.5 rounded-full">🏯 UNESCO-Weltkulturerbe</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 1,5 Std.</span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-earth mb-2 group-hover:text-ocean transition-colors">Katsuren-Burgruine</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">Erklimmt diese majestätische, geschwungene Festungsruine aus dem 15. Jahrhundert und genießt oben einen atemberaubenden 360-Grad-Panoramablick auf den leuchtend blauen Pazifik.</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -951,6 +965,10 @@
                                 <span>Gangala-Tal</span>
                                 <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">4h</span>
                             </button>
+                            <button onclick="quickAdd('Katsuren Ruinen besichtigen 🛖')" class="w-full text-left bg-white hover:bg-ocean/5 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
+                                <span>Katsuren Castle Ruins</span>
+                                <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">1.5h</span>
+                            </button>
                         </div>
                     </div>
 
@@ -1173,8 +1191,8 @@
                 badge: "🌅 Sonnenuntergangs-Klippen",
                 location: "Onna Village (Zentralküste)",
                 duration: "ca. 2 Std.",
-                image: "https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?auto=format&fit=crop&w=850&q=80",
-                link: "https://www.japan.travel/de/spot/1705/",
+                image: "https://okinawa-labo.com/wp-content/uploads/2021/06/manzamou-1.jpg",
+                link: "https://okinawa-labo.com/de/manzamou-50443",
                 description: "Das Kap Manzamo ist eine der ikonischsten Postkartenansichten Okinawas. Der mächtige Kalksteinfelsen an der Westküste ist durch die jahrhundertelange Meeresbrandung so erodiert, dass er verblüffend exakt wie der Rumpf und Rüssel eines riesigen Elefanten aussieht.<br><br>Der Name 'Manzamo' bedeutet übersetzt 'Ein Rasenplatz, auf dem zehntausend Menschen sitzen können' – benannt von einem alten Ryukyu-König, der von der weiten, grasbewachsenen Hochebene über den Klippen schwer beeindruckt war.",
                 tip: "Besucht das Kap unbedingt in den späten Nachmittagsstunden. Wenn die Sonne langsam im Ostchinesischen Meer versinkt und die Felsen in goldenes Licht taucht, entstehen unvergleichliche Urlaubsfotos."
             },
@@ -1183,8 +1201,8 @@
                 badge: "🏺 Traditionelle Handwerkskunst",
                 location: "Yomitan Village",
                 duration: "ca. 3 Std.",
-                image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=850&q=80",
-                link: "https://www.japan-guide.com/e/e7123.html",
+                image: "https://www.oki-islandguide.com/wp-content/uploads/2014/01/yachimun_img_4.jpg",
+                link: "https://www.oki-islandguide.com/specialfeatures/a-pottery-mecca-yomitan-village-yachimun-no-sato",
                 description: "Abseits der Touristenpfade liegt das malerische Töpferdorf Yachimun no Sato. Das idyllische Viertel ist das schöpferische Zentrum für das traditionelle Keramik-Handwerk Okinawas, genannt 'Yachimun'.<br><br>Hier haben sich über ein Dutzend Meistertöpfer zusammengeschlossen und betreiben gemeinschaftlich traditionelle, mehrstufige Stufenbrandöfen (Noborigama), die an den bewaldeten Hängen emporragen. Die urigen, mit roten Ziegeln gedeckten Atelier-Häuser verkaufen handgemachte Tassen, Teller und die berühmten Shisa-Wächterlöwen.",
                 tip: "Schlendert gemütlich durch die waldigen Gassen und werft einen Blick in die offenen Werkstätten der Künstler. Die Keramiken eignen sich hervorragend als einzigartiges, handgefertigtes Souvenir."
             },
@@ -1193,10 +1211,20 @@
                 badge: "🌴 Urzeit-Expedition",
                 location: "Süden Okinawas (nahe Okinawa World)",
                 duration: "ca. 4 Std.",
-                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=850&q=80",
+                image: "https://gangala.com/wp/wp-content/themes/gangala_ver2/images/1x/home/home-01__image_02--PC.webp",
                 link: "https://www.gangala.com/en/",
                 description: "Das spektakuläre Gangala-Tal ist ein uralter, mystischer Dschungelpfad, der in einer eingestürzten Kalksteinhöhle vor Hunderttausenden von Jahren entstanden ist. Riesige, meterlange Luftwurzeln von Banyan-Bäumen ragen spektakulär von den Klippenwänden herab.<br><br>Hier wurden zudem die ältesten Skelette von Urmenschen in ganz Ostasien (die Minatogawa-Menschen) gefunden, was dem nebelverhangenen Dschungel eine einzigartige historische Aura verleiht.",
                 tip: "Das Tal kann ausschließlich im Rahmen einer geführten Wanderung besichtigt werden. Bucht diese unbedingt vorab online. Highlight direkt am Start: Ein wunderschönes, uriges Café, das komplett in einer riesigen, echten Tropfsteinhöhle untergebracht ist!"
+            },
+            katsuren: {
+                title: "Katsuren Castle Ruins",
+                badge: "🛖 Alte Ruinen",
+                location: "Süd-Osten Okinawas",
+                duration: "ca. 1,5 Std.",
+                image: "https://www.japan-guide.com/g17/740/7123_top.jpg",
+                link: "https://www.japan-guide.com/e/e7123.html",
+                description: "Die Katsuren-Burgruine (Katsuren-jō) thront majestätisch auf einem steilen Hügel der Katsuren-Halbinsel und gehört zum UNESCO-Weltkulturerbe. Sie ist berühmt für ihre anmutigen, geschwungenen Steinmauern und war im 15. Jahrhundert der Sitz des legendären und rebellischen Fürsten Amawari.<br><br>Aufgrund ihrer exponierten Lage diente sie als beinahe uneinnehmbare Festung und besticht durch eine faszinierende Architektur, die sich elegant in die natürliche Topografie des Berges einfügt.",
+                tip: "Der Aufstieg über die alten Steinstufen ist relativ steil – zieht am besten bequemes Schuhwerk an. Oben angekommen werdet ihr dafür mit einem atemberaubenden 360-Grad-Panoramablick auf den leuchtend blauen Pazifik belohnt!"
             },
 
             // Fukuoka & Kyushu Sights
