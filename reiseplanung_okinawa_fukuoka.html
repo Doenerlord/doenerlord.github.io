@@ -1039,6 +1039,9 @@
                             <button onclick="confirmResetCalendar()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2 px-3 rounded-lg text-xs flex items-center whitespace-nowrap transition-all">
                                 <i class="fa-solid fa-rotate-left mr-1.5"></i> Zurücksetzen
                             </button>
+                            <button onclick="generateShareLink()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center whitespace-nowrap transition-all shadow">
+                                <i class="fa-solid fa-link mr-1.5"></i> Link teilen
+                            </button>
                             <button onclick="copyFullPlanToClipboard()" class="bg-earth hover:bg-earth/90 text-sand font-bold py-2 px-3 rounded-lg text-xs flex items-center whitespace-nowrap transition-all shadow">
                                 <i class="fa-regular fa-copy mr-1.5"></i> Plan kopieren
                             </button>
@@ -1543,6 +1546,7 @@
             initTabs();
             initWeatherChart();
             loadCalendarFromStorage();
+            checkUrlForPlan();
             renderWeekTabs();
             renderCalendarDays();
         });
@@ -1906,6 +1910,72 @@
 
         function hideCustomDialog() {
             document.getElementById("customDialog").classList.add("hidden");
+        }
+
+        function generateShareLink() {
+            try {
+                // Konvertiere die Plandaten zu einem String und kodiere sie sicher (Base64)
+                // Wir nutzen encodeURIComponent um Umlaute und Sonderzeichen (Emojis) sicher in Base64 umzuwandeln
+                const planString = JSON.stringify(calendarData);
+                const encodedPlan = btoa(encodeURIComponent(planString));
+                
+                // Erstelle die URL mit dem Plan-Parameter
+                const shareUrl = window.location.origin + window.location.pathname + "?plan=" + encodedPlan;
+                
+                // Modernes Kopieren (Fallback für iFrames & Github Pages)
+                const tempInput = document.createElement("textarea");
+                tempInput.value = shareUrl;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                
+                showToast("🔗 Teilbarer Link wurde in die Zwischenablage kopiert!");
+            } catch (e) {
+                console.error("Link-Generierung fehlgeschlagen:", e);
+                showToast("❌ Fehler beim Erstellen des Links.");
+            }
+        }
+
+        function checkUrlForPlan() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const planData = urlParams.get('plan');
+            
+            if (planData) {
+                // Bereinige die URL in der Adresszeile sofort, damit sie wieder schön kurz ist (ohne Neuladen)
+                const cleanUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+
+                // Frage den Nutzer, ob er importieren möchte, da bestehende lokale Daten überschrieben werden
+                showCustomDialog(
+                    "📥",
+                    "Geteilten Plan importieren?",
+                    "Es wurde ein Reiseplan in der URL gefunden. Möchtest du diesen importieren? Achtung: Dein bisheriger Plan auf diesem Gerät wird dadurch überschrieben!",
+                    "Abbrechen",
+                    "Ja, importieren",
+                    () => {
+                        try {
+                            // Dekodiere den Base64 String zurück in ein JSON-Objekt
+                            const decodedString = decodeURIComponent(atob(planData));
+                            const parsedPlan = JSON.parse(decodedString);
+                            
+                            // Überschreibe den lokalen Plan
+                            calendarData = parsedPlan;
+                            saveCalendarToStorage();
+                            
+                            // Aktualisiere die Ansicht im Kalender
+                            renderCalendarDays();
+                            hideCustomDialog();
+                            showToast("✅ Plan erfolgreich importiert!");
+                            
+                        } catch (e) {
+                            console.error("Plan-Import fehlgeschlagen:", e);
+                            hideCustomDialog();
+                            showToast("❌ Fehler: Der Link ist leider ungültig oder beschädigt.");
+                        }
+                    }
+                );
+            }
         }
 
         // HELPER: TOAST BANNER SUCCESS FEEDBACK
