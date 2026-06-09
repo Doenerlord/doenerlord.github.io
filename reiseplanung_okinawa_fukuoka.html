@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Herbstabenteuer: Okinawa, Kyushu & Kansai Peak</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for weather data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for beautiful, clean icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sand: '#fdfbf7',
+                        earth: '#4a4036',
+                        ocean: '#0077b6',
+                        autumn: '#c05621',
+                        leaf: '#eed8c9',
+                        fukuoka: '#0f9f90'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background-color: #fdfbf7; 
+            color: #4a4036; 
+        }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            height: 350px; 
+        }
+        @media (max-width: 640px) { 
+            .chart-container { height: 280px; } 
+        }
+        .tab-btn.active { 
+            border-bottom: 3px solid #c05621; 
+            color: #c05621; 
+            font-weight: 700; 
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(74, 64, 54, 0.1); 
+        }
+        /* Custom scrollbar for sidebar elements */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1ede4;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #c05621;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-orange-200">
+
+    <!-- Brand Header -->
+    <header class="bg-earth text-sand py-10 shadow-lg border-b-4 border-autumn relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#eed8c9_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="bg-autumn text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Subtropen bis Spätherbst</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold mt-2 tracking-tight text-white drop-shadow-sm">Japan: Okinawa &amp; Kyushu</h1>
+                <p class="text-base md:text-lg opacity-90 mt-1 font-light">26. Oktober - 28. November 2026 | Perfekt abgestimmter Laubzeit-Planer</p>
+            </div>
+            <div class="flex gap-2">
+                <div class="bg-white/10 px-4 py-2 rounded-xl text-center backdrop-blur-sm">
+                    <span class="block text-xs uppercase opacity-75">Okinawa</span>
+                    <span class="font-bold text-sm">~26°C Wasser</span>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-xl text-center backdrop-blur-sm">
+                    <span class="block text-xs uppercase opacity-75">Kyushu &amp; Kansai</span>
+                    <span class="font-bold text-sm text-amber-300">🍁 Laub-Peak</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white border-b border-stone-200 sticky top-0 z-50 shadow-sm overflow-x-auto custom-scroll">
+        <div class="max-w-7xl mx-auto px-4 flex justify-start space-x-1 md:space-x-4">
+            <button class="tab-btn active px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2" data-target="overview">
+                <i class="fa-solid fa-map"></i>
+                <span>Überblick</span>
+            </button>
+            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2" data-target="okinawa">
+                <i class="fa-solid fa-umbrella-beach text-sky-600"></i>
+                <span>Okinawa</span>
+            </button>
+            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2" data-target="kyushu">
+                <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
+                <span>Fukuoka &amp; Kyushu</span>
+            </button>
+            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2" data-target="interstop">
+                <i class="fa-solid fa-leaf text-orange-600"></i>
+                <span>Herbstlaub-Vergleich</span>
+            </button>
+            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2" data-target="interactive-planner">
+                <i class="fa-solid fa-calendar-days text-autumn"></i>
+                <span>📅 Tagesplaner</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+
+        <!-- TAB: OVERVIEW -->
+        <section id="overview" class="tab-content block animate-fade-in">
+            <div class="mb-8 bg-gradient-to-r from-orange-50 to-orange-100 p-6 md:p-8 rounded-3xl border border-orange-200/50 shadow-sm">
+                <h2 class="text-3xl font-extrabold mb-3 text-autumn tracking-tight">Die perfekte Route: Tropen &amp; Herbstlaub kombiniert</h2>
+                <p class="text-base md:text-lg leading-relaxed text-stone-700">
+                    Deine Reisezeit ist exzellent gewählt. Du startest Ende Oktober im subtropischen Süden, wenn die extreme Sommerhitze und Taifunsaison vorüber sind, das Wasser aber noch herrlich warm ist. Danach ziehst du weiter nach Kyushu und nimmst Kurs auf Kansai (Osaka/Kyoto) sowie Tokyo, genau rechtzeitig für den absoluten Höhepunkt der berühmten japanischen Herbstlaubfärbung (<em class="font-semibold text-autumn">Momiji</em>).
+                </p>
+            </div>
+
+            <!-- Festivals Timeline -->
+            <div class="mb-8 bg-amber-50/40 border border-amber-200/80 p-6 rounded-3xl">
+                <h3 class="text-2xl font-extrabold text-stone-800 mb-4 flex items-center">
+                    <i class="fa-solid fa-fire-burner text-autumn mr-2"></i> Exklusive Herbstfeste &amp; Matsuri auf deiner Route!
+                </h3>
+                <p class="text-sm text-stone-600 mb-6 leading-relaxed">
+                    Eure Reisedaten treffen auf spektakuläre, weltbekannte japanische Traditionsfeste. Von historischen Herrscherparaden auf Okinawa über UNESCO-Weltkulturerbe-Floats in Kyushu bis hin zu nächtlichen Lichtermeeren in Kyoto und Tokyo – diese Termine solltet ihr euch rot im Kalender markieren:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Shurijo -->
+                    <div class="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Okinawa (Naha)</span>
+                            <h4 class="font-bold text-base text-stone-800 mt-2">Shurijo-Schlossfest</h4>
+                            <p class="text-[11px] text-autumn font-bold mb-2">⏱️ Sa, 31. Okt – So, 1. Nov 2026</p>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Erlebe das Erbe des Ryukyu-Königreichs. Am Sonntag zieht die prunkvolle Kaiserparade mit über 1.000 Darstellern in historischen Gewändern über die Kokusai-Dori in Naha.
+                            </p>
+                        </div>
+                        <button onclick="switchTab('interactive-planner'); selectDay('2026-10-31');" class="text-ocean text-[11px] font-bold hover:underline mt-4 flex items-center">
+                            Im Planer ansehen <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                    <!-- Karatsu Kunchi -->
+                    <div class="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Kyushu (Saga / nahe Fukuoka)</span>
+                            <h4 class="font-bold text-base text-stone-800 mt-2">Karatsu Kunchi Festival</h4>
+                            <p class="text-[11px] text-autumn font-bold mb-2">⏱️ Mo, 2. Nov – Mi, 4. Nov 2026</p>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Ein weltberühmtes UNESCO-Kulturerbe! Gigantische, tonnenschwere, historische Lack-Prunkwagen werden von Hunderten Menschen unter rhythmischen Rufen durch die engen Gassen und sogar durch den Sandstrand gezogen.
+                            </p>
+                        </div>
+                        <button onclick="switchTab('interactive-planner'); selectDay('2026-11-03');" class="text-emerald-700 text-[11px] font-bold hover:underline mt-4 flex items-center">
+                            Im Planer ansehen <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                    <!-- Kiyomizu-dera -->
+                    <div class="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Kansai (Kyoto)</span>
+                            <h4 class="font-bold text-base text-stone-800 mt-2">Kiyomizu Herbst-LightUp</h4>
+                            <p class="text-[11px] text-autumn font-bold mb-2">⏱️ So, 22. Nov – Mo, 23. Nov 2026</p>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Ein unbeschreiblich schöner Anblick, wenn der weltberühmte Kiyomizu-dera-Tempel in feuriges Rot gehüllt und von Scheinwerfern hell erleuchtet wird, während ein blauer Lichtstrahl in den Nachthimmel ragt.
+                            </p>
+                        </div>
+                        <button onclick="switchTab('interactive-planner'); selectDay('2026-11-22');" class="text-autumn text-[11px] font-bold hover:underline mt-4 flex items-center">
+                            Im Planer ansehen <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                    <!-- Tori no Ichi -->
+                    <div class="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Tokyo (Shinjuku / Asakusa)</span>
+                            <h4 class="font-bold text-base text-stone-800 mt-2">Tori-no-Ichi Hahnenmarkt</h4>
+                            <p class="text-[11px] text-autumn font-bold mb-2">⏱️ Di, 24. Nov 2026 (Abend)</p>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Eines der lebendigsten, authentischsten Stadtfeste Tokyos. Schreine wie der Hanazono in Shinjuku füllen sich mit Ständen voller goldener Glücksrechen (Kumade) und Hunderten Streetfood-Buden (Yatai) bis tief in die Nacht.
+                            </p>
+                        </div>
+                        <button onclick="switchTab('interactive-planner'); selectDay('2026-11-24');" class="text-purple-800 text-[11px] font-bold hover:underline mt-4 flex items-center">
+                            Im Planer ansehen <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Route Summary & Splitting recommendations -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Okinawa summary card -->
+                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border-t-4 border-ocean flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-sky-100 text-ocean text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Abschnitt 1: Tropen</span>
+                            <i class="fa-solid fa-shrimp text-sky-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-800 mb-2">🌴 Okinawa &amp; Inseln</h3>
+                        <p class="text-xs text-stone-500 font-semibold mb-4">⏱️ 26. Okt. - 01. Nov. (ca. 6 Tage)</p>
+                        <p class="text-sm text-stone-600 leading-relaxed mb-4">
+                            Perfekt zum Akklimatisieren und Baden. Mit Wassertemperaturen um die <strong>26°C</strong> sind Schnorcheln mit Schildkröten und Strandausflüge im traumhaften Spätsommerklima angesagt.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('okinawa')" class="text-ocean text-xs font-bold hover:underline flex items-center mt-4">
+                        Mehr zu Okinawa erfahren <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Kyushu summary card -->
+                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border-t-4 border-emerald-600 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Abschnitt 2: Food &amp; Vulkane</span>
+                            <i class="fa-solid fa-fire-flame-curved text-emerald-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-800 mb-2">🌋 Fukuoka &amp; Kyushu</h3>
+                        <p class="text-xs text-emerald-700 font-semibold mb-4">⏱️ 02. Nov. - 20. Nov. (ca. 19 Tage)</p>
+                        <p class="text-sm text-stone-600 leading-relaxed mb-4">
+                            Reise durch die wunderschöne Vulkaninsel Kyushu. Genieße das weltberühmte Hakata Tonkotsu Ramen an Fukuokas Street-Food-Ständen (Yatai) und entspanne im tiefen Herbstwald der besten Onsen-Regionen.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('kyushu')" class="text-emerald-700 text-xs font-bold hover:underline flex items-center mt-4">
+                        Mehr zu Kyushu erfahren <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Golden Autumn / Kansai peak summary card -->
+                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border-t-4 border-autumn flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-orange-100 text-autumn text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Abschnitt 3: Peak Laub</span>
+                            <i class="fa-solid fa-plane-arrival text-autumn text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-800 mb-2">🍁 Osaka, Kyoto &amp; Tokyo</h3>
+                        <p class="text-xs text-orange-700 font-semibold mb-4">⏱️ 21. Nov. - 28. Nov. (ca. 7 Tage)</p>
+                        <p class="text-sm text-stone-600 leading-relaxed mb-4">
+                            Der ultimative Herbstlaub-Rausch im Tiefland von Kansai. Besuche glühende, rote Gärten in Osaka und Kyoto sowie das spektakuläre Ginkgo-Finale in Tokyo vor dem Heimflug.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('interstop')" class="text-autumn text-xs font-bold hover:underline flex items-center mt-4">
+                        Herbstlaub-Details ansehen <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Route Summary Area -->
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-stone-800">
+                    <i class="fa-solid fa-route mr-2 text-autumn"></i> Routen-Verlauf deiner Reise
+                </h3>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative py-6">
+                    <!-- Progress connector line on desktop -->
+                    <div class="hidden md:block absolute top-[64px] left-[10%] right-[10%] h-1 bg-gradient-to-r from-sky-400 via-emerald-400 to-orange-400 -z-10"></div>
+                    
+                    <div class="flex flex-col items-center text-center bg-sky-50/50 p-4 rounded-xl border border-sky-100 w-full md:w-1/5">
+                        <span class="text-3xl mb-1">🌴</span>
+                        <h4 class="font-bold text-sm text-sky-900">Okinawa</h4>
+                        <p class="text-xs text-stone-500 mt-1">26. Okt - 01. Nov</p>
+                        <span class="text-[10px] bg-sky-200 text-sky-800 font-bold px-1.5 py-0.5 rounded-full mt-2">Strand &amp; Subtropen</span>
+                    </div>
+                    <div class="text-stone-400 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
+                    <div class="flex flex-col items-center text-center bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 w-full md:w-1/5">
+                        <span class="text-3xl mb-1">🍜</span>
+                        <h4 class="font-bold text-sm text-emerald-900">Fukuoka</h4>
+                        <p class="text-xs text-stone-500 mt-1">02. Nov - 06. Nov</p>
+                        <span class="text-[10px] bg-emerald-200 text-emerald-800 font-bold px-1.5 py-0.5 rounded-full mt-2">Street Food &amp; Kultur</span>
+                    </div>
+                    <div class="text-stone-400 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
+                    <div class="flex flex-col items-center text-center bg-amber-50/50 p-4 rounded-xl border border-amber-100 w-full md:w-1/5">
+                        <span class="text-3xl mb-1">🌋</span>
+                        <h4 class="font-bold text-sm text-amber-900">Kyushu &amp; Onsen</h4>
+                        <p class="text-xs text-stone-500 mt-1">07. Nov - 20. Nov</p>
+                        <span class="text-[10px] bg-amber-200 text-amber-800 font-bold px-1.5 py-0.5 rounded-full mt-2">Rundreise &amp; Natur</span>
+                    </div>
+                    <div class="text-stone-400 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
+                    <div class="flex flex-col items-center text-center bg-orange-50/50 p-4 rounded-xl border border-orange-100 w-full md:w-1/5">
+                        <span class="text-3xl mb-1">🍁</span>
+                        <h4 class="font-bold text-sm text-orange-900">Osaka &amp; Kyoto</h4>
+                        <p class="text-xs text-stone-500 mt-1">21. Nov - 23. Nov</p>
+                        <span class="text-[10px] bg-orange-200 text-orange-800 font-bold px-1.5 py-0.5 rounded-full mt-2">Laub-Hauptsaison</span>
+                    </div>
+                    <div class="text-stone-400 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
+                    <div class="flex flex-col items-center text-center bg-purple-50/50 p-4 rounded-xl border border-purple-100 w-full md:w-1/5">
+                        <span class="text-3xl mb-1">🗼</span>
+                        <h4 class="font-bold text-sm text-purple-900">Tokyo Finale</h4>
+                        <p class="text-xs text-stone-500 mt-1">24. Nov - 28. Nov</p>
+                        <span class="text-[10px] bg-purple-200 text-purple-800 font-bold px-1.5 py-0.5 rounded-full mt-2">Letzte Ginkgos &amp; Abflug</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: OKINAWA -->
+        <section id="okinawa" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold mb-4 text-ocean tracking-tight">Klimatische Traumbedingungen in Okinawa</h2>
+                <p class="text-base md:text-lg leading-relaxed text-stone-700 mb-6">
+                    Ende Oktober ist ein hervorragender Reisezeitraum für Okinawa. Die unerträgliche Feuchtigkeit des Sommers sowie die Taifun-Gefahr sind vorbei. Mit Lufttemperaturen von <strong>25°C bis 28°C</strong> ist das Klima äußerst angenehm, während das Wasser dank gespeicherter Sommerwärme bei fantastischen <strong>26°C</strong> liegt – ideal für ausgiebiges Baden, Schnorcheln und Tauchen.
+                </p>
+                
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                    <h3 class="text-center font-bold text-earth text-lg mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-chart-line mr-2 text-ocean"></i> Klima &amp; Wasser-Trend Okinawa
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="weatherChart"></canvas>
+                    </div>
+                    <p class="text-xs text-stone-500 italic mt-4 text-center">
+                        * Hinweis: Die Wassertemperaturen (blau gestrichelt) sind Ende Oktober noch perfekt zum Schnorcheln geeignet.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INTEGRATED OKINAWA FESTIVAL SECTION -->
+            <div class="mb-10 bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-200/80 p-6 rounded-3xl shadow-sm flex flex-col md:flex-row gap-6 items-center">
+                <div class="bg-sky-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-md shrink-0">
+                    <i class="fa-solid fa-gopuran"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                        <span class="bg-sky-200 text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Insel-Tradition</span>
+                        <span class="text-xs text-autumn font-extrabold flex items-center">
+                            <i class="fa-regular fa-calendar-days mr-1"></i> Sa, 31. Okt – So, 1. Nov 2026
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800">Ryukyu-Kultur hautnah: Das Shurijo-Schlossfest</h3>
+                    <p class="text-sm text-stone-600 mt-2 leading-relaxed">
+                        Das Shurijo-Schlossfest erinnert an den Glanz und die prunkvollen Rituale des historischen Ryukyu-Königreichs. Während im Park des Schlosses Shuri feierliche Zeremonien und traditionelle Ryukyu-Tänze dargeboten werden, gipfelt das Fest in der monumentalen Kaiserparade auf der Kokusai-Dori Einkaufsstraße im Herzen von Naha. Über tausend Darsteller in detailreichen Kleidern des königlichen Hofstaates ziehen dabei durch die Stadt. Ein faszinierender, farbenprächtiger Kontrast zu den Tempelfesten Zentraljapans!
+                    </p>
+                    <a href="https://visitokinawajapan.com/discover/events/shurijo-castle-festival/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-bold text-ocean hover:underline mt-4 group">
+                        Offizielle Event-Details bei Visit Okinawa ansehen 
+                        <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Things to see in Okinawa -->
+            <div>
+                <h2 class="text-2xl font-bold mb-6 text-stone-800 flex items-center">
+                    <i class="fa-solid fa-compass text-ocean mr-2"></i> Unverzichtbare Erlebnisse auf Okinawa (Honto &amp; Kerama)
+                    <span class="ml-2 text-xs text-stone-400 font-normal hidden sm:inline">(Klicke auf ein Ziel für Details &amp; Bilder ℹ️)</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div onclick="openDetailModal('churaumi')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🐠 Highlights-Norden</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 4 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Churaumi Aquarium</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Eines der spektakulärsten Meerwasseraquarien der Welt. Das Hauptbecken beherbergt majestätische Walhaie und riesige Mantarochen, die dich ins Staunen versetzen werden.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('kerama')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🏝️ Tagestrip</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Ganzer Tag</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Kerama-Inseln (Zamami / Tokashiki)</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Nur eine kurze Schnellfähre-Fahrt von Naha entfernt. Das glasklare "Kerama Blue"-Wasser bietet atemberaubende Sichtweiten, weiße Korallenstrände und Schnorchel-Abenteuer mit Schildkröten.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('gangala')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🌋 Urzeit-Natur</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 3 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Gangala Valley &amp; Gyokusendo-Höhle</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Wandere durch ein subtropisches Flusstal inmitten eingestürzter Höhlensysteme mit jahrhundertealten Banyan-Bäumen und besuche die gewaltige, faszinierende Gyokusendo-Tropfsteinhöhle.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('manzamo')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🌅 Küste &amp; Kultur</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 4 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Cape Manzamo &amp; Zakimi-Burgruine</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Bestaune das markante "Elefantenrüssel-Kliff" am Kap Manzamo und kombiniere es mit der Erkundung der imposanten Steinmauern der UNESCO-Weltkulturerbestätte Zakimi Castle.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('shuri')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🏯 City-Tour Naha</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 3 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Shuri-Castle &amp; Kokusai-Dori</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Lerne das Ryukyu-Königreich im geschichtsträchtigen Shuri-Park kennen und schlendere am Abend durch die quirlige Einkaufsmeile Kokusai-Dori, um köstliche Streetfood-Spezialitäten auszuprobieren.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('yachimun')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-sky-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2 py-0.5 rounded">🏺 Kunsthandwerk</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 2 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2 group-hover:text-ocean transition-colors">Yachimun no Sato Töpferdorf</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Ein idyllisch gelegenes Künstlerdorf in Yomitan. Hier kannst du traditionellen Meistern in Werkstätten mit urigen, treppenförmigen Brennöfen bei der Arbeit zusehen und handgemachte Souvenirs kaufen.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean/85 group-hover:text-ocean transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: KYUSHU & FUKUOKA -->
+        <section id="kyushu" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold mb-4 text-emerald-800 tracking-tight">Fukuoka &amp; Kyushu-Abenteuer</h2>
+                <p class="text-base md:text-lg leading-relaxed text-stone-700">
+                    Kyushu bietet die perfekte Kombination aus weltklasse Gastronomie (Hakata-Ramen!), historisch bedeutsamen Tempeln, spektakulären, rauchenden Vulkanlandschaften und hervorragenden Thermalquellen (<em class="font-semibold text-amber-700">Onsen</em>). Du hast fast drei Wochen Zeit, um diese vielseitige Insel gründlich zu erkunden.
+                </p>
+            </div>
+
+            <!-- INTEGRATED KYUSHU FESTIVAL SECTION -->
+            <div class="mb-10 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 p-6 rounded-3xl shadow-sm flex flex-col md:flex-row gap-6 items-center">
+                <div class="bg-emerald-600 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-md shrink-0">
+                    <i class="fa-solid fa-dragon"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                        <span class="bg-emerald-200 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">UNESCO-Weltkulturerbe</span>
+                        <span class="text-xs text-autumn font-extrabold flex items-center">
+                            <i class="fa-regular fa-calendar-days mr-1"></i> Mo, 2. Nov – Mi, 4. Nov 2026
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800">Weltberühmtes Matsuri-Spektakel: Karatsu Kunchi</h3>
+                    <p class="text-sm text-stone-600 mt-2 leading-relaxed">
+                        Ein absolutes Weltklasse-Kulturereignis, das genau auf deine Route fällt! Die Küstenstadt Karatsu liegt nur eine komfortable, ca. 75-minütige Direktfahrt (per U-Bahn / JR Chikuhi-Linie) von deiner Unterkunft in Fukuoka entfernt. Beim dreitägigen Karatsu Kunchi ziehen die Bewohner 14 monumentale, tonnenschwere Wagen (Hikiyama) aus Holz und feinstem Lack durch die Stadt. Am Abend des 2. November brennen Hunderte Lichter auf den kunstvollen Riesenwagen (Yoiyama). Am Haupttag (3. November) werden die gigantischen Wagen unter lautem Trommelwirbel und "En-ya!"-Rufen sensationell durch den tiefen Strandsand des Meeresufers gezogen.
+                    </p>
+                    <a href="https://www.japan.travel/en/spot/326/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-bold text-emerald-700 hover:underline mt-4 group">
+                        Offizielle Details auf Japan.Travel ansehen 
+                        <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Fukuoka City and Immediate Surrounds -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold mb-6 text-stone-800 border-b pb-2 flex items-center">
+                    <i class="fa-solid fa-city mr-2 text-fukuoka"></i> Top-Ziele in Fukuoka &amp; Umgebung
+                    <span class="ml-2 text-xs text-stone-400 font-normal hidden sm:inline">(Klicke auf ein Ziel für Details &amp; Bilder ℹ️)</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div onclick="openDetailModal('nakasu')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">🍜 Foodie-Must-Do</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Abendfüllend</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">Nakasu Yatai Essensstände</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Am Ufer des Nakasu-Flusses erwachen am Abend urige, mobile Garküchen zum Leben. Genieße authentisches Hakata Tonkotsu Ramen, Yakitori und eiskaltes Bier in geselliger Runde Schulter an Schulter mit Einheimischen.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('dazaifu')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">🌸 Halbtagestrip</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 4 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">Dazaifu Tenmangu Schrein &amp; Concept Store</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Der wunderschöne Schrein liegt unweit von Fukuoka. Bekannt ist er für seine rot geschwungenen Brücken über Teiche. Auf dem Weg dorthin siehst du den faszinierenden, von Kengo Kuma designten Starbucks Concept Store aus ineinander verkeilten Holzbalken.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('ohori')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">🍃 Spaziergang</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 2.5 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">Ohori Park &amp; Burgruinen Fukuoka</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Fukuokas grüne Oase mit einem riesigen zentralen Teich. Der angeschlossene traditionelle japanische Garten brennt Mitte November förmlich im Herbstlaub. Unweit befinden sich die alten, steinernen Burgruinen im benachbarten Maizuru-Park.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('teamlab_fukuoka')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">      Digitale Kunst</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 2 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">teamLab Forest Fukuoka</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Eine grandiose interaktive Licht- und Sound-Ausstellung direkt im BOSS E・ZO-Komplex. Betrete eine traumhafte, sich dynamisch verändernde virtuelle Flora und Fauna, die du mit Berührung beeinflussen kannst.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('nokonoshima')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">🚢 Insel-Idylle</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 5 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">Nokonoshima Island Park</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Mit der Fähre in 10 Min. ab Fukuoka zu erreichen. Die autofreie Insel bietet atemberaubende Blumenfelder und sanfte Hügel mit freiem Blick auf die Skyline von Fukuoka und das Meer.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('itoshima')" class="bg-white p-5 rounded-xl shadow-sm border border-stone-200/60 hover:border-emerald-300 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">🏖️ Strand &amp; Küste</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Ganzer Tag</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-stone-800 mb-1 group-hover:text-fukuoka transition-colors">Itoshima-Halbinsel</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Fukuokas beliebtestear Naherholungsort für Surfer und Ruhesuchende. Bekannt für das weiße Shinto-Tor (Torii) im Wasser vor den verheirateten "Sakurai Futamigaura"-Felsen, herrliche Sandstrände und hippe Strandcafés.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-emerald-700/85 group-hover:text-emerald-700 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Broader Kyushu Road Trip & Onsen highlights -->
+            <div>
+                <h3 class="text-2xl font-bold mb-6 text-stone-800 border-b pb-2 flex items-center">
+                    <i class="fa-solid fa-mountain-subway mr-2 text-amber-700"></i> Kyushu Entdeckungen (Vulkane &amp; Onsen)
+                    <span class="ml-2 text-xs text-stone-400 font-normal hidden sm:inline">(Klicke auf ein Ziel für Details &amp; Bilder ℹ️)</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div onclick="openDetailModal('takachiho')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">🌋 Bootsfahrt</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Ganzer Tag</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Takachiho-Schlucht</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Miete ein traditionelles Ruderboot und gleite durch die tiefe, enge Basaltschlucht, während der spektakuläre Minainotaki-Wasserfall direkt neben dir ins smaragdgrüne Wasser stürzt. Ein unvergesslicher Anblick im leuchtenden Herbstwald.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('kurokawa')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">♨️ Wellness-Klassiker</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Ganzer Tag</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Kurokawa Onsen</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Eine der schönsten, ursprünglichsten Thermalquellendörfer Japans, tief versteckt in den Bergen Kyushus. Besorge dir eine hölzerne Bademarke (<em class="italic text-amber-900">Tegata</em>) und wandere im traditionellen Yukata-Gewand von Onsen zu Onsen.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('kumamoto')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">🏯 Architektur-Meisterwerk</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 6 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Kumamoto Castle &amp; Suizenji</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Erkunde eine der drei beeindruckendsten und historisch wehrhaftesten Burgen Japans, die nach dem Erdbeben grandios rekonstruiert wurde. Besuche danach den wunderschönen, landschaftlich dem Tokaido-Weg nachempfundenen Suizenji-Garten.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('nagasaki')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">   Kultur &amp; Aussicht</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> Ganzer Tag</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Nagasaki Highlights</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Eine geschichtsträchtige Hafenstadt an malerischen Steilhängen. Besuche den bewegenden Peace Park, schlendere durch den wunderschönen kolonialen Glover Garden und genieße nachts den weltberühmten, atemberaubenden Rundumblick vom Mount Inasa.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('yufuin')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">🏔️ See &amp; Flanieren</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 4 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Yufuin Onsen-Dorf</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Ein idyllisches, von Bergen gerahmtes Thermalquellenstädtchen mit charmanten Boutiquen und Kunstgalerien. Spaziere zum malerischen Kinrin-See, der besonders in kühlen Novembermorgen durch aufsteigenden warmen Quellendampf mystisch leuchtet.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="openDetailModal('kunenan')" class="bg-amber-50/40 p-5 rounded-xl border border-amber-200/70 hover:border-amber-400 hover:shadow-md hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded">🍁 Geheimer Laub-Tipp</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 3 Std.</span>
+                            </div>
+                            <h4 class="font-bold text-lg text-amber-900 mb-1 group-hover:text-amber-800 transition-colors">Saga - Kunenan Garden</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">
+                                Ein exklusiver, historischer Park in der Präfektur Saga. Er ist jedes Jahr nur für exakt 9 Tage im November für die Öffentlichkeit zugänglich, um die absolut unübertroffene, leuchtend rote Fächerahornfärbung zu bewundern.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-amber-800/85 group-hover:text-amber-800 transition-colors">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-circle-info ml-1.5 text-[11px] transition-transform group-hover:rotate-12"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: OSAKA VS NIKKO ANALYSIS -->
+        <section id="interstop" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-2 text-autumn">Der Herbstlaub-Vergleich (21. - 25. November)</h2>
+                <p class="text-stone-600 max-w-3xl">
+                    Welcher Zwischenstopp lohnt sich auf dem Weg nach Tokyo zwischen dem 21. und 25. November wirklich für das Herbstlaub? Hier ist unsere fundierte, meteorologische Analyse und die optimalen Ausflugsalternativen.
+                </p>
+            </div>
+
+            <!-- Analysis Box: Osaka Winner vs. Nikko Winter -->
+            <div class="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-bold text-stone-800 mb-4 flex items-center">
+                    <i class="fa-solid fa-chart-simple text-autumn mr-2"></i> Warum die Höhenlage im Spätherbst entscheidet
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 leading-relaxed text-sm">
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                        <strong class="text-amber-800 block text-base mb-1">Option A: Die Tiefland-Region Osaka / Kyoto (Der Gewinner!)</strong>
+                        <p class="text-stone-600">
+                            Aufgrund der milden, küstennahen Lage und der geringen Höhe über dem Meeresspiegel erlebt die Kansai-Region (Osaka, Kyoto, Nara) ihren <strong>absoluten Herbstlaub-Peak genau zwischen dem 15. November und dem 5. Dezember</strong>. Wenn ihr hier Halt macht, steht ihr mitten in einem tiefen, feuerroten Meer aus Fächerahornen und goldgelben Ginkgo-Bäumen. Es ist landschaftlich die spektakulärste Option für diesen Reisezeitraum.
+                        </p>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <strong class="text-stone-700 block text-base mb-1">Option B: Die Berg-Regionen Koyasan &amp; Nikko (Schon Winter-Modus)</strong>
+                        <p class="text-stone-600">
+                            Sowohl der Berg Koyasan (ca. 800 Meter Höhe) als auch Nikko (Snoqualmie-Höhe von 600 bis über 1000 Meter) erleben ihren Herbstlaub-Peak bereits im <strong>Oktober bis spätestens Anfang November</strong>. Ende November sind die Laubbäume an diesen geschichtsträchtigen Orten meist kahl, der kalte Winterwind weht über die Tempeldächer und es kann bereits erster Schnee fallen. Kulturell wunderschön, aber für Herbstlaub nicht mehr geeignet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Option A: Osaka Area (The Winner) -->
+                <div class="border border-orange-200 bg-orange-50/40 p-6 rounded-2xl shadow-sm">
+                    <span class="bg-autumn text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">🔥 Herbstlaub-Peak</span>
+                    <h3 class="text-2xl font-bold mt-3 mb-2 text-autumn">Option A: Osaka &amp; Kansai-Region</h3>
+                    <p class="text-sm text-stone-600 mb-6 leading-relaxed">
+                        Wenn ihr euch für die Gewinner-Option entscheidet, genießt ihr im Großraum Osaka fantastische Laub-Highlights ohne lange Anfahrten aus eurer Unterkunft. <span class="text-xs text-stone-500 italic block mt-1">(Klicke auf ein Ziel für Bilder &amp; Infos!)</span>
+                    </p>
+
+                    <h4 class="font-bold text-stone-800 mb-3 border-b pb-1">Top-Ziele für diese Tage:</h4>
+                    <ul class="space-y-4">
+                        <!-- Kiyomizu-dera Festival Highlight Inserted Contextually -->
+                        <li class="bg-amber-50/80 p-4 rounded-xl border-2 border-amber-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-1 flex-wrap gap-1">
+                                <strong class="text-stone-800 flex items-center gap-1.5 text-sm">
+                                    <span>🏮 Event</span> Kiyomizu-dera Herbst-LightUp
+                                </strong>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">⏱️ 22. – 23. Nov (Abend)</span>
+                            </div>
+                            <p class="text-xs text-stone-600 mb-3">
+                                Ein Weltklassetipp! Der auf hölzernen Pfählen erbaute Hauptbalkon des berühmten Tempels schwebt bei Nacht scheinbar über einer brennenden, karmesinrot illuminierten Ahornschlucht. Ein strahlend blauer Laserstrahl weist als Symbol der Barmherzigkeit von dort den Weg in den Kyotoer Nachthimmel.
+                            </p>
+                            <a href="https://www.japan.travel/en/spot/1141/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[11px] font-bold text-autumn hover:underline group">
+                                Offizielle Tempel-Informationen auf Japan.Travel 
+                                <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                            </a>
+                        </li>
+                        <li onclick="openDetailModal('minoo')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-autumn hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-autumn transition-colors">Minoo Park (Osaka)</strong>
+                                    <span class="text-xs bg-orange-100 text-autumn px-2 py-0.5 rounded font-semibold">⏱️ 4-5 Std.</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Eine wunderschöne, leicht begehbare Schlucht am Nordrand von Osaka. Nach einem gemütlichen Spaziergang entlang des Flusses erreicht ihr einen beeindruckenden 33 Meter hohen Wasserfall. Probiert unbedingt die lokale Spezialität: In Sesamöl frittierte, gesüßte Ahornblätter (Momiji Tempura)!</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-autumn/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                        <li onclick="openDetailModal('katsuoji')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-autumn hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-autumn transition-colors">Katsuo-ji Tempel (Osaka)</strong>
+                                    <span class="text-xs bg-orange-100 text-autumn px-2 py-0.5 rounded font-semibold">⏱️ 3 Std.</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Ein spektakulärer Tempel in den Minoh-Bergen, berühmt für tausende rote "Daruma"-Glücksbringer-Puppen. Ende November wird der Tempel am Abend magisch illuminiert, während der Nebel über den Teichen aufsteigt.</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-autumn/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                        <li onclick="openDetailModal('kyoto_day')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-autumn hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-autumn transition-colors">Kyoto (Herbst-Tagesausflug)</strong>
+                                    <span class="text-xs bg-orange-100 text-autumn px-2 py-0.5 rounded font-semibold">⏱️ Ganzer Tag</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Nur 30 Zugminuten von Osaka entfernt. Besucht die weltberühmten Tempel Eikan-do (der absolute Tempeltraum im Herbstlaub) oder den Kiyomizu-dera zur atemberaubenden Abendbeleuchtung über einem Meer aus brennend roten Baumkronen.</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-autumn/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Option B: Nikko & Tokyo Alternatives -->
+                <div class="border border-stone-200 bg-stone-50 p-6 rounded-2xl shadow-sm">
+                    <span class="bg-stone-500 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">❄️ Spätherbst-Kultur</span>
+                    <h3 class="text-2xl font-bold mt-3 mb-2 text-stone-700">Option B: Nikko &amp; Tokyo-Region</h3>
+                    <p class="text-sm text-stone-600 mb-6 leading-relaxed">
+                        Wenn ihr Nikko besucht, steht die spirituelle Kultur der prunkvollen Schreine im Vordergrund. Für farbenprächtiges Herbstlaub solltet ihr hier direkt auf Alternativen nahe Tokyo ausweichen. <span class="text-xs text-stone-500 italic block mt-1">(Klicke auf ein Ziel für Bilder &amp; Infos!)</span>
+                    </p>
+
+                    <h4 class="font-bold text-stone-800 mb-3 border-b pb-1">Top-Ziele &amp; Alternativen in der Nähe:</h4>
+                    <ul class="space-y-4">
+                        <!-- Tori-no-Ichi Festival Highlight Inserted Contextually -->
+                        <li class="bg-purple-50/80 p-4 rounded-xl border-2 border-purple-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-1 flex-wrap gap-1">
+                                <strong class="text-stone-800 flex items-center gap-1.5 text-sm">
+                                    <span>🏮 Event</span> Tori-no-Ichi (Hahnenmarkt Tokyo)
+                                </strong>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">⏱️ Di, 24. Nov (Abend)</span>
+                            </div>
+                            <p class="text-xs text-stone-600 mb-3">
+                                Direkt an eurem ersten Abend in Tokyo könnt ihr in das lebendigste Nachtspektakel der Stadt eintauchen! Der Hahnenmarkt am Hanazono-Schrein in Shinjuku lockt mit über 200 Streetfood-Verkaufsständen (Yatai) und Händlern, die farbenprächtige, goldene Glücksrechen (Kumade) lautstark an Händler klatschen. Die Stimmung nach Einbruch der Dunkelheit ist absolut legendär.
+                            </p>
+                            <a href="https://japantravel.navitime.com/en/area/jp/guide/NTJtrv1430-en/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[11px] font-bold text-purple-800 hover:underline group">
+                                Detaillierter Schrein-Guide bei Japan Travel Navitime 
+                                <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                            </a>
+                        </li>
+                        <li class="bg-white p-3 rounded-xl border border-stone-200 opacity-75">
+                            <div class="flex justify-between items-center mb-1">
+                                <strong class="text-stone-600">Nikko (Toshogu-Schrein)</strong>
+                                <span class="text-xs bg-stone-200 text-stone-800 px-2 py-0.5 rounded font-semibold">⏱️ Ganzer Tag</span>
+                            </div>
+                            <p class="text-xs text-stone-500 mb-1">Der prächtige Toshogu-Schrein (UNESCO-Welterbe) ist architektonisch atemberaubend. Laub gibt es um diese Zeit nur noch vereinzelt an den tiefer gelegenen Brücken (z.B. Shinkyo-Brücke).</p>
+                        </li>
+                        <li onclick="openDetailModal('showa_kinen')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-purple-600 hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-purple-700 transition-colors">Showa Kinen Park (Tachikawa)</strong>
+                                    <span class="text-xs bg-stone-200 text-stone-800 px-2 py-0.5 rounded font-semibold">⏱️ 3-4 Std.</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Ein riesiger Park am Westrand von Tokyo. Ende November spaziert ihr hier durch eine weltberühmte, goldgelb strahlende Ginkgo-Allee und besucht einen traditionellen japanischen Garten voller roter Ahornbäume.</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-purple-700/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                        <li onclick="openDetailModal('koishikawa')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-purple-600 hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-purple-700 transition-colors">Koishikawa Korakuen (Zentrum Tokyo)</strong>
+                                    <span class="text-xs bg-stone-200 text-stone-800 px-2 py-0.5 rounded font-semibold">⏱️ 2 Std.</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Einer der ältesten und schönsten Landschaftsgärten Tokyos. Die dichten Ahornbäume rund um die Teiche und die rote "Tsuzunodorokis"-Brücke brennen Ende November förmlich in tiefem Karmesinrot.</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-purple-700/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                        <li onclick="openDetailModal('kamakura')" class="bg-white p-3 rounded-xl border border-stone-200 hover:border-purple-600 hover:shadow-sm cursor-pointer transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <strong class="text-stone-800 group-hover:text-purple-700 transition-colors">Kamakura (Zen &amp; Meer)</strong>
+                                    <span class="text-xs bg-stone-200 text-stone-800 px-2 py-0.5 rounded font-semibold">⏱️ Ganzer Tag</span>
+                                </div>
+                                <p class="text-xs text-stone-600 mb-1">Die historische Küstenstadt südlich von Tokyo ist berühmter für ihren großen Buddha und späte Herbstfarben. Die Zen-Tempel (z.B. Hasedera) strahlen Ende November in voller Pracht.</p>
+                            </div>
+                            <span class="text-[10px] font-bold text-purple-700/80 self-end mt-1 flex items-center">Bilder &amp; Tipps <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE PLANNER TAB -->
+        <section id="interactive-planner" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-2 text-autumn flex items-center">
+                    <span class="mr-2">📅</span> Dein interaktiver Tagesplaner (26. Okt - 28. Nov)
+                </h2>
+                <p class="text-stone-600">
+                    Plane deine Tage Schritt für Schritt. Klicke einfach auf die Empfehlungen auf der linken Seite, um sie einem Reisetag zuzuordnen. Du kannst auch eigene Notizen und Ziele hinzufügen. Alle Änderungen werden automatisch in deinem Browser gespeichert!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Recommendations Sidebar (Left side on desktop) -->
+                <div class="lg:col-span-4 bg-stone-100 p-4 rounded-xl shadow-inner max-h-[750px] overflow-y-auto">
+                    <h3 class="font-bold text-lg mb-3 text-earth">⚡ Schnell-Auswahl</h3>
+                    <p class="text-xs text-stone-500 mb-4">Wähle unten einen Reisetag und klicke dann auf ein Ziel, um es sofort einzuplanen:</p>
+                    
+                    <div class="space-y-6">
+                        <!-- Festival Recommendations -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-red-700 mb-2 border-b border-red-700 border-opacity-30 pb-1 flex items-center justify-between">
+                                <span>🏮 Feste &amp; Matsuri (Exklusiv)</span>
+                                <span class="bg-red-100 text-red-800 text-[9px] px-1.5 py-0.5 rounded font-extrabold uppercase animate-pulse">Termingebunden!</span>
+                            </h4>
+                            <p class="text-[10px] text-stone-500 mb-2">Achtung: Diese Feste finden nur an exakten Reisetagen statt. Wähle erst den passenden Tag und klicke dann zum Hinzufügen:</p>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Shurijo Schlossfest &amp; Ryukyu-Kaiserparade (Okinawa) - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-red-50 p-2.5 rounded-lg border border-red-200 text-sm flex justify-between items-center transition-all group">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-stone-800 text-xs">Shurijo Kaiserparade (Naha)</span>
+                                        <span class="text-[10px] text-stone-500">Okinawa-Basis | Sa 31. Okt / So 1. Nov</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Okt 31/Nov 1</span>
+                                </button>
+                                <button onclick="quickAdd('Karatsu Kunch: UNESCO Abend-Yoiyama Parade (Karatsu, Saga)')" class="w-full text-left bg-white hover:bg-red-50 p-2.5 rounded-lg border border-red-200 text-sm flex justify-between items-center transition-all group">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-stone-800 text-xs">Karatsu Kunchi Yoiyama (Abend)</span>
+                                        <span class="text-[10px] text-stone-500">Abendparade nahe Fukuoka | Mo 2. Nov</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Nov 2</span>
+                                </button>
+                                <button onclick="quickAdd('Karatsu Kunch: UNESCO Riesenwagen-Strandzug (Karatsu, Saga)')" class="w-full text-left bg-white hover:bg-red-50 p-2.5 rounded-lg border border-red-200 text-sm flex justify-between items-center transition-all group">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-stone-800 text-xs">Karatsu Kunchi Strandparade (Tag)</span>
+                                        <span class="text-[10px] text-stone-500">Ausflug von Fukuoka | Di 3. Nov</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Nov 3</span>
+                                </button>
+                                <button onclick="quickAdd('Kiyomizu-dera Herbst-LightUp &amp; Blaue Laser-Illumination (Kyoto)')" class="w-full text-left bg-white hover:bg-red-50 p-2.5 rounded-lg border border-red-200 text-sm flex justify-between items-center transition-all group">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-stone-800 text-xs">Kiyomizu Herbst-LightUp (Abend)</span>
+                                        <span class="text-[10px] text-stone-500">Kyoto-Ausflug von Osaka | So 22. Nov</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Nov 22</span>
+                                </button>
+                                <button onclick="quickAdd('Tori-no-Ichi Hahnenmarkt &amp; Yatai Streetfood (Hanazono Schrein, Tokyo)')" class="w-full text-left bg-white hover:bg-red-50 p-2.5 rounded-lg border border-red-200 text-sm flex justify-between items-center transition-all group">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-stone-800 text-xs">Tori-no-Ichi (Hahnenmarkt)</span>
+                                        <span class="text-[10px] text-stone-500">Riesen-Schreinfest Shinjuku | Di 24. Nov</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Nov 24</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Okinawa Ideas -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-ocean mb-2 border-b border-ocean border-opacity-30 pb-1">🏖️ Okinawa Empfehlungen</h4>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Churaumi Aquarium (Aquarium im Norden) - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-sky-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Churaumi Aquarium</span>
+                                    <span class="text-xs bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded group-hover:bg-sky-200">⏱️ 4h</span>
+                                </button>
+                                <button onclick="quickAdd('Tagesausflug: Kerama Inseln (Schnorcheln &amp; Boot)')" class="w-full text-left bg-white hover:bg-sky-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kerama Inseln Ausflug</span>
+                                    <span class="text-xs bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded group-hover:bg-sky-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Gangala Valley &amp; Gyokusendo-Höhle (Urzeit-Natur &amp; Höhlencafé) - ca. 3 Std.')" class="w-full text-left bg-white hover:bg-sky-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Gangala Valley &amp; Höhle</span>
+                                    <span class="text-xs bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded group-hover:bg-sky-200">⏱️ 3h</span>
+                                </button>
+                                <button onclick="quickAdd('Cape Manzamo &amp; Zakimi-Burgruine (Küstenpanorama &amp; UNESCO) - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-sky-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Cape Manzamo &amp; Ruinen</span>
+                                    <span class="text-xs bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded group-hover:bg-sky-200">⏱️ 4h</span>
+                                </button>
+                                <button onclick="quickAdd('Naha Highlights: Kokusai Dori Streetfood &amp; Shuri Castle Park - ca. 3 Std.')" class="w-full text-left bg-white hover:bg-sky-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Naha City &amp; Shuri Castle</span>
+                                    <span class="text-xs bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded group-hover:bg-sky-200">⏱️ 3h</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Fukuoka Ideas -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-fukuoka mb-2 border-b border-fukuoka border-opacity-30 pb-1">🍜 Fukuoka Highlights</h4>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Abendessen an den Nakasu Yatai Essensständen')" class="w-full text-left bg-white hover:bg-emerald-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Nakasu Yatai Stände</span>
+                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded group-hover:bg-emerald-200">⏱️ Abend</span>
+                                </button>
+                                <button onclick="quickAdd('Tagesausflug: Itoshima Halbinsel (Felsen &amp; Cafés)')" class="w-full text-left bg-white hover:bg-emerald-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Itoshima Halbinsel</span>
+                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded group-hover:bg-emerald-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Ausflug Dazaifu Tenmangu Schrein &amp; Starbucks Concept Store - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-emerald-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Dazaifu Tenmangu Schrein</span>
+                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded group-hover:bg-emerald-200">⏱️ 4h</span>
+                                </button>
+                                <button onclick="quickAdd('Ohori Park, japanischer Garten &amp; Fukuoka Castle Ruins - ca. 2.5 Std.')" class="w-full text-left bg-white hover:bg-emerald-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Ohori Park &amp; Burgruinen</span>
+                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded group-hover:bg-emerald-200">⏱️ 2.5h</span>
+                                </button>
+                                <button onclick="quickAdd('teamLab Forest Fukuoka (Interaktive Lichtkunst) - ca. 2 Std.')" class="w-full text-left bg-white hover:bg-emerald-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>teamLab Forest Fukuoka</span>
+                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded group-hover:bg-emerald-200">⏱️ 2h</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Kyushu Travel & Onsen Ideas -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-800 mb-2 border-b border-amber-800 border-opacity-30 pb-1">🌋 Kyushu Rundreise &amp; Onsen</h4>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Tagesausflug: Takachiho-Schlucht (Ruderboot-Tour am Wasserfall)')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Takachiho-Schlucht</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Kurokawa Onsen: Traditionelle heiße Quellen &amp; Bademarken-Tour')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kurokawa Onsenbad</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Kumamoto Castle (Eine der schönsten Burgen) &amp; Suizenji Garden - ca. 6 Std.')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kumamoto Burg &amp; Garten</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ 6h</span>
+                                </button>
+                                <button onclick="quickAdd('Nagasaki Highlights: Peace Park, Glover Garden &amp; Mt. Inasa Nachtblick')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Nagasaki Entdeckung</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Yufuin Onsen-Dorf: Spaziergang am idyllischen Kinrin See - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Yufuin &amp; Kinrin See</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ 4h</span>
+                                </button>
+                                <button onclick="quickAdd('Saga - Kunenan Garden (Exklusives Herbstlaub nur im November) - ca. 3 Std.')" class="w-full text-left bg-white hover:bg-amber-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kunenan Laub-Peak</span>
+                                    <span class="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded group-hover:bg-amber-200">⏱️ 3h</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Osaka & Kyoto Zwischenstopp (Peak-Saison) -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-autumn mb-2 border-b border-autumn border-opacity-30 pb-1">🍁 Osaka &amp; Kyoto Highlights (Peak!)</h4>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Minoo Park: Wanderung zum Wasserfall &amp; Momiji Tempura essen - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-orange-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Minoo Park Wasserfall</span>
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded group-hover:bg-orange-200">⏱️ 4h</span>
+                                </button>
+                                <button onclick="quickAdd('Katsuo-ji Tempel: Sieger-Darumas &amp; Abend-Illumination - ca. 3 Std.')" class="w-full text-left bg-white hover:bg-orange-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Katsuo-ji Tempel</span>
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded group-hover:bg-orange-200">⏱️ 3h</span>
+                                </button>
+                                <button onclick="quickAdd('Kyoto Tagesausflug: Eikan-do Tempel im Laub-Rausch &amp; Kiyomizu-dera Light-Up')" class="w-full text-left bg-white hover:bg-orange-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kyoto Herbst-Traum</span>
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded group-hover:bg-orange-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Osaka Castle Park: Goldener Ginkgo-Teppich im Spätherbst - ca. 2.5 Std.')" class="w-full text-left bg-white hover:bg-orange-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Osaka Burg &amp; Ginkgos</span>
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded group-hover:bg-orange-200">⏱️ 2.5h</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tokyo Highlights -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-800 mb-2 border-b border-purple-800 border-opacity-30 pb-1">🗼 Tokyo Finale Highlights</h4>
+                            <div class="space-y-2">
+                                <button onclick="quickAdd('Meiji Jingu Gaien: Schlendern durch die weltberühmte goldene Ginkgo-Allee - ca. 2 Std.')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Ginkgo Allee</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ 2h</span>
+                                </button>
+                                <button onclick="quickAdd('Rikugien Garden: Spektakuläre herbstliche Abend-Beleuchtung - ca. 2 Std.')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Rikugien Abend-Licht</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ 2h</span>
+                                </button>
+                                <button onclick="quickAdd('Showa Kinen Park: Goldgelber Ginkgo-Tunnel &amp; traditionelles Herbstlaub - ca. 3 Std.')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Showa Kinen Park</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ 3h</span>
+                                </button>
+                                <button onclick="quickAdd('Koishikawa Korakuen: Ältester Landschaftsgarten mit feuerroten Fächerahornen - ca. 2 Std.')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Koishikawa Korakuen</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ 2h</span>
+                                </button>
+                                <button onclick="quickAdd('Kamakura Tagesausflug: Zen-Tempel, herbstlicher Hasedera &amp; Küstenbrise')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>Kamakura Tempel</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ Tag</span>
+                                </button>
+                                <button onclick="quickAdd('Digital-Art im teamLab Borderless (Odaiba / Azabudai Hills) - ca. 4 Std.')" class="w-full text-left bg-white hover:bg-purple-50 p-2.5 rounded-lg border border-stone-200 text-sm flex justify-between items-center transition-all group">
+                                    <span>teamLab Borderless</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded group-hover:bg-purple-200">⏱️ 4h</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day-by-day scheduler grouped by Weeks -->
+                <div class="lg:col-span-8 flex flex-col space-y-4">
+                    <!-- Week Selection Buttons -->
+                    <div class="bg-stone-100 p-2 rounded-xl flex overflow-x-auto gap-2 border border-stone-200/50">
+                        <button onclick="switchWeek(1)" id="week-tab-1" class="week-btn bg-white shadow-sm text-stone-800 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex-1 min-w-[90px] text-center border border-stone-200 transition-all">Woche 1</button>
+                        <button onclick="switchWeek(2)" id="week-tab-2" class="week-btn bg-transparent text-stone-600 hover:bg-stone-50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex-1 min-w-[90px] text-center transition-all">Woche 2</button>
+                        <button onclick="switchWeek(3)" id="week-tab-3" class="week-btn bg-transparent text-stone-600 hover:bg-stone-50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex-1 min-w-[90px] text-center transition-all">Woche 3</button>
+                        <button onclick="switchWeek(4)" id="week-tab-4" class="week-btn bg-transparent text-stone-600 hover:bg-stone-50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex-1 min-w-[90px] text-center transition-all">Woche 4</button>
+                        <button onclick="switchWeek(5)" id="week-tab-5" class="week-btn bg-transparent text-stone-600 hover:bg-stone-50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex-1 min-w-[90px] text-center transition-all">Woche 5</button>
+                    </div>
+
+                    <!-- Selected Day Alert bar -->
+                    <div class="bg-orange-50 border border-orange-200/60 p-3 rounded-xl flex justify-between items-center text-sm">
+                        <div class="flex items-center space-x-2 text-stone-800">
+                            <span class="inline-block w-2.5 h-2.5 rounded-full bg-autumn animate-ping"></span>
+                            <span>Aktiver Reisetag für Schnellauswahl:</span>
+                            <strong id="active-day-display" class="text-autumn">Mo, 26. Okt (Okinawa)</strong>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="openConfirmModal()" class="text-xs bg-stone-200 hover:bg-stone-300 text-stone-700 px-2.5 py-1 rounded-lg font-bold transition-all"><i class="fa-solid fa-trash-can mr-1"></i> Alles löschen</button>
+                            <button onclick="copyItinerary()" class="text-xs bg-autumn hover:bg-orange-700 text-white px-2.5 py-1 rounded-lg font-bold transition-all"><i class="fa-solid fa-copy mr-1"></i> Plan kopieren</button>
+                        </div>
+                    </div>
+
+                    <!-- Day Cards Container -->
+                    <div id="day-cards-list" class="space-y-4">
+                        <!-- Dynamic content rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Dialog Overlays instead of standard Alert/Confirm -->
+    <div id="confirm-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white p-6 rounded-2xl shadow-xl border border-stone-200 max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold text-stone-800 mb-2"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2"></i> Planer zurücksetzen?</h3>
+            <p class="text-sm text-stone-600 mb-6 leading-relaxed">Möchtest du wirklich alle geplanten Aktivitäten und Notizen löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-sm font-bold transition-all">Abbrechen</button>
+                <button onclick="resetItinerary()" class="px-4 py-2 bg-autumn hover:bg-orange-700 text-white rounded-xl text-sm font-bold transition-all">Ja, alles löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Destination Detailed Modal with Image and External Information Links -->
+    <div id="detail-modal" class="fixed inset-0 bg-stone-900/65 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300" onclick="closeDetailModal()">
+        <div class="bg-white rounded-3xl shadow-2xl border border-stone-200 max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+            <!-- Image Header -->
+            <div class="relative h-48 md:h-64 overflow-hidden shrink-0">
+                <img id="modal-image" class="w-full h-full object-cover" src="" alt="" onerror="this.onerror=null; this.src='https://placehold.co/800x450/eed8c9/4a4036?text=Japan+Abenteuer';">
+                <div class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/30 to-transparent"></div>
+                <button onclick="closeDetailModal()" class="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-md">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="absolute bottom-4 left-6 right-6">
+                    <span id="modal-badge" class="bg-autumn text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">Kategorie</span>
+                    <h3 id="modal-title" class="text-xl md:text-2xl font-black text-white mt-1.5 drop-shadow-sm">Titel des Ziels</h3>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 md:p-8 overflow-y-auto custom-scroll space-y-5">
+                <div class="flex flex-wrap gap-4 text-xs font-semibold text-stone-500">
+                    <span class="flex items-center gap-1.5 bg-stone-100 px-3 py-1.5 rounded-full">
+                        <i class="fa-regular fa-clock text-autumn"></i>
+                        <span id="modal-duration">Empfohlene Zeit</span>
+                    </span>
+                    <span id="modal-regional-badge" class="flex items-center gap-1.5 bg-stone-100 px-3 py-1.5 rounded-full text-ocean">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="modal-location">Region</span>
+                    </span>
+                </div>
+
+                <div class="text-sm md:text-base leading-relaxed text-stone-600 space-y-3" id="modal-description">
+                    <!-- Dynamic Description Paragraphs -->
+                </div>
+
+                <!-- Insider Tip Box -->
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200/60 p-4 rounded-2xl flex gap-3.5 shadow-sm">
+                    <div class="text-amber-500 text-xl pt-0.5 shrink-0">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-stone-800 text-xs md:text-sm uppercase tracking-wide mb-1">💡 Insider-Tipp von Reiseexperten</h4>
+                        <p id="modal-tip" class="text-xs md:text-sm text-stone-600 leading-relaxed">Insider-Tipp</p>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 bg-autumn hover:bg-orange-700 text-white text-center py-3 rounded-xl text-sm font-bold shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+                        <span>Offiziellen Reiseführer ansehen</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                    </a>
+                    <button onclick="closeDetailModal()" class="sm:w-32 bg-stone-100 hover:bg-stone-200 text-stone-700 py-3 rounded-xl text-sm font-bold transition-all text-center">
+                        Schließen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification for clipboard copy feedback -->
+    <div id="toast-banner" class="fixed bottom-6 right-6 bg-stone-800 text-sand px-5 py-3 rounded-xl shadow-lg z-50 flex items-center space-x-2 border border-stone-700 hidden transform translate-y-10 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message" class="text-sm font-semibold">Erfolgreich in die Zwischenablage kopiert!</span>
+    </div>
+
+    <footer class="bg-earth text-sand py-8 text-center mt-12 border-t border-stone-700">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="opacity-80 text-sm">Dein personalisierter Japan-Reiseplan &copy; 2026</p>
+            <div class="flex space-x-4 text-xs opacity-75">
+                <span>Okinawa 🌴</span>
+                <span>Kyushu 🌋</span>
+                <span>Kansai 🍁</span>
+                <span>Tokyo 🗼</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Comprehensive Database for Pop-ups & Detailed Destinations
+        const destinationDetails = {
+            // Okinawa Sights
+            churaumi: {
+                title: "Churaumi Aquarium",
+                badge: "🐠 Highlights-Norden",
+                location: "Okinawa Honto (Motobu-Halbinsel)",
+                duration: "ca. 4 Std.",
+                image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=850&q=80",
+                link: "https://churaumi.okinawa/en/",
+                description: "Das Okinawa-Churaumi-Aquarium gilt als eines der besten und größten Meeresaquarien weltweit. Im gigantischen 'Kuroshio Sea'-Becken, das durch eine 60 Zentimeter dicke Acrylglasscheibe eingesehen werden kann, gleiten majestätische Walhaie und riesige Mantarochen Seite an Seite mit unzähligen tropischen Fischarten durch das tiefblaue Meerwasser.<br><br>Neben diesem Hauptbecken bietet das Aquarium fantastische Nachbauten der Tiefseebereiche rund um Okinawa, Ausstellungen zu Biolumineszenz sowie ein wunderschönes Außengelände direkt am Strand des Ocean Expo Parks, auf dem auch Delfin-Shows stattfinden.",
+                tip: "Kombiniert den Besuch unbedingt mit dem wunderschönen 'Emerald Beach' direkt nebenan im Park. Die beste Besuchszeit für das Aquarium selbst ist entweder früh am Morgen vor 10 Uhr oder am Nachmittag nach 16 Uhr, wenn die großen Reisegruppen wieder abgefahren sind."
+            },
+            kerama: {
+                title: "Kerama-Inseln",
+                badge: "🏝️ Tagestrip ab Naha",
+                location: "Kerama-Archipel (Zamami / Tokashiki)",
+                duration: "Ganzer Tag (ca. 7-8 Std.)",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.japan.travel/en/spot/611/",
+                description: "Die Kerama-Inselgruppe ist berühmt für ihr spektakuläres, jadegrünes und saphirblaues Wasser, das in Japan ehrfürchtig als 'Kerama Blue' bezeichnet wird. Die Inseln Zamami und Tokashiki sind mit der Schnellfähre in nur 35 bis 50 Minuten vom Tomari-Hafen in Naha aus erreichbar.<br><br>Hier erwarten dich schneeweiße Korallensandstrände wie der Furuzamami Beach oder der Aharen Beach. Durch die außergewöhnlichen Sichtweiten unter Wasser ist dies ein weltklasse Revier zum Schnorcheln und Tauchen. Du hast erstklassige Chancen, in unmittelbarer Ufernähe auf neugierige Meeresschildkröten zu treffen.",
+                tip: "Die Schnellfähren (Queen Zamami) sind im Herbst sehr beliebt und schnell ausgebucht. Reserviert eure Tickets unbedingt mindestens 2-3 Wochen im Voraus online über die offizielle Website der Betreibergemeinde."
+            },
+            gangala: {
+                title: "Valley of Gangala & Gyokusendo-Höhle",
+                badge: "🌋 Urzeit-Natur & Höhlen",
+                location: "Okinawa Süden (Nanjo)",
+                duration: "ca. 3 Std.",
+                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.gangala.com/en/",
+                description: "Das Gangala-Tal ist ein atemberaubender subtropischer Urwald, der vor Zehntausenden von Jahren durch den Einsturz riesiger Kalksteinhöhlen entstanden ist. Auf geführten Pfaden wanderst du durch eine mystische Kulisse aus gigantischen Banyan-Bäumen, deren Wurzeln über Felsklippen hängen. Hier wurden historisch bedeutende Skelettfunde der ersten Ur-Okinawaner (Minatogawa-Mensch) gemacht.<br><br>Direkt gegenüber befindet sich der Eingang zur Gyokusendo-Höhle (Teil des Freizeitparks 'Okinawa World'). Mit über fünf Kilometern Länge ist sie eine der gewaltigsten Tropfsteinhöhlen Japans, von der knapp 900 Meter auf spektakulär ausgeleuchteten Holzstegen für Besucher zugänglich sind.",
+                tip: "Das Gangala-Tal kann ausschließlich im Rahmen einer geführten Tour betreten werden (Reservierung vorab empfohlen). Am Eingang befindet sich das weltberühmte 'Cave Café', das sich komplett in einer echten Höhlenöffnung befindet."
+            },
+            manzamo: {
+                title: "Cape Manzamo & Zakimi Castle",
+                badge: "🌅 Küste & UNESCO-Welterbe",
+                location: "Okinawa Westküste (Onna & Yomitan)",
+                duration: "ca. 4 Std.",
+                image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.japan.travel/en/spot/602/",
+                description: "Das Kap Manzamo ist eine der ikonischsten Postkartenansichten Okinawas. Das steile Kliff aus korallinem Kalkstein formt ein markantes Profil, das verblüffend einem Elefantenrüssel ähnelt. Von den grasbewachsenen Klippenpfaden aus genießt man einen gigantischen Panoramablick auf das Ostchinesische Meer.<br><br>Kombiniert wird dieser Ausflug am besten mit der Zakimi-Burgruine im nahegelegenen Yomitan. Die sanft geschwungenen Steinmauern dieser Burg aus dem 15. Jahrhundert sind architektonisch einzigartig und gehören zum UNESCO-Weltkulturerbe. Sie bieten einen fantastischen Rundumblick über die Halbinsel.",
+                tip: "Besucht Cape Manzamo gezielt zur Zeit des Sonnenuntergangs. Die tiefstehende Sonne taucht den markanten Felsgipfel und das tosende Meer in ein fantastisches, warmes Orange."
+            },
+            shuri: {
+                title: "Shuri Castle & Kokusai-Dori",
+                badge: "🏯 City-Tour Naha",
+                location: "Naha City",
+                duration: "ca. 3 Std.",
+                image: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=850&q=80",
+                link: "https://oki-park.jp/shurijo/en/",
+                description: "Das Shurijo-Schloss war über Jahrhunderte der administrative und zeremonielle Mittelpunkt des Ryukyu-Königreiches. Die Burg hebt sich durch ihr strahlendes Zinnoberrot und die chinesisch inspirierten Baustile drastisch von den Festungen auf Japans Hauptinseln ab. Nach einem tragischen Brand im Jahr 2019 wird der Hauptpalast derzeit auf spektakuläre Weise originalgetreu rekonstruiert – Besucher können den Handwerkern durch Glaswände live bei der Arbeit zusehen.<br><br>Die Kokusai-Dori ('Internationale Straße') bildet den lebendigen Kontrast dazu: Sie ist Nahas turbulente Hauptschlagader voller bunter Souvenirläden, Bars, tropischer Eisdielen und dem berühmten Makishi-Markt, auf dem die Spezialitäten Okinawas frisch zubereitet werden.",
+                tip: "Probiert in den kleinen Gassen abseits der Kokusai-Dori unbedingt ein Glas des lokalen 'Awamori'-Reisschnapses und eine dampfende Schüssel 'Okinawa Soba' mit butterweichem Schweinebauch."
+            },
+            yachimun: {
+                title: "Yachimun no Sato Töpferdorf",
+                badge: "🏺 Kunsthandwerk",
+                location: "Zentral-Okinawa (Yomitan)",
+                duration: "ca. 2 Std.",
+                image: "https://images.unsplash.com/photo-1576016770956-debb63d900fd?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.japan.travel/en/spot/616/",
+                description: "Yachimun no Sato (übersetzt: 'Dorf der Keramik') ist eine idyllische Künstlerkolonie im grünen Hügelland von Yomitan. Hier haben sich führende Töpfermeister Okinawas niedergelassen, um die jahrhundertealte Tradition des Ryukyu-Kunsthandwerks fortzuführen.<br><br>Das Wahrzeichen des Dorfes ist der spektakuläre, treppenförmige Gemeinschafts-Brennofen (Noborigama), der mit Kiefernholz befeuert wird. Beim Spaziergang über das parkähnliche Gelände kannst du den Künstlern in ihren offenen Ateliers bei der Arbeit zusehen und in den kleinen Läden einzigartige, handgetöpferte Tassen, Teller und die berühmten schützenden Shisa-Löwenfiguren erwerben.",
+                tip: "Die Ateliers sind sehr friedlich und laden zum Entspannen ein. Verbinde den Besuch mit einem Kaffee im charmanten Lehm-Café des Dorfes, wo alle Getränke in handgemachten Unikaten serviert werden."
+            },
+
+            // Fukuoka Sights
+            nakasu: {
+                title: "Nakasu Yatai Essensstände",
+                badge: "🍜 Foodie-Must-Do",
+                location: "Fukuoka City (Nakasu Insel)",
+                duration: "Abendfüllend (ca. 2-3 Std.)",
+                image: "https://images.unsplash.com/photo-1542044896530-05d85be9b11a?auto=format&fit=crop&w=850&q=80",
+                link: "https://yokanavi.com/en/yatai/",
+                description: "Die Yatais von Fukuoka sind mobile Straßengarküchen und eine der lebendigsten kulinarischen Attraktionen ganz Japans. Sobald die Dämmerung einbricht, werden die urigen Holzhütten entlang der Flussufer auf der Insel Nakasu aufgebaut.<br><br>Unter den Planen sitzen meist nur 8 bis 10 Personen dicht gedrängt auf Hockern um den kochenden Kessel herum. Hier genießt man die lokale Spezialität schlechthin: Hakata Tonkotsu Ramen (Nudeln in einer sämigen, stundenlang eingekochten Schweineknochenbrühe), frisch gegrillte Yakitori-Spieße und gegrillte Gyoza-Teigtaschen.",
+                tip: "Yatais sind Orte der Geselligkeit. Scheue dich nicht, mit den Nachbarn anzustoßen – auch ohne Japanischkenntnisse kommt man hier sofort ins Gespräch. Gehe am besten vor 19:00 Uhr hin, um lange Warteschlangen zu vermeiden."
+            },
+            dazaifu: {
+                title: "Dazaifu Tenmangu & Concept Store",
+                badge: "🌸 Halbtagestrip ab Fukuoka",
+                location: "Dazaifu City (Südlich von Fukuoka)",
+                duration: "ca. 4 Std.",
+                image: "https://images.unsplash.com/photo-1578637387536-420657565949?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.dazaifutenmangu.or.jp/en/",
+                description: "Der Dazaifu Tenmangu ist einer der wichtigsten Shinto-Schreine Japans und Tenjin gewidmet, dem Schutzgott der Gelehrsamkeit und Bildung. Der Weg zum Hauptschrein führt über wunderschöne, rot lackierte Brücken, die über Teiche in Form des Schriftzeichens für 'Herz' geschwungen sind.<br><br>Auf der belebten Einkaufsstraße vor dem Schrein befindet sich zudem ein architektonisches Highlight der Moderne: Der Starbucks-Concept-Store des Star-Architekten Kengo Kuma. Das Design besticht durch ein faszinierendes, geometrisches Geflecht aus über 2.000 ineinander verkeilten Zedernholzbalken, die komplett ohne Nägel auskommen.",
+                tip: "Probier auf der Promenade unbedingt die Spezialität 'Umegae Mochi' – eine warme, knusprige Reiskuchen-Spezialität gefüllt mit süßer Azukibohnenpaste, die frisch vor deinen Augen gepresst wird."
+            },
+            ohori: {
+                title: "Ohori Park & Burgruinen",
+                badge: "🍃 Spaziergang & Natur",
+                location: "Fukuoka City Zentrum",
+                duration: "ca. 2.5 Std.",
+                image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.ohorikoen.jp/en/",
+                description: "Der Ohori-Park ist Fukuokas grüne Lunge. Das Herzstück des Parks ist ein gewaltiger, historischer See, der einst als schützender Wassergraben für die Burg Fukuoka diente. Drei kleine Inseln im See sind durch filigrane, weiße Brücken miteinander verbunden und laden zum Flanieren ein.<br><br>Direkt an den See grenzt der prächtige Ohori Park Traditional Japanese Garden, der Mitte November in spektakulären roten Laubfarben erstrahlt. Auf der Ostseite des Parks erheben sich zudem die alten, steinernen Burgruinen im Maizuru-Park, von deren Aussichtsplattform man einen sensationellen Blick über die Skyline der Stadt hat.",
+                tip: "Im Ohori-Park befindet sich auch das Fukuoka Art Museum sowie ein stilvolles Teehaus im japanischen Garten, in dem man bei Matcha-Tee den Blick auf die roten Ahornbäume genießen kann."
+            },
+            teamlab_fukuoka: {
+                title: "teamLab Forest Fukuoka",
+                badge: "✨ Digitale Kunst",
+                location: "Fukuoka Jigyohama (BOSS E・ZO)",
+                duration: "ca. 2 Std.",
+                image: "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.teamlab.art/e/forest/",
+                description: "teamLab Forest ist eine spektakuläre, permanente Ausstellung des weltbekannten Digitalkunst-Kollektivs teamLab. Die Ausstellung teilt sich in zwei faszinierende Hauptbereiche: Den 'Catching and Collecting Forest' und den 'Athletics Forest'.<br><br>Mithilfe von modernsten Projektionen, Bewegungssensoren und Spiegeln betrittst du eine virtuelle Traumlandschaft. Pflanzen und Tiere reagieren in Echtzeit auf deine Bewegungen und Berührungen. Es ist eine faszinierende, dreidimensionale Sinnesreise aus Licht, Farben und eigens komponierter Musik.",
+                tip: "Tragt unbedingt flache, geschlossene Schuhe (keine Absätze oder Sandalen), da der Boden im athletischen Bereich stark hügelig, weich und interaktiv ist. Tickets solltet ihr vorab online buchen."
+            },
+            nokonoshima: {
+                title: "Nokonoshima Island Park",
+                badge: "🚢 Insel-Idylle",
+                location: "Hakata-Bucht (10 Min. Fähre ab Meinohama)",
+                duration: "ca. 5 Std. (Halber Tag)",
+                image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=850&q=80",
+                link: "https://nokonoshima.com/en/",
+                description: "Nokonoshima ist eine verträumte, fast autofreie Insel inmitten der Hakata-Bucht vor Fukuoka. Der Island Park im Norden der Insel ist weltberühmt für seine gigantischen, saisonal wechselnden Blumenmeere, die terrassenförmig angelegt sind und sanft zum tiefblauen Meer hin abfallen.<br><br>Ende Oktober und Anfang November blühen hier Millionen von rosafarbenen und weißen Kosmeen (Herbst-Kirschblüten), während im Hintergrund die Skyline von Fukuoka schimmert. Das Gelände im Retrostil verfügt zudem über nachgebaute historische Gassen mit traditionellen Spielzeugläden und Töpferwerkstätten.",
+                tip: "Die Fähre fährt stündlich ab dem Meinohama Ferry Terminal und kostet nur wenige Euro. Am Inselhafen nimmst du am besten direkt den Anschlussbus hoch zum Park."
+            },
+            itoshima: {
+                title: "Itoshima-Halbinsel",
+                badge: "🏖️ Strand & Küste",
+                location: "Westlich von Fukuoka",
+                duration: "Ganzer Tag",
+                image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.japan.travel/en/spot/1987/",
+                description: "Die Itoshima-Halbinsel ist Fukuokas absoluter Lieblingsort für Naturbegeisterte, Surfer und Künstler. Die malerische Küstenstraße führt an weißen Sandstränden, hippen Strandcafés und kleinen Handwerks-Ateliers vorbei.<br><br>Das berühmteste Wahrzeichen ist das 'Sakurai Futamigaura'. Ein strahlend weißes Shinto-Tor (Torii) steht direkt im Meer, dahinter ragen zwei markante, mit einem dicken Shinto-Strohseil (Shimenawa) verbundene Klippen empor – die 'verheirateten Felsen'. Sie symbolisieren eine glückliche Partnerschaft.",
+                tip: "Die Halbinsel lässt sich am flexibelsten mit einem Mietwagen ab Fukuoka erkunden. So könnt ihr die idyllischen Küstencafés im Westen ansteuern, die für fantastischen Blick auf das Meer bekannt sind."
+            },
+
+            // Kyushu Broader Sights
+            takachiho: {
+                title: "Takachiho-Schlucht",
+                badge: "🌋 Naturwunder & Mythologie",
+                location: "Präfektur Miyazaki (Zentral-Kyushu)",
+                duration: "Ganzer Tag (Anfahrt ca. 2.5 Std. ab Kumamoto/Fukuoka)",
+                image: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=850&q=80",
+                link: "https://takachiho-kanko.info/en/",
+                description: "Die Takachiho-Schlucht ist eine der spektakulärsten Naturschönheiten Japans. Durch vulkanische Aktivität des nahegelegenen Vulkans Aso formte der Gokase-Fluss eine tiefe, enge Schlucht aus senkrecht emporragenden, säulenförmigen Basaltklippen.<br><br>Das klassische Erlebnis ist das Mieten eines kleinen Holz-Ruderboots. Du gleitest über das smaragdgrüne, ruhige Wasser tief unten in der Schlucht, während direkt neben dir der atemberaubende Minainotaki-Wasserfall von der Klippenkante stürzt. Mitte November rahmt das rot und gold leuchtende Laub der Ahornbäume diese ohnehin magische Kulisse märchenhaft ein.",
+                tip: "Die Ruderboote sind extrem begehrt und die Online-Tickets oft Wochen im Voraus ausverkauft. Sichert euch euer Ticket unbedingt exakt am Tag der Freischaltung auf der offiziellen Tourismusseite von Takachiho."
+            },
+            kurokawa: {
+                title: "Kurokawa Onsen",
+                badge: "♨️ Erstklassiges Wellness-Dorf",
+                location: "Präfektur Kumamoto (Aso-Region)",
+                duration: "Ganzer Tag (Übernachtung dringend empfohlen!)",
+                image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.kurokawaonsen.or.jp/eng_new/",
+                description: "Kurokawa Onsen ist ein außergewöhnlich gut erhaltenes, historisches Thermalquellendorf, das sich tief in einem waldreichen Flusstal versteckt. Das Besondere: Die Dorfgemeinschaft hat konsequent auf große Beton-Hotelbauten, Leuchtreklame und Asphalt verzichtet. Das gesamte Dorf wirkt wie eine Zeitreise in das alte Japan.<br><br>Besucher besorgen sich eine hölzerne Bademarke (Nyutō Tegata) und können damit drei verschiedene Freiluftbäder (Rotenburo) der teilnehmenden Ryokans (traditionelle Herbergen) besuchen. Jedes Bad bietet ein anderes mineralisches Heilwasser inmitten von herbstlichen Natursteinen und dichten Wäldern.",
+                tip: "Leiht euch in eurer Unterkunft einen Yukata (leichten Baumwollkiomono) und Holz-Geta-Sandalen aus. Es gehört zum wunderbaren Lebensgefühl in Kurokawa, in diesem Gewand gemütlich am Fluss entlang von Bad zu Bad zu schlendern."
+            },
+            kumamoto: {
+                title: "Kumamoto Castle & Suizenji Garden",
+                badge: "🏯 Kultur & Architektur",
+                location: "Kumamoto City",
+                duration: "ca. 6 Std.",
+                image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=850&q=80",
+                link: "https://kumamoto-guide.jp/en/castle/",
+                description: "Die Burg Kumamoto gehört aufgrund ihrer enormen Ausmaße und der ausgeklügelten Verteidigungssysteme zu den drei wichtigsten und beeindruckendsten Burgen Japans. Nach schweren Schäden durch das Erdbeben von 2016 wurde die hölzerne Hauptburg spektakulär wiederaufgebaut und verfügt im Inneren über ein erstklassiges, interaktives Museum.<br><br>Im Anschluss lohnt ein Besuch des Suizenji Jojuen: Ein herrlicher Landschaftsgarten aus dem 17. Jahrhundert. Das Highlight ist der perfekt geschorene, grüne Miniatur-Hügel, der dem heiligen Berg Fuji nachempfunden ist. Der Rundweg führt entlang kristallklarer, von Quellen des Mount Aso gespeister Teiche voller bunter Koi-Karpfen.",
+                tip: "Besucht das charmante Reitai-Teehaus im Suizenji-Garten, das direkt über dem Wasser schwebt. Hier könnt ihr auf Tatami-Matten sitzen und feine japanische Süßigkeiten zu eurem Matcha-Tee genießen."
+            },
+            nagasaki: {
+                title: "Nagasaki Highlights & Mt. Inasa",
+                badge: "⚓ Geschichte & Panorama",
+                location: "West-Kyushu (Präfektur Nagasaki)",
+                duration: "Ganzer Tag (ca. 8-10 Std.)",
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.discover-nagasaki.com/en",
+                description: "Nagasaki ist eine faszinierende, geschichtsträchtige Hafenstadt an steilen Berghängen. Als einzige geöffnete Pforte zum Westen während Japans jahrhundertelanger Isolation besitzt die Stadt ein einzigartiges, europäisch und chinesisch beeinflusstes Flair. <br><br>Zu den Höhepunkten gehören der bewegende Friedenspark und das Atombombenmuseum, der koloniale Glover Garden mit historischen Kaufmannsvillen und die künstliche Insel Dejima. Nach Einbruch der Dunkelheit fahrt ihr mit der Seilbahn auf den 333 Meter hohen Mount Inasa – der Blick auf das Lichtermeer in der engen Bucht gilt offiziell als einer der drei schönsten Nachtblicke der Welt.",
+                tip: "Probiert unbedingt die lokale Spezialität 'Champon' – eine nahrhafte Nudelsuppe chinesischen Ursprungs mit Meeresfrüchten und Gemüse, die nirgendwo so gut schmeckt wie im historischen Chinatown von Nagasaki."
+            },
+            yufuin: {
+                title: "Yufuin Onsen-Dorf & Kinrin-See",
+                badge: "🏔️ See-Panorama & Boutiquen",
+                location: "Präfektur Oita (Ost-Kyushu)",
+                duration: "ca. 4-5 Std.",
+                image: "https://images.unsplash.com/photo-1524413840003-0507415af48d?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.yufu-in.com/",
+                description: "Yufuin ist ein charmantes Onsen-Städtchen vor der malerischen, doppelgipfeligen Kulisse des Berges Yufu. Entlang der Hauptstraße flanierst du vorbei an unzähligen kleinen Kunstgalerien, exklusiven Boutiquen, Handwerksläden und exzellenten Cafés.<br><br>Am Ende der Straße liegt der malerische Kinrin-See. Das Besondere: Am Seegrund entspringen sowohl kalte als auch heiße Thermalquellen. Dies sorgt besonders an kühlen Herbsttagen am frühen Morgen für einen mystischen, dichten Dampfschleier, der sanft über dem glasklaren Wasser schwebt und sich in den roten Ahornbäumen verfängt.",
+                tip: "Besucht den kleinen Shinto-Schrein Tenjinsha, der sich im dichten Wald am Südufer des Sees befindet. Ein kleines hölzernes Torii-Tor steht malerisch direkt im dampfenden Wasser des Sees."
+            },
+            kunenan: {
+                title: "Kunenan Garden",
+                badge: "🍁 Exklusiver Herbst-Tipp",
+                location: "Präfektur Saga",
+                duration: "ca. 3 Std.",
+                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.saga-tripgenius.com/tourism/kunenan.html",
+                description: "Kunenan ist ein sagenumwobenes, historisches Anwesen in der Präfektur Saga, das im späten 19. Jahrhundert über einen Zeitraum von neun Jahren (daher der Name 'Kunen') von einem lokalen Geschäftsmann erbaut wurde. Der Garten ist im traditionellen Sukiyastil angelegt und schmiegt sich elegant an die umliegenden Berghänge an.<br><br>Die Exklusivität dieses Ortes ist kaum zu übertreffen: Das Anwesen ist für die Öffentlichkeit das gesamte Jahr über verschlossen und öffnet seine Tore **ausschließlich für 9 Tage Mitte November**, um die absolut spektakuläre Laubfärbung der unzähligen japanischen Fächerahorne und den dichten, smaragdgrünen Moosteppich zu bewundern.",
+                tip: "Da die Öffnungszeit extrem kurz ist, zieht das Event viele Besucher an. Reist am besten sehr früh am Morgen an und kombiniert den Besuch mit den historischen Tempeln im benachbarten Saga."
+            },
+
+            // Kansai Sights
+            minoo: {
+                title: "Minoo Park & Wasserfall",
+                badge: "🍁 Herbstlaub-Peak Kansai",
+                location: "Nördlich von Osaka",
+                duration: "ca. 4-5 Std.",
+                image: "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.osaka-info.jp/en/spot/minoh-park/",
+                description: "Der Minoo-Park ist ein bewaldetes Tal am Nordrand von Osaka und bietet die schnellste Flucht in die wilde Natur Kansais. Ein asphaltierter, sanft ansteigender Spazierweg führt rund drei Kilometer entlang eines malerischen Flusses tief in den dichten Ahornwald.<br><br>Das Ziel des Weges ist der fabelhafte, 33 Meter hohe Minoo-Wasserfall, der sich vor einer Felskante ergießt, die im Spätherbst von leuchtend roten Fächerahornen gerahmt wird. Entlang des Weges befinden sich Tempel, traditionelle Teestuben und historische Holzgebäude.",
+                tip: "Probiert unbedingt die lokale kulinarische Kuriosität: 'Momiji Tempura' – echte Ahornblätter, die ein Jahr lang in Salz eingelegt, danach in einem süßen Sesamteig gewendet und knusprig frittiert werden."
+            },
+            katsuoji: {
+                title: "Katsuo-ji Tempel",
+                badge: "🔴 Daruma & Abend-Illumination",
+                location: "Minoh-Berge (Osaka)",
+                duration: "ca. 3 Std.",
+                image: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=850&q=80",
+                link: "https://katsuo-ji.or.jp/en/",
+                description: "Der Katsuo-ji ist als 'Tempel des Sieges' bekannt. Seit über tausend Jahren pilgern Gläubige hierher, um für Erfolg bei Prüfungen, Geschäften oder privaten Zielen zu beten. Das gesamte, weitläufige Tempelgelände ist übersät mit Zehntausenden roten, kugelrunden Daruma-Glücksbringer-Puppen.<br><br>Ende November bietet der Tempel nach Einbruch der Dunkelheit ein magisches Lichtspektakel: Das große hölzerne Eingangstor, die Teiche und die rote Pagode werden kunstvoll illuminiert, während künstlicher Nebel mystisch über den Brücken aufsteigt und die roten Ahornbäume beleuchtet.",
+                tip: "Kauft euch euren eigenen kleinen Daruma-Zwerg, schreibt euren Wunsch auf, lasst ihn im Schrein weihen und platziert ihn an einer der unzähligen Mauerspalten im Tempelgarten – oder nehmt ihn als wunderbares Souvenir mit nach Hause."
+            },
+            kyoto_day: {
+                title: "Kyoto Herbst-Tagesausflug",
+                badge: "🍁 Kaiserliches Momiji-Zentrum",
+                location: "Kyoto City (30 Min. ab Osaka)",
+                duration: "Ganzer Tag (ca. 10-12 Std.)",
+                image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.kyoto.travel/en/",
+                description: "Kyoto ist das unbestrittene Epizentrum der japanischen Herbstlaubfärbung. Während eures Aufenthaltes Ende November steht die Stadt in ihrer absoluten Pracht. Die unzähligen Zen-Gärten und Tempelanlagen bieten die schönsten herbstlichen Farbkontraste des Landes.<br><br>Besucht den Tempel Eikan-do, der als absoluter 'Laub-Tempel' bekannt ist und über 3.000 Ahornbäume beherbergt, oder spaziert durch das malerische Arashiyama-Viertel im Westen der Stadt, wo sich die bewaldeten Hänge bunt färben und sich im Hozu-Fluss spiegeln.",
+                tip: "Die beliebten Tempel sind im Herbst sehr voll. Besucht Highlights wie den Tofuku-ji oder den Tenryu-ji direkt zur Öffnung um 08:30 Uhr morgens. Plant die spektakulären Lichtspiele wie am Kiyomizu-dera für den späten Abend ein."
+            },
+
+            // Tokyo Sights
+            showa_kinen: {
+                title: "Showa Kinen Park",
+                badge: "🟡 Goldener Ginkgo-Tunnel",
+                location: "West-Tokyo (Tachikawa)",
+                duration: "ca. 3-4 Std.",
+                image: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.showakinen-koen.jp/guide-in-english/",
+                description: "Der Showa Kinen Park ist ein gigantischer, staatlicher Naturpark im Westen Tokyos. Das absolute Highlight Ende November ist der weltberühmte 'Ginkgo-Kanal': Zwei parallele Alleen aus perfekt geformten, prachtvollen Ginkgo-Bäumen säumen ein langes Wasserbecken.<br><br>Wenn die Blätter Ende November ihre volle, strahlend goldgelbe Färbung erreichen und sanft zu Boden fallen, verwandelt sich der gesamte Weg in einen atemberaubenden, goldenen Teppich. Im hinteren Teil des Parks befindet sich zudem ein exquisiter traditioneller japanischer Garten mit tiefrotem Fächerahorn.",
+                tip: "Der Park ist riesig! Mietet euch direkt am Eingang für wenige Yen ein Fahrrad. Es gibt ein hervorragend ausgebautes, separates Fahrradweg-Netz, mit dem ihr alle Ecken des Parks spielend leicht erreicht."
+            },
+            koishikawa: {
+                title: "Koishikawa Korakuen",
+                badge: "🍁 Ältester Landschaftsgarten",
+                location: "Zentral-Tokyo (Bunkyo)",
+                duration: "ca. 2 Std.",
+                image: "https://images.unsplash.com/photo-1578496479914-7ef3b0193be3?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.tokyo-park.or.jp/teien/en/koishikawa/",
+                description: "Der Koishikawa Korakuen ist einer der ältesten und schönsten traditionellen japanischen Gärten in ganz Tokyo, dessen Ursprünge bis in das Jahr 1629 (frühe Edo-Zeit) zurückreichen. Der Garten integriert chinesische und japanische Landschaftsmotive in Miniaturform rund um einen zentralen Teich.<br><br>Ende November leuchten die dichten Fächerahorn-Wälder rund um den Teich in tiefem Karmesinrot. Besonders fotogen ist die hölzerne, rot lackierte 'Full Moon'-Brücke (Engetsu-kyo), die zusammen mit ihrem Spiegelbild im ruhigen Wasser einen perfekten Vollkreis bildet.",
+                tip: "Der Garten bildet eine Oase der absoluten Stille, obwohl sich im Hintergrund direkt die spektakuläre, futuristische Kuppel des Tokyo Dome Stadions erhebt – ein fantastischer Kontrast zwischen Tradition und Moderne."
+            },
+            kamakura: {
+                title: "Kamakura & Hasedera Tempel",
+                badge: "🗼 Zen-Kultur & Meer",
+                location: "Kanagawa (1 Std. südlich von Tokyo)",
+                duration: "Ganzer Tag (ca. 7-8 Std.)",
+                image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=850&q=80",
+                link: "https://www.japan.travel/en/spot/2085/",
+                description: "Kamakura ist eine geschichtsträchtige Küstenstadt und war im Mittelalter zeitweise der Regierungssitz Japans. Die Stadt ist weltberühmt für den 'Kotoku-in', einen monumentalen, 13 Meter hohen und freistehenden Großen Buddha aus Bronze, der allen Taifunen und Erdbeben getrotzt hat.<br><br>Ein herbstliches Juwel ist der Hasedera-Tempel: Er schmiegt sich an eine bewaldete Bergflanke und bietet von seiner Aussichtsterrasse einen tollen Blick über die Bucht von Kamakura. Der Tempelgarten besticht Ende November durch späte, feurige Ahornfarben und ist berühmt für seine süßen Jizo-Steinfiguren im Moos.",
+                tip: "Fahrt von Kamakura unbedingt ein paar Stationen mit der charmanten, nostalgischen Enoden-Straßenbahn im Retro-Look direkt an der Küste entlang, um den Sonnenuntergang am Enoshima-Strand zu erleben."
+            }
+        };
+
+        // Modal triggers
+        function openDetailModal(key) {
+            const data = destinationDetails[key];
+            if (!data) return;
+
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-badge').textContent = data.badge;
+            document.getElementById('modal-location').textContent = data.location;
+            document.getElementById('modal-duration').textContent = data.duration;
+            document.getElementById('modal-tip').innerHTML = data.tip;
+            document.getElementById('modal-description').innerHTML = data.description;
+            
+            const imgEl = document.getElementById('modal-image');
+            imgEl.src = data.image;
+            imgEl.alt = data.title;
+
+            const linkEl = document.getElementById('modal-link');
+            linkEl.href = data.link;
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Disable background scroll
+
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 50);
+        }
+
+        function closeDetailModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('opacity-0');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden'); // Re-enable scroll
+            }, 300);
+        }
+
+        // Close detail modal on ESC key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetailModal();
+                closeConfirmModal();
+            }
+        });
+    </script>
+
+    <script>
+        // Calendar Days definition spanning exactly Oct 26 to Nov 28
+        const daysData = [
+            // Week 1 (Oct 26 - Nov 01)
+            { date: '2026-10-26', label: 'Mo, 26. Okt', week: 1, region: 'Okinawa Base', icon: '🌴' },
+            { date: '2026-10-27', label: 'Di, 27. Okt', week: 1, region: 'Okinawa Base', icon: '🌴' },
+            { date: '2026-10-28', label: 'Mi, 28. Okt', week: 1, region: 'Okinawa Base', icon: '🌴' },
+            { date: '2026-10-29', label: 'Do, 29. Okt', week: 1, region: 'Okinawa Base', icon: '🌴' },
+            { date: '2026-10-30', label: 'Fr, 30. Okt', week: 1, region: 'Okinawa Base', icon: '🌴' },
+            { date: '2026-10-31', label: 'Sa, 31. Okt', week: 1, region: 'Okinawa / Shurijo-Fest', icon: '🏮' },
+            { date: '2026-11-01', label: 'So, 01. Nov', week: 1, region: 'Okinawa Transit / Kaiserparade', icon: '🏮✈️' },
+            
+            // Week 2 (Nov 02 - Nov 08)
+            { date: '2026-11-02', label: 'Mo, 02. Nov', week: 2, region: 'Fukuoka / Karatsu Yoiyama', icon: '🏮' },
+            { date: '2026-11-03', label: 'Di, 03. Nov', week: 2, region: 'Fukuoka / Karatsu Haupttag', icon: '🏮' },
+            { date: '2026-11-04', label: 'Mi, 04. Nov', week: 2, region: 'Fukuoka Stadt', icon: '🍜' },
+            { date: '2026-11-05', label: 'Do, 05. Nov', week: 2, region: 'Fukuoka Stadt', icon: '🍜' },
+            { date: '2026-11-06', label: 'Fr, 06. Nov', week: 2, region: 'Fukuoka Stadt', icon: '🍜' },
+            { date: '2026-11-07', label: 'Sa, 07. Nov', week: 2, region: 'Kyushu Rundreise', icon: '🌋' },
+            { date: '2026-11-08', label: 'So, 08. Nov', week: 2, region: 'Kyushu Rundreise', icon: '🌋' },
+
+            // Week 3 (Nov 09 - Nov 15)
+            { date: '2026-11-09', label: 'Mo, 09. Nov', week: 3, region: 'Kyushu Rundreise', icon: '🌋' },
+            { date: '2026-11-10', label: 'Di, 10. Nov', week: 3, region: 'Kyushu Rundreise', icon: '🌋' },
+            { date: '2026-11-11', label: 'Mi, 11. Nov', week: 3, region: 'Kyushu Rundreise', icon: '🌋' },
+            { date: '2026-11-12', label: 'Do, 12. Nov', week: 3, region: 'Kyushu Rundreise', icon: '🌋' },
+            { date: '2026-11-13', label: 'Fr, 13. Nov', week: 3, region: 'Kyushu / Onsen', icon: '♨️' },
+            { date: '2026-11-14', label: 'Sa, 14. Nov', week: 3, region: 'Kyushu / Onsen', icon: '♨️' },
+            { date: '2026-11-15', label: 'So, 15. Nov', week: 3, region: 'Kyushu / Onsen', icon: '♨️' },
+
+            // Week 4 (Nov 16 - Nov 22)
+            { date: '2026-11-16', label: 'Mo, 16. Nov', week: 4, region: 'Kyushu / Fukuoka', icon: '🍜' },
+            { date: '2026-11-17', label: 'Di, 17. Nov', week: 4, region: 'Kyushu / Fukuoka', icon: '🍜' },
+            { date: '2026-11-18', label: 'Mi, 18. Nov', week: 4, region: 'Kyushu / Fukuoka', icon: '🍜' },
+            { date: '2026-11-19', label: 'Do, 19. Nov', week: 4, region: 'Kyushu / Fukuoka', icon: '🍜' },
+            { date: '2026-11-20', label: 'Fr, 20. Nov', week: 4, region: 'Kyushu / Fukuoka', icon: '🍜' },
+            { date: '2026-11-21', label: 'Sa, 21. Nov', week: 4, region: 'Transit nach Osaka', icon: '🚄' },
+            { date: '2026-11-22', label: 'So, 22. Nov', week: 4, region: 'Osaka & Kyoto / Kiyomizu Light-Up', icon: '🍁🏮' },
+
+            // Week 5 (Nov 23 - Nov 28)
+            { date: '2026-11-23', label: 'Mo, 23. Nov', week: 5, region: 'Osaka & Kansai (Peak)', icon: '🍁' },
+            { date: '2026-11-24', label: 'Di, 24. Nov', week: 5, region: 'Transit Tokyo / Tori-no-Ichi Fest', icon: '🚄🏮' },
+            { date: '2026-11-25', label: 'Mi, 25. Nov', week: 5, region: 'Tokyo (Herbstlaub)', icon: '🗼' },
+            { date: '2026-11-26', label: 'Do, 26. Nov', week: 5, region: 'Tokyo (Finale)', icon: '🗼' },
+            { date: '2026-11-27', label: 'Fr, 27. Nov', week: 5, region: 'Tokyo (Finale)', icon: '🗼' },
+            { date: '2026-11-28', label: 'Sa, 28. Nov', week: 5, region: 'Abreise Tokyo', icon: '✈️' }
+        ];
+
+        // Active State variables
+        let selectedDayDate = '2026-10-26';
+        let currentWeekActive = 1;
+        let plannerStore = {};
+
+        // Load data from LocalStorage
+        function loadPlannerStore() {
+            const saved = localStorage.getItem('japan_trip_planner');
+            if (saved) {
+                try {
+                    plannerStore = JSON.parse(saved);
+                } catch(e) {
+                    plannerStore = {};
+                }
+            } else {
+                plannerStore = {};
+            }
+        }
+
+        // Save data to LocalStorage
+        function savePlannerStore() {
+            localStorage.setItem('japan_trip_planner', JSON.stringify(plannerStore));
+        }
+
+        // SWITCH TAB
+        function switchTab(targetId) {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            tabContents.forEach(content => {
+                if (content.id === targetId) {
+                    content.classList.remove('hidden');
+                    content.classList.add('block');
+                } else {
+                    content.classList.remove('block');
+                    content.classList.add('hidden');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // SELECT DAY FOR PLANNER
+        function selectDay(dateStr) {
+            selectedDayDate = dateStr;
+            const dayObj = daysData.find(d => d.date === dateStr);
+            const activeDisplay = document.getElementById('active-day-display');
+            if (activeDisplay && dayObj) {
+                activeDisplay.textContent = `${dayObj.label} (${dayObj.region})`;
+            }
+            renderDayCards();
+        }
+
+        // SWITCH ACTIVE WEEK IN SCHEDULER
+        function switchWeek(weekNum) {
+            currentWeekActive = weekNum;
+            const weekBtns = document.querySelectorAll('.week-btn');
+            weekBtns.forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-stone-800', 'border', 'border-stone-200');
+                btn.classList.add('bg-transparent', 'text-stone-600', 'hover:bg-stone-50');
+            });
+
+            const activeBtn = document.getElementById(`week-tab-${weekNum}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-transparent', 'text-stone-600', 'hover:bg-stone-50');
+                activeBtn.classList.add('bg-white', 'shadow-sm', 'text-stone-800', 'border', 'border-stone-200');
+            }
+
+            // Set the first day of this week as active if the current active day is outside this week
+            const currentActiveDayObj = daysData.find(d => d.date === selectedDayDate);
+            if (!currentActiveDayObj || currentActiveDayObj.week !== weekNum) {
+                const firstDayOfWeek = daysData.find(d => d.week === weekNum);
+                if (firstDayOfWeek) {
+                    selectDay(firstDayOfWeek.date);
+                }
+            } else {
+                renderDayCards();
+            }
+        }
+
+        // ADD CUSTOM ACTIVITY
+        function addCustomActivity(dateStr) {
+            const inputEl = document.getElementById(`input-${dateStr}`);
+            if (!inputEl) return;
+            const val = inputEl.value.trim();
+            if (val === '') return;
+
+            if (!plannerStore[dateStr]) {
+                plannerStore[dateStr] = [];
+            }
+            plannerStore[dateStr].push(val);
+            inputEl.value = '';
+            
+            savePlannerStore();
+            renderDayCards();
+            showToast('Aktivität erfolgreich hinzugefügt!');
+        }
+
+        // QUICK ADD FROM RECOMMENDATIONS
+        function quickAdd(itemText) {
+            if (!selectedDayDate) return;
+            if (!plannerStore[selectedDayDate]) {
+                plannerStore[selectedDayDate] = [];
+            }
+            // Avoid adding identical duplicates on the same day
+            if (plannerStore[selectedDayDate].includes(itemText)) {
+                showToast('Dieses Ziel ist an diesem Tag bereits eingeplant!', true);
+                return;
+            }
+            plannerStore[selectedDayDate].push(itemText);
+            savePlannerStore();
+            renderDayCards();
+            showToast('Ziel erfolgreich eingeplant!');
+        }
+
+        // REMOVE ITEM
+        function removeItem(dateStr, index) {
+            if (plannerStore[dateStr]) {
+                plannerStore[dateStr].splice(index, 1);
+                if (plannerStore[dateStr].length === 0) {
+                    delete plannerStore[dateStr];
+                }
+                savePlannerStore();
+                renderDayCards();
+                showToast('Aktivität entfernt.');
+            }
+        }
+
+        // SHOW POPUP CONFIRM MODAL (NO WINDOW.CONFIRM)
+        function openConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+            }, 10);
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // RESET ALL ITINERARY DATA
+        function resetItinerary() {
+            plannerStore = {};
+            localStorage.removeItem('japan_trip_planner');
+            closeConfirmModal();
+            renderDayCards();
+            showToast('Reiseplaner wurde zurückgesetzt.');
+        }
+
+        // SHOW PREMIUM TOAST BANNER
+        function showToast(msg, isWarning = false) {
+            const toast = document.getElementById('toast-banner');
+            const messageEl = document.getElementById('toast-message');
+            
+            messageEl.textContent = msg;
+            if (isWarning) {
+                toast.classList.add('border-amber-500');
+                toast.classList.remove('border-stone-700');
+            } else {
+                toast.classList.add('border-stone-700');
+                toast.classList.remove('border-amber-500');
+            }
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 2500);
+        }
+
+        // COPY ENTIRE PLAN FORMATTED
+        function copyItinerary() {
+            let outputText = "MEIN JAPAN REISEPLAN (26. OKTOBER - 28. NOVEMBER)\n";
+            outputText += "===================================================\n\n";
+
+            daysData.forEach(day => {
+                outputText += `📅 ${day.label} (${day.region}):\n`;
+                const items = plannerStore[day.date] || [];
+                if (items.length === 0) {
+                    outputText += `   - Freie Gestaltung / Anreise / Entspannung\n`;
+                } else {
+                    items.forEach((item, idx) => {
+                        outputText += `   ${idx + 1}. ${item}\n`;
+                    });
+                }
+                outputText += "\n";
+            });
+
+            // Fallback Copy to Clipboard due to potential iFrame restrictions
+            const textarea = document.createElement('textarea');
+            textarea.value = outputText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Komplette Reiseliste in Zwischenablage kopiert!');
+            } catch (err) {
+                showToast('Fehler beim Kopieren.', true);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // RENDER ACTIVE WEEK DAY-CARDS
+        function renderDayCards() {
+            const cardsContainer = document.getElementById('day-cards-list');
+            if (!cardsContainer) return;
+
+            cardsContainer.innerHTML = '';
+            const filteredDays = daysData.filter(d => d.week === currentWeekActive);
+
+            filteredDays.forEach(day => {
+                const isActive = day.date === selectedDayDate;
+                const items = plannerStore[day.date] || [];
+
+                let itemsHTML = '';
+                if (items.length === 0) {
+                    itemsHTML = `
+                        <div class="text-xs text-stone-400 italic py-2">
+                            Noch keine Ziele eingeplant. Nutze die Schnellauswahl links oder füge unten ein eigenes hinzu.
+                        </div>
+                    `;
+                } else {
+                    itemsHTML = `<ul class="space-y-1.5 py-1">`;
+                    items.forEach((item, index) => {
+                        itemsHTML += `
+                            <li class="bg-stone-50 border border-stone-200/60 rounded-lg p-2 flex justify-between items-center text-xs text-stone-700 font-medium">
+                                <span class="flex items-center">
+                                    <span class="inline-block w-1.5 h-1.5 bg-autumn rounded-full mr-2"></span>
+                                    ${item}
+                                </span>
+                                <button onclick="removeItem('${day.date}', ${index})" class="text-red-500 hover:text-red-700 p-1 font-bold transition-colors">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </li>
+                        `;
+                    });
+                    itemsHTML += `</ul>`;
+                }
+
+                const cardHTML = `
+                    <div class="bg-white border-2 rounded-xl p-4 transition-all hover:shadow-sm ${isActive ? 'border-autumn shadow-sm bg-orange-50/10' : 'border-stone-200/80'}" onclick="selectDay('${day.date}')">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-100 pb-2 mb-3 cursor-pointer">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl">${day.icon}</span>
+                                <div>
+                                    <h4 class="font-bold text-stone-800 text-sm md:text-base">${day.label}</h4>
+                                    <span class="text-[11px] text-stone-500 font-medium">${day.region}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                ${isActive ? '<span class="text-xs bg-orange-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">Aktiv</span>' : '<span class="text-xs text-stone-400 font-semibold group-hover:text-stone-600">Klicken zum Wählen</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Planned items list -->
+                        <div class="mb-4">
+                            ${itemsHTML}
+                        </div>
+
+                        <!-- Add custom input form -->
+                        <div class="flex space-x-2" onclick="event.stopPropagation()">
+                            <input type="text" id="input-${day.date}" placeholder="Eigenes Ziel / Notiz eingeben..." class="flex-grow text-xs px-3 py-2 border border-stone-200 rounded-lg focus:outline-none focus:border-autumn">
+                            <button onclick="addCustomActivity('${day.date}')" class="bg-earth hover:bg-stone-800 text-sand text-xs font-bold px-3 py-2 rounded-lg transition-all"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.innerHTML += cardHTML;
+            });
+        }
+
+        // INITIALIZE APP
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPlannerStore();
+
+            // Set up main Navigation Click listeners
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    switchTab(target);
+                });
+            });
+
+            // Initial render of dynamic day cards
+            switchWeek(1);
+
+            // Chart.js Configuration
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            const airTemp = [17, 17, 19, 21, 24, 27, 29, 29, 28, 25, 22, 18];
+            const waterTemp = [21, 21, 21, 23, 24, 27, 29, 29, 28, 26, 24, 22];
+
+            const pointBackgroundColors = months.map(m => m === 'Okt' ? '#c05621' : '#0077b6');
+            const pointRadii = months.map(m => m === 'Okt' ? 8 : 4);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Lufttemperatur (°C)',
+                            data: airTemp,
+                            borderColor: '#c05621',
+                            backgroundColor: 'rgba(192, 86, 33, 0.08)',
+                            borderWidth: 3,
+                            pointBackgroundColor: months.map(m => m === 'Okt' ? '#c05621' : '#ffffff'),
+                            pointBorderColor: '#c05621',
+                            pointRadius: pointRadii,
+                            tension: 0.35,
+                            fill: true
+                        },
+                        {
+                            label: 'Wassertemperatur (°C)',
+                            data: waterTemp,
+                            borderColor: '#0077b6',
+                            backgroundColor: 'rgba(0, 119, 182, 0.04)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: pointBackgroundColors,
+                            pointRadius: pointRadii,
+                            tension: 0.35
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: 'system-ui',
+                                    size: 11
+                                },
+                                color: '#4a4036'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.dataset.label + ': ' + context.parsed.y + '°C';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 15,
+                            max: 33,
+                            ticks: {
+                                callback: function(value) { return value + '°C'; },
+                                color: '#4a4036'
+                            },
+                            grid: {
+                                color: 'rgba(74, 64, 54, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#4a4036'
+                            },
+                            grid: {
+                                color: 'rgba(74, 64, 54, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
