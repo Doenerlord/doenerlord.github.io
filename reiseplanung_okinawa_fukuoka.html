@@ -1339,7 +1339,7 @@
     </footer>
 
     <!-- MODAL FOR DETAILED INFOS -->
-    <div id="detailModal" class="fixed inset-0 bg-earth/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden transition-opacity duration-300">
+    <div id="detailModal" onclick="if(event.target === this) closeModal()" class="fixed inset-0 bg-earth/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden transition-opacity duration-300">
         <div class="bg-white rounded-3xl overflow-hidden max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl relative border border-stone-200 transform scale-95 transition-transform duration-300" id="modalCard">
             
             <button onclick="closeDetailModal()" class="absolute top-4 right-4 bg-earth/70 text-sand hover:bg-earth w-10 h-10 rounded-full flex items-center justify-center transition-all z-10 shadow">
