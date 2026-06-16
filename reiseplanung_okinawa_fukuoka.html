@@ -2070,6 +2070,7 @@
             const card = document.getElementById("modalCard");
             
             modal.classList.remove("hidden");
+            document.body.style.overflow = 'hidden';
             setTimeout(() => {
                 modal.classList.remove("opacity-0");
                 card.classList.remove("scale-95");
@@ -2083,6 +2084,7 @@
             
             card.classList.remove("scale-100");
             card.classList.add("scale-95");
+            document.body.style.overflow = '';
             setTimeout(() => {
                 modal.classList.add("hidden");
             }, 250);
