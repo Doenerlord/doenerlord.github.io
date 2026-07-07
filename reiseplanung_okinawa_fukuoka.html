@@ -66,7 +66,9 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #a89887; 
         }
-    </style>
+    </style> <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-autumn/20 selection:text-autumn">
 
@@ -124,6 +126,12 @@
                 data-target="interactive-planner">
                 <span>📅 Tagesplaner</span>
             </button>
+                                <button
+                                    class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                                    data-target="map-view">
+                                    <i class="fa-solid fa-map-location-dot text-indigo-600"></i>
+                                    <span>Routen-Karte</span>
+                                </button>
         </div>
     </nav>
 
@@ -1397,7 +1405,18 @@
                 </div>
             </div>
         </section>
-
+                            <!-- TAB: MAP VIEW (NEW) -->
+                            <section id="map-view" class="tab-content hidden animate-fade-in space-y-8">
+                                <div class="border-b border-stone-200 pb-4">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-ocean">Routen-Visualisierung</span>
+                                    <h2 class="text-3xl font-black text-earth tracking-tight mt-1">🗺️ Interaktive Japan-Karte</h2>
+                                    <p class="text-stone-500 text-sm mt-1">Alle eure Highlights, Ausflüge und Matsuris auf einen Blick. Klickt auf
+                                        einen Pin, um Details anzuzeigen!</p>
+                                </div>
+                                <div class="bg-white p-2 rounded-2xl shadow-sm border border-stone-200">
+                                    <div id="japan-map" class="w-full h-[600px] rounded-xl z-10 relative"></div>
+                                </div>
+                            </section>
     </main>
 
     <!-- FOOTER -->
@@ -2095,6 +2114,13 @@
                             content.classList.add("hidden");
                         }
                     });
+                    /* NEW: Initialize or resize map when map tab is clicked */
+                    if (targetId === "map-view") {
+                        initJapanMap();
+                        if (map !== null) {
+                            setTimeout(() => {map.invalidateSize();}, 100);
+                        }
+                    }
                 });
             });
         }
@@ -2231,6 +2257,8 @@
         function saveCalendarToStorage() {
             localStorage.setItem("japan_travel_calendar_2026", JSON.stringify(calendarData));
         }
+
+        
 
         // RENDER WEEKS CHIPS
         function renderWeekTabs() {
