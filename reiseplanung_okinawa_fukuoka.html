@@ -2258,7 +2258,45 @@
             localStorage.setItem("japan_travel_calendar_2026", JSON.stringify(calendarData));
         }
 
-        
+        // MAP INITIALIZER (NEW)
+        const mapCoords = {
+            paragliding_okinawa: [26.175, 127.817], bungee_itsuki: [32.398, 130.825], sandbad_ibusuki: [31.237, 130.643], kintsugi_kyoto: [35.016, 135.768], yanbaru: [26.817, 128.250], aoshima: [31.804, 131.474], naruto: [34.238, 134.650], todoroki: [35.605, 139.645], churaumi: [26.694, 127.877], kerama: [26.196, 127.320], shuri: [26.217, 127.719], manzamo: [26.504, 127.850], yachimun: [26.408, 127.741], gangala: [26.144, 127.750], katsuren: [26.330, 127.878], yatai: [33.590, 130.401], dazaifu: [33.521, 130.534], nokonoshima: [33.618, 130.301], itoshima: [33.559, 130.198], takachiho: [32.701, 131.300], yufuin: [33.264, 131.362], kunenan: [33.315, 130.380], aso: [32.884, 131.104], sakurajima: [31.583, 130.650], yanagawa: [33.161, 130.401], dogo_onsen: [33.852, 132.786], iya_valley: [33.876, 133.820], ritsurin: [34.330, 134.045], shimanami: [34.053, 133.003], naoshima: [34.458, 133.987], pilgerweg: [34.158, 134.502], minoo: [34.846, 135.471], katsuo: [34.863, 135.490], kyoto_illumination: [34.994, 135.785], showa: [35.712, 139.394], koishikawa: [35.705, 139.749], shurijo_fest: [26.217, 127.719], balloon_fiesta: [33.250, 130.293], ohara_matsuri: [31.589, 130.551], karatsu_kunchi: [33.450, 129.968], hakata_lightup: [33.593, 130.413], usuki_takeyoi: [33.120, 131.800], sumo_fukuoka: [33.603, 130.395], sennen_akari: [33.323, 130.938], fireworks_nagasaki: [33.086, 129.789], yokai_matsuri: [33.850, 133.800], takachiho_yokagura: [32.705, 131.305], kiyomizu_lightup: [34.994, 135.785], gaien_ginkgo: [35.674, 139.718], rikugien_lightup: [35.733, 139.746]
+        };
+        let map = null;
+
+        function initJapanMap() {
+            if(map !== null) return;
+            
+            map = L.map('japan-map').setView([33.590, 130.401], 6);
+            
+            // Clean, light Map tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            const markersLayer = L.featureGroup().addTo(map);
+
+            for (const [key, details] of Object.entries(destinationDetails)) {
+                if (mapCoords[key]) {
+                    const marker = L.marker(mapCoords[key]).addTo(markersLayer);
+                    
+                    const popupContent = `
+                        <div class="text-center p-2 min-w-[150px]">
+                            <span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider block mb-2">${details.badge}</span>
+                            <h4 class="font-bold text-sm text-earth mb-3">${details.title}</h4>
+                            <button onclick="openDetailModal('${key}')" class="bg-autumn hover:bg-orange-700 text-white font-bold py-1.5 px-3 rounded-lg text-xs transition-all w-full shadow-sm">Details ansehen</button>
+                        </div>
+                    `;
+                    marker.bindPopup(popupContent);
+                }
+            }
+            
+            if (Object.keys(mapCoords).length > 0) {
+                map.fitBounds(markersLayer.getBounds(), { padding: [40, 40] });
+            }
+        }
 
         // RENDER WEEKS CHIPS
         function renderWeekTabs() {
