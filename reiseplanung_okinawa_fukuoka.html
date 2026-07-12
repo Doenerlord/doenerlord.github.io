@@ -188,6 +188,28 @@
             animation: kenburns 25s ease-in-out infinite alternate;
             will-change: transform;
         }
+
+        /* Filter Fade Animation */
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .filter-show {
+            animation: fadeInScale 0.4s ease-out forwards;
+            display: flex !important;
+        }
+
+        .filter-hide {
+            display: none !important;
+        }
     </style>
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -393,7 +415,7 @@
                 </div>
 
                 <!-- Matusri Grid (Hydrated by JS) -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div id="overview-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('shurijo_fest')"></div>
                     <div onclick="openDetailModal('balloon_fiesta')"></div>
                     <div onclick="openDetailModal('ohara_matsuri')"></div>
@@ -513,12 +535,34 @@
             </div>
 
             <div class="space-y-6">
-                <h3 class="text-2xl font-black text-earth drop-shadow-sm">Entdecke Okinawa: Sights &amp; Erlebnisse</h3>
-                <p
-                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
-                    Klicke auf ein Reiseziel, um spektakuläre Fotos, Insider-Tipps und Routenlinks anzuzeigen.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h3 class="text-2xl font-black text-earth drop-shadow-sm">Entdecke Okinawa: Sights &amp;
+                            Erlebnisse</h3>
+                        <p
+                            class="text-stone-700 font-medium text-sm mt-1 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                            Klicke auf ein Reiseziel, um spektakuläre Fotos, Insider-Tipps und Routenlinks anzuzeigen.
+                        </p>
+                    </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- NEW: FILTER BUTTONS OKINAWA -->
+                    <div class="flex flex-wrap gap-2 filter-container" data-target="okinawa-grid">
+                        <button
+                            class="filter-btn active bg-ocean text-white border border-transparent px-4 py-1.5 rounded-full text-xs font-bold shadow transition-all"
+                            data-filter="all">Alle</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="strand">🏖️ Strand & Meer</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="kultur">🏯 Kultur</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="natur">🌴 Natur</button>
+                    </div>
+                    </div>
+                    
+                    <div id="okinawa-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('churaumi')"></div>
                     <div onclick="openDetailModal('kerama')"></div>
                     <div onclick="openDetailModal('paragliding_okinawa')"></div>
@@ -550,13 +594,37 @@
             </div>
 
             <div class="space-y-6">
-                <h3 class="text-2xl font-black text-earth drop-shadow-sm">Kyushu Highlights &amp; Aktivitäten</h3>
-                <p
-                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
-                    Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Buchungslinks
-                    anzuzeigen.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h3 class="text-2xl font-black text-earth drop-shadow-sm">Kyushu Highlights &amp; Aktivitäten
+                        </h3>
+                        <p
+                            class="text-stone-700 font-medium text-sm mt-1 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                            Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Buchungslinks
+                            anzuzeigen.</p>
+                    </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- NEW: FILTER BUTTONS KYUSHU -->
+                    <div class="flex flex-wrap gap-2 filter-container" data-target="kyushu-grid">
+                        <button
+                            class="filter-btn active bg-autumn text-white border border-transparent px-4 py-1.5 rounded-full text-xs font-bold shadow transition-all"
+                            data-filter="all">Alle</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="kultur">⛩️ Kultur</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="natur">🌋 Natur</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="essen">🍜 Essen</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="entspannung">♨️ Entspannung</button>
+                    </div>
+                    </div>
+                    
+                    <div id="kyushu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('yatai')"></div>
                     <div onclick="openDetailModal('hakata_ori')"></div>
                     <div onclick="openDetailModal('hakata_ningyo')"></div>
@@ -604,7 +672,7 @@
                     Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Routenlinks
                     anzuzeigen.</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div id="shikoku-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('dogo_onsen')"></div>
                     <div onclick="openDetailModal('iya_valley')"></div>
                     <div onclick="openDetailModal('ritsurin')"></div>
@@ -761,11 +829,11 @@
                     ausgewählten Tag zu hinterlegen!</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
 
                 <!-- Quick Selection Column (Left) -->
                 <div
-                    class="lg:col-span-4 bg-white/50 backdrop-blur-xl p-5 rounded-3xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white/60 shadow-xl scrollbar-thin">
+                    class="lg:col-span-4 bg-white/50 backdrop-blur-xl p-5 rounded-3xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white/60 shadow-xl scrollbar-thin z-20">
                     <h3 class="font-bold text-lg text-earth border-b border-white/50 pb-2"><i
                             class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
 
@@ -778,28 +846,28 @@
                                 class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-indigo-800">Action</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Motor-Paragliding 🪂')"
+                            <button onclick="quickAdd('Motor-Paragliding 🪂')" data-thumbnail="paragliding_okinawa"
                                 class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-indigo-800">Paragliding am
                                     Meer</span>
                                 <span
                                     class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
                             </button>
-                            <button onclick="quickAdd('Itsuki Bungee Jump 🪂')"
+                            <button onclick="quickAdd('Itsuki Bungee Jump 🪂')" data-thumbnail="bungee_itsuki"
                                 class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-indigo-800">66m Bungee
                                     Jump</span>
                                 <span
                                     class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
                             </button>
-                            <button onclick="quickAdd('Ibusuki Vulkan-Sandbad 🌋')"
+                            <button onclick="quickAdd('Ibusuki Vulkan-Sandbad 🌋')" data-thumbnail="sandbad_ibusuki"
                                 class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span
                                     class="font-bold text-stone-700 group-hover:text-indigo-800">Wellness-Sandbad</span>
                                 <span
                                     class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
                             </button>
-                            <button onclick="quickAdd('Kintsugi Workshop 🖌️')"
+                            <button onclick="quickAdd('Kintsugi Workshop 🖌️')" data-thumbnail="kintsugi_kyoto"
                                 class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-amber-800">Kintsugi
                                     Handwerk</span>
@@ -818,21 +886,21 @@
                                 class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-amber-800">Monozukuri</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Hakata-ori Web-Kurs 🧵')"
+                            <button onclick="quickAdd('Hakata-ori Web-Kurs 🧵')" data-thumbnail="hakata_ori"
                                 class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata-ori
                                     Seidenweben</span>
                                 <span
                                     class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Ningyo Puppen 🎎')"
+                            <button onclick="quickAdd('Hakata Ningyo Puppen 🎎')" data-thumbnail="hakata_ningyo"
                                 class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Ningyo
                                     Bemalung</span>
                                 <span
                                     class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Magemono Holz 🪵')"
+                            <button onclick="quickAdd('Hakata Magemono Holz 🪵')" data-thumbnail="hakata_magemono"
                                 class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Magemono
                                     Bento</span>
@@ -852,85 +920,88 @@
                                 Datum</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Saga Balloon Fiesta 🎈')"
+                            <button onclick="quickAdd('Saga Balloon Fiesta 🎈')" data-thumbnail="balloon_fiesta"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">30. Okt - 03. Nov: Saga Balloon</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
                             </button>
-                            <button onclick="quickAdd('Shurijo-Schlossfest 🏯')"
+                            <button onclick="quickAdd('Shurijo-Schlossfest 🏯')" data-thumbnail="shurijo_fest"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">31. Okt - 01. Nov: Shurijo Fest</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
                             </button>
-                            <button onclick="quickAdd('Karatsu Kunchi Festival 🏮')"
+                            <button onclick="quickAdd('Karatsu Kunchi Festival 🏮')" data-thumbnail="karatsu_kunchi"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">02. Nov - 03. Nov: Karatsu Kunchi</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
                             </button>
-                            <button onclick="quickAdd('Ohara Matsuri 💃')"
+                            <button onclick="quickAdd('Ohara Matsuri 💃')" data-thumbnail="ohara_matsuri"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">02. Nov - 03. Nov: Ohara Matsuri</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Kago.</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Light Up Walk 🏯')"
+                            <button onclick="quickAdd('Hakata Light Up Walk 🏯')" data-thumbnail="hakata_lightup"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">04. Nov - 08. Nov: Hakata Light Up</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Usuki Takeyoi Laternenfest 🎋')"
+                            <button onclick="quickAdd('Usuki Takeyoi Laternenfest 🎋')" data-thumbnail="usuki_takeyoi"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">07. Nov - 08. Nov: Usuki Takeyoi</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Oita</span>
                             </button>
-                            <button onclick="quickAdd('Kyushu Grand Sumo Tournament 🏆')"
+                            <button onclick="quickAdd('Kyushu Grand Sumo Tournament 🏆')" data-thumbnail="sumo_fukuoka"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">08. Nov - 22. Nov: Sumo Fukuoka</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Sennen Akari Bambusfest 🎋')"
+                            <button onclick="quickAdd('Sennen Akari Bambusfest 🎋')" data-thumbnail="sennen_akari"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">13. Nov - 15. Nov: Sennen Akari</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Hita</span>
                             </button>
-                            <button onclick="quickAdd('Shikoku Yokai Matsuri 👺')"
+                            <button onclick="quickAdd('Shikoku Yokai Matsuri 👺')" data-thumbnail="yokai_matsuri"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Mitte Nov: Yokai Matsuri</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Toku.</span>
                             </button>
                             <button onclick="quickAdd('Kyushu No.1 Fireworks Festival 🎆')"
+                                data-thumbnail="fireworks_nagasaki"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Sa, 14. Nov: Nagasaki Feuerwerk</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Nagasaki</span>
                             </button>
                             <button onclick="quickAdd('Takachiho Yokagura Tänze 👹')"
+                                data-thumbnail="takachiho_yokagura"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Sa, 14. Nov: Yokagura Nacht</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Taka.</span>
                             </button>
-                            <button onclick="quickAdd('Kiyomizu-dera LightUp 🍁')"
+                            <button onclick="quickAdd('Kiyomizu-dera LightUp 🍁')" data-thumbnail="kiyomizu_lightup"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Ab 18. Nov: Kiyomizu-dera</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Kyoto</span>
                             </button>
-                            <button onclick="quickAdd('Meiji Jingu Gaien 🍂')"
+                            <button onclick="quickAdd('Meiji Jingu Gaien 🍂')" data-thumbnail="gaien_ginkgo"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Ende Nov: Gaien Ginkgo Fest</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tokyo</span>
                             </button>
                             <button onclick="quickAdd('Rikugien Garten Illumination 💡')"
+                                data-thumbnail="rikugien_lightup"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Mitte-Ende Nov: Rikugien Abend</span>
                                 <span
@@ -945,68 +1016,68 @@
                             class="text-xs font-extrabold uppercase tracking-wider text-ocean mb-2 border-b border-ocean/20 pb-1">
                             🏝️ Okinawa Sights</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Churaumi Aquarium 🐳')"
+                            <button onclick="quickAdd('Churaumi Aquarium 🐳')" data-thumbnail="churaumi"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Churaumi Aquarium</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Tagesausflug Kerama-Inseln 🐢')"
+                            <button onclick="quickAdd('Tagesausflug Kerama-Inseln 🐢')" data-thumbnail="kerama"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kerama Schnorcheln</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Yoron Island Ausflug 🏝️')"
+                            <button onclick="quickAdd('Yoron Island Ausflug 🏝️')" data-thumbnail="yoron"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yoron Island (Yoronto)</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1-2
                                     T</span>
                             </button>
-                            <button onclick="quickAdd('Kouri-jima Insel & Brücke 🚗')"
+                            <button onclick="quickAdd('Kouri-jima Insel & Brücke 🚗')" data-thumbnail="kouri"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kouri-jima Insel</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Sefa-Utaki Pilgerstätte ⛩️')"
+                            <button onclick="quickAdd('Sefa-Utaki Pilgerstätte ⛩️')" data-thumbnail="sefa_utaki"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Sefa-Utaki</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Naha Erkundung & Kokusai-Dori 🍜')"
+                            <button onclick="quickAdd('Naha Erkundung & Kokusai-Dori 🍜')" data-thumbnail="shuri"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naha &amp; Shuri Castle</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Kap Manzamo Klippen 🌅')"
+                            <button onclick="quickAdd('Kap Manzamo Klippen 🌅')" data-thumbnail="manzamo"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Cape Manzamo</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Yachimun no Sato Töpferdorf 🏺')"
+                            <button onclick="quickAdd('Yachimun no Sato Töpferdorf 🏺')" data-thumbnail="yachimun"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yachimun Töpferdorf</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Wanderung Gangala-Tal 🌴')"
+                            <button onclick="quickAdd('Wanderung Gangala-Tal 🌴')" data-thumbnail="gangala"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Gangala-Tal</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Katsuren Ruinen besichtigen 🛖')"
+                            <button onclick="quickAdd('Katsuren Ruinen besichtigen 🛖')" data-thumbnail="katsuren"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Katsuren Castle Ruins</span>
                                 <span
                                     class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Yanbaru Urwald-Trekking 🌴')"
+                            <button onclick="quickAdd('Yanbaru Urwald-Trekking 🌴')" data-thumbnail="yanbaru"
                                 class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yanbaru Trekking</span>
                                 <span
@@ -1021,110 +1092,110 @@
                             class="text-xs font-extrabold uppercase tracking-wider text-autumn mb-2 border-b border-autumn/20 pb-1">
                             🌋 Kyushu, Fukuoka &amp; Yamaguchi</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Yatai Hakata Streetfood 🍜')"
+                            <button onclick="quickAdd('Yatai Hakata Streetfood 🍜')" data-thumbnail="yatai"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hakata Yatai Abend</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Dazaifu Tenmangu & Concept Store ⛩️')"
+                            <button onclick="quickAdd('Dazaifu Tenmangu & Concept Store ⛩️')" data-thumbnail="dazaifu"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Dazaifu Schrein</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Akiyoshido Tropfsteinhöhle 🦇')"
+                            <button onclick="quickAdd('Akiyoshido Tropfsteinhöhle 🦇')" data-thumbnail="akiyoshido"
                                 class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Akiyoshido Höhle</span>
                                 <span
                                     class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Motonosumi Schrein ⛩️')"
+                            <button onclick="quickAdd('Motonosumi Schrein ⛩️')" data-thumbnail="motonosumi"
                                 class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Motonosumi Schrein</span>
                                 <span
                                     class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Okawachiyama Töpferdorf 🏺')"
+                            <button onclick="quickAdd('Okawachiyama Töpferdorf 🏺')" data-thumbnail="okawachiyama"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Okawachiyama Dorf</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Hamanoura Reisterrassen 🌾')"
+                            <button onclick="quickAdd('Hamanoura Reisterrassen 🌾')" data-thumbnail="hamanoura"
                                 class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hamanoura Terrassen</span>
                                 <span
                                     class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Tagesausflug Nokonoshima Insel 🌸')"
+                            <button onclick="quickAdd('Tagesausflug Nokonoshima Insel 🌸')" data-thumbnail="nokonoshima"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Nokonoshima Insel</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Itoshima Coastal Roadtrip 🚗')"
+                            <button onclick="quickAdd('Itoshima Coastal Roadtrip 🚗')" data-thumbnail="itoshima"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Itoshima Halbinsel</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Hakoshima Jinja Schrein ⛩️')"
+                            <button onclick="quickAdd('Hakoshima Jinja Schrein ⛩️')" data-thumbnail="hakoshima"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hakoshima Schrein</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">1h</span>
                             </button>
-                            <button onclick="quickAdd('Nonoma Restaurant Essen 🍽️')"
+                            <button onclick="quickAdd('Nonoma Restaurant Essen 🍽️')" data-thumbnail="nonoma"
                                 class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Nonoma Itoshima</span>
                                 <span
                                     class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Takachiho Gorge Ruderboot 🏞️')"
+                            <button onclick="quickAdd('Takachiho Gorge Ruderboot 🏞️')" data-thumbnail="takachiho"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Takachiho Schlucht</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Yufuin Onsen & Kinrin-See ♨️')"
+                            <button onclick="quickAdd('Yufuin Onsen & Kinrin-See ♨️')" data-thumbnail="yufuin"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yufuin Bergdorf</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Kunenan Garden Herbstlaub 🍁')"
+                            <button onclick="quickAdd('Kunenan Garden Herbstlaub 🍁')" data-thumbnail="kunenan"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kunenan Garten</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Mount Aso Vulkankrater 🌋')"
+                            <button onclick="quickAdd('Mount Aso Vulkankrater 🌋')" data-thumbnail="aso"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Mount Aso Krater</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Sakurajima Lava-Fussbad 🌋')"
+                            <button onclick="quickAdd('Sakurajima Lava-Fussbad 🌋')" data-thumbnail="sakurajima"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Sakurajima Vulkan</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Yakushima Urwald-Wanderung 🌲')"
+                            <button onclick="quickAdd('Yakushima Urwald-Wanderung 🌲')" data-thumbnail="yakushima"
                                 class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yakushima Trekking</span>
                                 <span
                                     class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1-2
                                     T</span>
                             </button>
-                            <button onclick="quickAdd('Yanagawa Gondelfahrt & Unagi 🚣')"
+                            <button onclick="quickAdd('Yanagawa Gondelfahrt & Unagi 🚣')" data-thumbnail="yanagawa"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yanagawa Kanäle</span>
                                 <span
                                     class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Aoshima Dschungelinsel 🏝️')"
+                            <button onclick="quickAdd('Aoshima Dschungelinsel 🏝️')" data-thumbnail="aoshima"
                                 class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Aoshima Insel</span>
                                 <span
@@ -1139,43 +1210,43 @@
                             class="text-xs font-extrabold uppercase tracking-wider text-teal-700 mb-2 border-b border-teal-700/20 pb-1">
                             🥾 Shikoku (Optional)</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Dogo Onsen (Matsuyama) ♨️')"
+                            <button onclick="quickAdd('Dogo Onsen (Matsuyama) ♨️')" data-thumbnail="dogo_onsen"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Dogo Onsen</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Iya-Tal & Kazurabashi Brücken 🏞️')"
+                            <button onclick="quickAdd('Iya-Tal & Kazurabashi Brücken 🏞️')" data-thumbnail="iya_valley"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Iya-Tal</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Ritsurin Garten Takamatsu 🍁')"
+                            <button onclick="quickAdd('Ritsurin Garten Takamatsu 🍁')" data-thumbnail="ritsurin"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Ritsurin Garten</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Shimanami Kaido Fahrrad-Tour 🚲')"
+                            <button onclick="quickAdd('Shimanami Kaido Fahrrad-Tour 🚲')" data-thumbnail="shimanami"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Shimanami Kaido</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Naoshima Kunstinsel 🎨')"
+                            <button onclick="quickAdd('Naoshima Kunstinsel 🎨')" data-thumbnail="naoshima"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naoshima Insel</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Shikoku Ohenro Tempel-Etappe 🥾')"
+                            <button onclick="quickAdd('Shikoku Ohenro Tempel-Etappe 🥾')" data-thumbnail="pilgerweg"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Pilgerweg-Etappe</span>
                                 <span
                                     class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Naruto Gezeitenstrudel 🌊')"
+                            <button onclick="quickAdd('Naruto Gezeitenstrudel 🌊')" data-thumbnail="naruto"
                                 class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naruto Strudel</span>
                                 <span
@@ -1190,37 +1261,37 @@
                             class="text-xs font-extrabold uppercase tracking-wider text-darkAutumn mb-2 border-b border-darkAutumn/20 pb-1">
                             🍂 Kansai &amp; Tokyo (21. - 28. Nov)</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Wanderung Minoo-Wasserfall 🍁')"
+                            <button onclick="quickAdd('Wanderung Minoo-Wasserfall 🍁')" data-thumbnail="minoo"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Minoo Park Osaka</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Katsuo-ji Tempel & Darumas 🔴')"
+                            <button onclick="quickAdd('Katsuo-ji Tempel & Darumas 🔴')" data-thumbnail="katsuo"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Katsuo-ji Tempel</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Showa Kinen Ginkgo-Tunnel 🍂')"
+                            <button onclick="quickAdd('Showa Kinen Ginkgo-Tunnel 🍂')" data-thumbnail="showa"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Showa Kinen Park</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Koishikawa Korakuen Garten 🍁')"
+                            <button onclick="quickAdd('Koishikawa Korakuen Garten 🍁')" data-thumbnail="koishikawa"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Koishikawa Korakuen</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Todoroki Valley Schlucht 🌿')"
+                            <button onclick="quickAdd('Todoroki Valley Schlucht 🌿')" data-thumbnail="todoroki"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Todoroki Valley</span>
                                 <span
                                     class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Kamakura & Großer Buddha 🏯')"
+                            <button onclick="quickAdd('Kamakura & Großer Buddha 🏯')" data-thumbnail="kamakura"
                                 class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kamakura Ausflug</span>
                                 <span
@@ -1232,7 +1303,7 @@
 
                 <!-- Calendar View Column (Right) -->
                 <div
-                    class="lg:col-span-8 bg-white/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/60 space-y-6">
+                    class="lg:col-span-8 bg-white/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/60 space-y-6 relative z-10">
                     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
                         <div class="flex flex-wrap gap-2 w-full xl:w-auto pb-1" id="weekTabsContainer">
                             <!-- Populated Dynamically -->
@@ -1292,6 +1363,13 @@
         </div>
     </footer>
 
+    <!-- MOBILE FAB (FLOATING ACTION BUTTON) -->
+    <button onclick="scrollToPlanner()"
+        class="md:hidden fixed bottom-6 right-6 bg-autumn text-white w-14 h-14 rounded-full shadow-[0_10px_25px_-5px_rgba(227,100,20,0.5)] flex items-center justify-center text-2xl z-40 hover:bg-orange-600 transition-transform transform active:scale-95 border border-white/20 backdrop-blur-md"
+        aria-label="Zum Tagesplaner">
+        📅
+    </button>
+
     <!-- MODAL FOR DETAILED INFOS -->
     <div id="detailModal" onclick="if(event.target === this) closeDetailModal()"
         class="fixed inset-0 bg-earth/60 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
@@ -1345,19 +1423,19 @@
                 <div class="flex items-center gap-3 w-full md:w-auto justify-center">
                     <span
                         class="text-[10px] font-black text-stone-500 uppercase tracking-widest drop-shadow-sm">Bewertung:</span>
-                    <div class="flex gap-1 bg-white/60 backdrop-blur-md p-1 rounded-full border border-white shadow-sm"
+                    <div class="flex gap-1 bg-white/60 backdrop-blur-md p-1 rounded-full border border-white shadow-sm relative"
                         id="modalReactions">
                         <button onclick="handleReactionClick(event, currentModalKey, 'heart')"
-                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            class="reaction-btn relative w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
                             data-type="heart" title="Unbedingt!">❤️</button>
                         <button onclick="handleReactionClick(event, currentModalKey, 'thumbsup')"
-                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            class="reaction-btn relative w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
                             data-type="thumbsup" title="Gerne (Muss nicht)">👍</button>
                         <button onclick="handleReactionClick(event, currentModalKey, 'question')"
-                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            class="reaction-btn relative w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
                             data-type="question" title="Eventuell">❓</button>
                         <button onclick="handleReactionClick(event, currentModalKey, 'cross')"
-                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            class="reaction-btn relative w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
                             data-type="cross" title="Sicher nicht">❌</button>
                     </div>
                 </div>
@@ -1386,9 +1464,9 @@
         </div>
     </div>
 
-    <!-- TOAST SUCCESS BANNER -->
+    <!-- TOAST SUCCESS BANNER (Moved to TOP to not overlap with FAB) -->
     <div id="toastSuccess"
-        class="fixed bottom-6 right-6 bg-earth text-sand py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 border border-autumn/30">
+        class="fixed top-24 right-6 bg-earth text-sand py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-3 transform -translate-y-[150%] opacity-0 transition-all duration-300 z-50 border border-autumn/30">
         <span class="text-autumn"><i class="fa-solid fa-circle-check text-xl"></i></span>
         <span id="toastText" class="text-xs md:text-sm font-semibold tracking-wide"></span>
     </div>
@@ -2062,7 +2140,6 @@
         // SCHEDULE INITIALIZER FOR INTERACTIVE CALENDAR
         const totalWeeks = 5;
         const schedulerDates = [
-            // Week 1
             {week: 1, dateStr: "Mo, 26. Okt", notesKey: "2026-10-26", region: "Okinawa 🏝️ Landung", label: "Okinawa"},
             {week: 1, dateStr: "Di, 27. Okt", notesKey: "2026-10-27", region: "Okinawa 🏝️ Strände", label: "Okinawa"},
             {week: 1, dateStr: "Mi, 28. Okt", notesKey: "2026-10-28", region: "Okinawa 🏝️ Sightseeing", label: "Okinawa"},
@@ -2070,8 +2147,6 @@
             {week: 1, dateStr: "Fr, 30. Okt", notesKey: "2026-10-30", region: "Okinawa 🎈 Saga Balloon Start", label: "Okinawa / Kyushu"},
             {week: 1, dateStr: "Sa, 31. Okt", notesKey: "2026-10-31", region: "Okinawa 🏯 Shurijo Fest", label: "Okinawa"},
             {week: 1, dateStr: "So, 01. Nov", notesKey: "2026-11-01", region: "Okinawa 🏯 Shurijo / Abreise", label: "Okinawa / Fukuoka"},
-
-            // Week 2
             {week: 2, dateStr: "Mo, 02. Nov", notesKey: "2026-11-02", region: "Kyushu 🏮 Karatsu Kunchi / Ohara", label: "Kyushu"},
             {week: 2, dateStr: "Di, 03. Nov", notesKey: "2026-11-03", region: "Kyushu 🏮 Karatsu / Ohara Finale", label: "Kyushu"},
             {week: 2, dateStr: "Mi, 04. Nov", notesKey: "2026-11-04", region: "Kyushu 🏯 Hakata Light Up Walk", label: "Fukuoka"},
@@ -2079,8 +2154,6 @@
             {week: 2, dateStr: "Fr, 06. Nov", notesKey: "2026-11-06", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka"},
             {week: 2, dateStr: "Sa, 07. Nov", notesKey: "2026-11-07", region: "Kyushu 🏮 Usuki Takeyoi Laternenfest", label: "Oita"},
             {week: 2, dateStr: "So, 08. Nov", notesKey: "2026-11-08", region: "Kyushu 🏆 Sumo Start / 🏮 Usuki Takeyoi", label: "Fukuoka / Oita"},
-
-            // Week 3
             {week: 3, dateStr: "Mo, 09. Nov", notesKey: "2026-11-09", region: "Kyushu 🏆 Sumo Fukuoka", label: "Fukuoka"},
             {week: 3, dateStr: "Di, 10. Nov", notesKey: "2026-11-10", region: "Kyushu 🌋 Fukuoka & Ausflüge", label: "Kyushu"},
             {week: 3, dateStr: "Mi, 11. Nov", notesKey: "2026-11-11", region: "Kyushu 🌋 Erkundung", label: "Kyushu"},
@@ -2088,8 +2161,6 @@
             {week: 3, dateStr: "Fr, 13. Nov", notesKey: "2026-11-13", region: "Kyushu 🏮 Sennen Akari Hita Start", label: "Hita / Oita"},
             {week: 3, dateStr: "Sa, 14. Nov", notesKey: "2026-11-14", region: "Kyushu 🎆 Nagasaki Feuerwerk / 🏮 Sennen Akari / 👹 Yokagura", label: "Kyushu"},
             {week: 3, dateStr: "So, 15. Nov", notesKey: "2026-11-15", region: "Kyushu 🏮 Sennen Akari Finale", label: "Hita / Oita"},
-
-            // Week 4
             {week: 4, dateStr: "Mo, 16. Nov", notesKey: "2026-11-16", region: "Kyushu 🍁 Kunenan Herbst-Peak", label: "Kyushu"},
             {week: 4, dateStr: "Di, 17. Nov", notesKey: "2026-11-17", region: "Kyushu 🍁 Herbstwald", label: "Kyushu"},
             {week: 4, dateStr: "Mi, 18. Nov", notesKey: "2026-11-18", region: "Kyushu 🍁 Dazaifu Herbst", label: "Kyushu"},
@@ -2097,8 +2168,6 @@
             {week: 4, dateStr: "Fr, 20. Nov", notesKey: "2026-11-20", region: "Kyushu 🌋 Packen & Erholung", label: "Fukuoka"},
             {week: 4, dateStr: "Sa, 21. Nov", notesKey: "2026-11-21", region: "Kansai 🍂 Transit nach Osaka", label: "Kansai / Osaka"},
             {week: 4, dateStr: "So, 22. Nov", notesKey: "2026-11-22", region: "Kansai 🍁 Kyoto LightUp", label: "Kansai / Kyoto"},
-
-            // Week 5
             {week: 5, dateStr: "Mo, 23. Nov", notesKey: "2026-11-23", region: "Kansai 🍁 Osaka Herbst-Peak", label: "Osaka"},
             {week: 5, dateStr: "Di, 24. Nov", notesKey: "2026-11-24", region: "Tokyo 🍂 Shinkansen nach Tokyo / 🍂 Gaien Ginkgo Fest", label: "Tokyo"},
             {week: 5, dateStr: "Mi, 25. Nov", notesKey: "2026-11-25", region: "Tokyo 🍂 Herbstgärten", label: "Tokyo"},
@@ -2110,12 +2179,12 @@
         // --- DYNAMIC BLOB COLOR PALETTES (THEMES) ---
         const blobPalettes = {
             'overview': ['rgba(2, 128, 144, 0.2)', 'rgba(227, 100, 20, 0.2)', 'rgba(252, 237, 219, 0.4)', 'rgba(216, 180, 226, 0.3)', 'rgba(254, 240, 138, 0.2)'],
-            'okinawa': ['rgba(56, 189, 248, 0.3)', 'rgba(2, 128, 144, 0.3)', 'rgba(103, 232, 249, 0.3)', 'rgba(96, 165, 250, 0.2)', 'rgba(153, 246, 228, 0.3)'], // Oceans & Skies
-            'kyushu': ['rgba(227, 100, 20, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(52, 211, 153, 0.2)', 'rgba(154, 3, 30, 0.2)', 'rgba(252, 211, 77, 0.3)'], // Volcano & Autumn
-            'shikoku': ['rgba(45, 212, 191, 0.3)', 'rgba(16, 185, 129, 0.2)', 'rgba(34, 211, 238, 0.2)', 'rgba(134, 239, 172, 0.2)', 'rgba(186, 230, 253, 0.3)'], // Deep Nature Greens/Teals
-            'autumn-analysis': ['rgba(239, 68, 68, 0.2)', 'rgba(154, 3, 30, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(251, 191, 36, 0.2)', 'rgba(251, 113, 133, 0.3)'], // Deep Red Koyo Peak
-            'interactive-planner': ['rgba(129, 140, 248, 0.2)', 'rgba(192, 132, 252, 0.2)', 'rgba(227, 100, 20, 0.2)', 'rgba(125, 211, 252, 0.2)', 'rgba(244, 114, 182, 0.2)'], // Indigo/Purple planning
-            'map-view': ['rgba(96, 165, 250, 0.2)', 'rgba(129, 140, 248, 0.2)', 'rgba(52, 211, 153, 0.2)', 'rgba(2, 128, 144, 0.2)', 'rgba(94, 234, 212, 0.2)']  // Map UI colors
+            'okinawa': ['rgba(56, 189, 248, 0.3)', 'rgba(2, 128, 144, 0.3)', 'rgba(103, 232, 249, 0.3)', 'rgba(96, 165, 250, 0.2)', 'rgba(153, 246, 228, 0.3)'],
+            'kyushu': ['rgba(227, 100, 20, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(52, 211, 153, 0.2)', 'rgba(154, 3, 30, 0.2)', 'rgba(252, 211, 77, 0.3)'],
+            'shikoku': ['rgba(45, 212, 191, 0.3)', 'rgba(16, 185, 129, 0.2)', 'rgba(34, 211, 238, 0.2)', 'rgba(134, 239, 172, 0.2)', 'rgba(186, 230, 253, 0.3)'],
+            'autumn-analysis': ['rgba(239, 68, 68, 0.2)', 'rgba(154, 3, 30, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(251, 191, 36, 0.2)', 'rgba(251, 113, 133, 0.3)'],
+            'interactive-planner': ['rgba(129, 140, 248, 0.2)', 'rgba(192, 132, 252, 0.2)', 'rgba(227, 100, 20, 0.2)', 'rgba(125, 211, 252, 0.2)', 'rgba(244, 114, 182, 0.2)'],
+            'map-view': ['rgba(96, 165, 250, 0.2)', 'rgba(129, 140, 248, 0.2)', 'rgba(52, 211, 153, 0.2)', 'rgba(2, 128, 144, 0.2)', 'rgba(94, 234, 212, 0.2)']
         };
 
         let selectedWeek = 1;
@@ -2128,7 +2197,9 @@
 
         // DOM ELEMENTS & INITIALIZATION
         document.addEventListener("DOMContentLoaded", () => {
-            upgradeCardsToImageCards();
+            upgradeCardsToImageCards(); // Erstellt die schönen Cards & weist Kategorien für den Filter zu
+            initThumbnails();           // Fügt runde Bild-Vorschauen in den Tagesplaner ein
+            initFilters();              // Startet die Kategorie-Filter
             initTabs();
             initWeatherChart();
             loadCalendarFromStorage();
@@ -2140,12 +2211,76 @@
             initCountdown();
         });
 
+        // --- DYNAMIC THUMBNAILS IN PLANNER ---
+        function initThumbnails () {
+            document.querySelectorAll('button[data-thumbnail]').forEach(btn => {
+                const key = btn.getAttribute('data-thumbnail');
+                if (destinationDetails[key]) {
+                    const img = document.createElement('img');
+                    img.src = destinationDetails[key].image;
+                    img.className = "w-7 h-7 rounded-full object-cover border border-stone-200 shadow-sm flex-shrink-0";
+
+                    // Button Padding anpassen
+                    btn.classList.add('flex', 'items-center', 'gap-2.5');
+                    btn.classList.remove('p-2.5');
+                    btn.classList.add('p-2');
+
+                    // Textinhalte in einen Wrapper packen (für sauberes Flex-Layout)
+                    const contentWrapper = document.createElement('div');
+                    contentWrapper.className = "flex-grow flex justify-between items-center";
+                    while (btn.firstChild) {contentWrapper.appendChild(btn.firstChild);}
+
+                    btn.appendChild(img);
+                    btn.appendChild(contentWrapper);
+                }
+            });
+        }
+
+        // --- FILTER SYSTEM ---
+        function initFilters () {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const container = btn.closest('.filter-container');
+                    const targetGridId = container.getAttribute('data-target');
+                    const grid = document.getElementById(targetGridId);
+
+                    // Reset Button Styles
+                    container.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-autumn', 'bg-ocean', 'text-white', 'border-transparent');
+                        b.classList.add('bg-white/70', 'text-stone-600', 'border-white');
+                    });
+
+                    // Activate clicked button (Color depends on region)
+                    if (targetGridId === 'okinawa-grid') btn.classList.add('bg-ocean');
+                    else btn.classList.add('bg-autumn');
+
+                    btn.classList.add('text-white', 'border-transparent');
+                    btn.classList.remove('bg-white/70', 'text-stone-600', 'border-white');
+
+                    const filter = btn.getAttribute('data-filter');
+                    const cards = grid.querySelectorAll('.group');
+
+                    // Filter Cards
+                    cards.forEach(card => {
+                        const cats = card.getAttribute('data-category') || "";
+                        if (filter === 'all' || cats.includes(filter)) {
+                            card.classList.remove('filter-hide');
+                            card.classList.add('filter-show');
+                        } else {
+                            card.classList.remove('filter-show');
+                            card.classList.add('filter-hide');
+                        }
+                    });
+                });
+            });
+        }
+
         // --- MICRO-INTERACTIONS: REACTION PARTICLES ---
         function handleReactionClick (event, key, type) {
             event.stopPropagation();
             setReaction(key, type);
 
-            // Zeige Partikel-Explosion nur, wenn eine Bewertung HINZUGEFÜGT wurde (nicht wenn sie gelöscht wird)
+            // Zeige Partikel-Explosion nur, wenn Bewertung HINZUGEFÜGT (nicht gelöscht) wird
             if (userReactions[key] === type) {
                 createParticles(event.currentTarget, type);
             }
@@ -2159,17 +2294,13 @@
                 'cross': ['❌', '💨', '🙅', '💥']
             };
             const particleEmojis = emojis[reactionType] || ['✨'];
-
-            // Hole genaue Position des Buttons auf dem Bildschirm
             const rect = buttonElement.getBoundingClientRect();
 
-            // Erzeuge 8 kleine Partikel pro Klick
             for (let i = 0; i < 8; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'fixed pointer-events-none z-[100] text-xl';
                 particle.innerText = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
 
-                // Startposition leicht randomisiert um die Button-Mitte
                 const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 20;
                 const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 20;
 
@@ -2177,20 +2308,18 @@
                 particle.style.top = startY + 'px';
                 document.body.appendChild(particle);
 
-                // Animations-Mathematik: Schieße nach oben in Form eines Fächers
-                const angle = (Math.random() * Math.PI) - (Math.PI / 2); // -90 bis +90 Grad
+                const angle = (Math.random() * Math.PI) - (Math.PI / 2);
                 const velocity = 50 + Math.random() * 60;
                 const tx = Math.sin(angle) * velocity;
-                const ty = -Math.cos(angle) * velocity - 60; // Vorrangig nach oben (-Y)
+                const ty = -Math.cos(angle) * velocity - 60;
 
-                // Nutze die moderne Web Animations API
                 particle.animate([
                     {transform: 'translate(0, 0) scale(1)', opacity: 1},
                     {transform: `translate(${tx}px, ${ty}px) scale(${1 + Math.random()}) rotate(${Math.random() * 90 - 45}deg)`, opacity: 0}
                 ], {
-                    duration: 600 + Math.random() * 400, // 0.6s bis 1s
-                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)' // Schneller Start, langsames Abbremsen
-                }).onfinish = () => particle.remove(); // Lösche Element nach Animation
+                    duration: 600 + Math.random() * 400,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                }).onfinish = () => particle.remove();
             }
         }
 
@@ -2209,7 +2338,7 @@
         function setReaction (key, reactionType) {
             if (!key) return;
             if (userReactions[key] === reactionType) {
-                delete userReactions[key]; // Toggle off if clicked again
+                delete userReactions[key]; // Toggle off
             } else {
                 userReactions[key] = reactionType;
             }
@@ -2228,7 +2357,6 @@
         }
 
         function updateReactionUI (key) {
-            // Update Buttons in Modal
             const reaction = userReactions[key];
             const btns = document.querySelectorAll('.reaction-btn');
             btns.forEach(btn => {
@@ -2240,7 +2368,6 @@
                     btn.classList.add('grayscale-0', 'opacity-100', 'bg-white', 'scale-110', 'shadow-sm', 'border', 'border-stone-200');
                 }
             });
-            // Update Badges on Cards globally
             renderReactionsOnCards();
         }
 
@@ -2272,7 +2399,6 @@
                 }
             });
         }
-
 
         // LIVE COUNTDOWN TIMER
         function initCountdown () {
@@ -2336,7 +2462,6 @@
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
 
-                    // Schiebe den farbigen Balken sanft unter den neuen Tab
                     updateTabIndicator(btn);
 
                     const targetId = btn.getAttribute("data-target");
@@ -2361,20 +2486,16 @@
                     // Init Map if needed
                     if (targetId === "map-view") {
                         initJapanMap();
-                        if (map !== null) {
-                            setTimeout(() => {map.invalidateSize();}, 100);
-                        }
+                        if (map !== null) {setTimeout(() => {map.invalidateSize();}, 100);}
                     }
                 });
             });
 
-            // Initiale Balken-Position beim Laden der Seite setzen
             setTimeout(() => {
                 const activeBtn = document.querySelector('.tab-btn.active');
                 if (activeBtn) updateTabIndicator(activeBtn);
             }, 100);
 
-            // Balken-Position anpassen, wenn das Fenster vergrößert/verkleinert wird
             window.addEventListener('resize', () => {
                 const activeBtn = document.querySelector('.tab-btn.active');
                 if (activeBtn) updateTabIndicator(activeBtn);
