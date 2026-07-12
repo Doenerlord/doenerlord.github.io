@@ -69,6 +69,23 @@
         .leaflet-container { font-family: 'Inter', system-ui, -apple-system, sans-serif; z-index: 10; }
         .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .leaflet-popup-content { margin: 8px; }
+        
+        /* 1. Ken Burns Effect für den Header */
+        @keyframes kenburns {
+            0% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.05) translate(-1%, -1%); }
+            100% { transform: scale(1.1) translate(0, 0); }
+        }
+        .animate-kenburns {
+            animation: kenburns 30s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+        
+        /* 2. Custom Map Pin Base Reset */
+        .custom-map-pin {
+            background: transparent;
+            border: none;
+        }
     </style> <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -77,7 +94,8 @@
 
     <!-- HEADER -->
     <header class="bg-earth text-sand relative overflow-hidden py-10 md:py-16 shadow-xl border-b-4 border-autumn">
-        <div class="absolute inset-0 opacity-10 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80');"></div>
+        <!-- Angewandter Ken Burns Effekt und minimal höhere Sichtbarkeit (opacity-15) -->
+        <div class="absolute inset-0 opacity-15 bg-cover bg-center bg-no-repeat animate-kenburns transform-gpu" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -126,7 +144,8 @@
     </header>
 
     <!-- NAVIGATION TABS -->
-    <nav class="bg-white/95 backdrop-blur-md shadow-md sticky top-0 z-30 border-b border-stone-200">
+    <!-- Glasmorphismus-Upgrade: Transparentes bg-white/70 mit extremem backdrop-blur -->
+    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-30 border-b border-stone-200/60 supports-[backdrop-filter]:bg-white/60 transition-all">
         <div class="max-w-6xl mx-auto px-4 flex overflow-x-auto scrollbar-none">
             <button
                 class="tab-btn active px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
@@ -1299,16 +1318,16 @@
         <section id="interactive-planner" class="tab-content hidden animate-fade-in space-y-8">
             <div class="border-b border-stone-200 pb-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-autumn">Planungs-Zentrale</span>
-                <h2 class="text-3xl font-black text-earth tracking-tight mt-1">📅 Dein interaktiver Tages- &amp;
-                    Aktivitätenplaner</h2>
-                <p class="text-stone-500 text-sm mt-1">Eure Reise läuft vom <strong>24. Oktober bis zum 28. November
-                        2026</strong>. Klickt einfach links auf ein Ziel, um es blitzschnell für euren ausgewählten Tag zu
-                    hinterlegen!</p>
+                <h2 class="text-3xl font-black text-earth tracking-tight mt-1">📅 Dein interaktiver Tages- &amp; Aktivitätenplaner</h2>
+                <p class="text-stone-500 text-sm mt-1">Eure Reise läuft vom <strong>24. Oktober bis zum 28. November 2026</strong>. Klickt einfach links auf ein Ziel, um es blitzschnell für euren ausgewählten Tag zu hinterlegen!</p>
             </div>
-        
+
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <!-- Quick Selection Column (Left) - NOW STICKY AND SCROLLABLE -->
-                <div
+                <!-- Quick Selection Column (Left) - Glasmorphismus Upgrade -->
+                <div class="lg:col-span-4 bg-stone-50/70 backdrop-blur-xl p-5 rounded-2xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white shadow-xl scrollbar-thin">
+                    <h3 class="font-bold text-lg text-earth border-b border-stone-200 pb-2"><i class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
+                    
+                    <!-- NEW CATEGORY: ABENTEUER & ERLEBNISSE -->
                     class="lg:col-span-4 bg-white p-5 rounded-2xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-stone-200/80 shadow-md scrollbar-thin">
                     <h3 class="font-bold text-lg text-earth border-b border-stone-200 pb-2"><i
                             class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
@@ -2040,7 +2059,7 @@
                 badge: "🏺 Kunsthandwerk",
                 location: "Yomitan Village",
                 duration: "ca. 3 Std.",
-                image: "https://www.oki-islandguide.com/wp-content/uploads/2014/01/yuntanzayaki_store_1.jpg",
+                image: "https://okinawahai.com/wp-content/uploads/2014/12/Yomitan-Pottery-Village-16-696x507.jpg",
                 link: "https://www.oki-islandguide.com/specialfeatures/a-pottery-mecca-yomitan-village-yachimun-no-sato",
                 description: "Abseits der Touristenpfade liegt das malerische Töpferdorf Yachimun no Sato. Das idyllische Viertel ist das schöpferische Zentrum für das traditionelle Keramik-Handwerk Okinawas, genannt 'Yachimun'.<br><br>Hier haben sich über ein Dutzend Meistertöpfer zusammengeschlossen und betreiben gemeinschaftlich traditionelle, mehrstufige Stufenbrandöfen (Noborigama), die an den bewaldeten Hängen emporragen. Die urigen, mit roten Ziegeln gedeckten Atelier-Häuser verkaufen handgemachte Tassen, Teller und die berühmten Shisa-Wächterlöwen.",
                 tip: "Schlendert gemütlich durch die waldigen Gassen und werft einen Blick in die offenen Werkstätten der Künstler. Die Keramiken eignen sich hervorragend als einzigartiges, handgefertigtes Souvenir."
@@ -2895,9 +2914,28 @@
 
             const markersLayer = L.featureGroup().addTo(map);
 
-       for (const [key, details] of Object.entries(destinationDetails)) {
+            for (const [key, details] of Object.entries(destinationDetails)) {
                 if (mapCoords[key]) {
-                    const marker = L.marker(mapCoords[key]).addTo(markersLayer);
+                    // 3. Custom Map-Pins: Emoji und Farben basierend auf der Kategorie extrahieren
+                    const emoji = details.badge.split(' ')[0]; // Zieht das Emoji (z.B. ⛩️) aus dem Badge
+                    let borderColor = 'border-autumn';
+                    let shadowColor = 'shadow-orange-500/30';
+                    
+                    if (details.badge.includes('Okinawa') || details.badge.includes('Strand') || details.badge.includes('Luft')) { borderColor = 'border-ocean'; shadowColor = 'shadow-cyan-500/30'; }
+                    else if (details.badge.includes('Kunst') || details.badge.includes('Shikoku') || details.badge.includes('Inselhüpfen')) { borderColor = 'border-teal-500'; shadowColor = 'shadow-teal-500/30'; }
+                    else if (details.badge.includes('Abenteuer') || details.badge.includes('Extrem')) { borderColor = 'border-indigo-500'; shadowColor = 'shadow-indigo-500/30'; }
+
+                    // Custom HTML Div-Icon für Leaflet
+                    const customIcon = L.divIcon({
+                        className: 'custom-map-pin',
+                        html: `<div class="bg-white border-2 ${borderColor} shadow-lg ${shadowColor} rounded-full w-8 h-8 flex items-center justify-center text-sm transform transition-all duration-300 hover:scale-125 hover:-translate-y-1">${emoji}</div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16],
+                        popupAnchor: [0, -16]
+                    });
+
+                    // Marker mit dem neuen customIcon anlegen
+                    const marker = L.marker(mapCoords[key], {icon: customIcon}).addTo(markersLayer);
 
                     const popupContent = `
                         <div class="text-center p-2 min-w-[150px]">
