@@ -776,11 +776,30 @@
             </div>
 
             <div class="space-y-6">
-                <h3 class="text-2xl font-black text-earth drop-shadow-sm">Shikoku Highlights &amp; Aktivitäten</h3>
-                <p
-                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
-                    Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Routenlinks
-                    anzuzeigen.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h3 class="text-2xl font-black text-earth drop-shadow-sm">Shikoku Highlights &amp; Aktivitäten
+                        </h3>
+                        <p
+                            class="text-stone-700 font-medium text-sm mt-1 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                            Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Routenlinks
+                            anzuzeigen.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 filter-container" data-target="shikoku-grid">
+                        <button
+                            class="filter-btn active bg-teal-700 text-white border border-transparent px-4 py-1.5 rounded-full text-xs font-bold shadow transition-all"
+                            data-filter="all">Alle</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="kultur">⛩️ Kultur</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="natur">🌿 Natur</button>
+                        <button
+                            class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                            data-filter="entspannung">♨️ Entspannung</button>
+                    </div>
+                </div>
 
                 <div id="shikoku-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('dogo_onsen')"></div>
@@ -1453,6 +1472,60 @@
                     class="text-stone-700 font-medium text-sm mt-1 bg-white/40 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
                     Alle eure Highlights, Ausflüge und Matsuris auf einen Blick. Klickt auf einen Pin, um Details
                     anzuzeigen!</p>
+            </div>
+            <div class="bg-white/70 backdrop-blur-xl p-4 rounded-3xl shadow-lg border border-white/60 space-y-4">
+                <div class="flex flex-col lg:flex-row gap-4 lg:items-end lg:justify-between">
+                    <div class="space-y-2">
+                        <span class="text-[11px] font-black uppercase tracking-wider text-stone-600">Kategorien</span>
+                        <div id="mapCategoryFilters" class="flex flex-wrap gap-2">
+                            <button
+                                class="map-filter-btn bg-ocean text-white border border-transparent px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all"
+                                data-category="all">Alle</button>
+                            <button
+                                class="map-filter-btn bg-white/80 text-stone-600 border border-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                                data-category="strand">🏖️ Strand</button>
+                            <button
+                                class="map-filter-btn bg-white/80 text-stone-600 border border-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                                data-category="kultur">⛩️ Kultur</button>
+                            <button
+                                class="map-filter-btn bg-white/80 text-stone-600 border border-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                                data-category="natur">🌿 Natur</button>
+                            <button
+                                class="map-filter-btn bg-white/80 text-stone-600 border border-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                                data-category="essen">🍜 Essen</button>
+                            <button
+                                class="map-filter-btn bg-white/80 text-stone-600 border border-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
+                                data-category="entspannung">♨️ Entspannung</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto">
+                        <label class="text-xs font-bold text-stone-600 flex flex-col gap-1">
+                            Planer-Status
+                            <select id="mapPlannerStatusFilter"
+                                class="bg-white/90 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm">
+                                <option value="all">Alle Pins</option>
+                                <option value="planned">Nur eingeplante Pins</option>
+                                <option value="unplanned">Nur nicht eingeplante Pins</option>
+                            </select>
+                        </label>
+                        <label class="text-xs font-bold text-stone-600 flex flex-col gap-1">
+                            Planer-Woche
+                            <select id="mapPlannerWeekFilter"
+                                class="bg-white/90 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm">
+                                <option value="all">Alle Wochen</option>
+                                <option value="1">Woche 1</option>
+                                <option value="2">Woche 2</option>
+                                <option value="3">Woche 3</option>
+                                <option value="4">Woche 4</option>
+                                <option value="5">Woche 5</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div id="mapVisiblePinCount"
+                    class="text-xs font-bold text-stone-600 bg-white/80 border border-white rounded-xl px-3 py-2 w-fit shadow-sm">
+                    Pins werden geladen...
+                </div>
             </div>
             <div class="bg-white/70 backdrop-blur-xl p-3 rounded-3xl shadow-lg border border-white/60">
                 <div id="japan-map" class="w-full h-[650px] rounded-2xl z-10 relative"></div>
@@ -2247,6 +2320,53 @@
             }
         };
 
+        const destinationCategories = {
+            churaumi: ['strand', 'natur'],
+            kerama: ['strand', 'natur'],
+            paragliding_okinawa: ['strand', 'natur'],
+            yoron: ['strand', 'natur'],
+            kouri: ['strand', 'natur'],
+            shuri: ['kultur'],
+            manzamo: ['strand', 'natur'],
+            yachimun: ['kultur'],
+            sefa_utaki: ['kultur', 'natur'],
+            gangala: ['natur'],
+            katsuren: ['kultur'],
+            yanbaru: ['natur'],
+
+            yatai: ['essen', 'kultur'],
+            hakata_ori: ['kultur'],
+            hakata_ningyo: ['kultur'],
+            hakata_magemono: ['kultur'],
+            bungee_itsuki: ['natur'],
+            dazaifu: ['kultur'],
+            sandbad_ibusuki: ['entspannung', 'natur'],
+            nokonoshima: ['natur'],
+            itoshima: ['natur'],
+            hakoshima: ['kultur', 'natur'],
+            nonoma: ['essen'],
+            okawachiyama: ['kultur'],
+            hamanoura: ['natur'],
+            akiyoshido: ['natur'],
+            motonosumi: ['kultur', 'natur'],
+            takachiho: ['kultur', 'natur'],
+            yufuin: ['entspannung', 'natur'],
+            kunenan: ['natur'],
+            aso: ['natur'],
+            sakurajima: ['natur'],
+            yakushima: ['natur'],
+            yanagawa: ['kultur'],
+            aoshima: ['natur'],
+
+            dogo_onsen: ['entspannung', 'kultur'],
+            iya_valley: ['natur'],
+            ritsurin: ['kultur', 'natur'],
+            shimanami: ['natur'],
+            naoshima: ['kultur'],
+            pilgerweg: ['kultur', 'natur'],
+            naruto: ['natur']
+        };
+
         // SCHEDULE INITIALIZER FOR INTERACTIVE CALENDAR
         const totalWeeks = 5;
         const schedulerDates = [
@@ -2300,6 +2420,12 @@
         let selectedWeek = 1;
         let selectedDayKey = "2026-10-26";
         let calendarData = {};
+        let map = null;
+        let mapMarkersLayer = null;
+        let mapMarkersByKey = {};
+        let plannerDestinationIndex = {};
+        let plannerItemKeyMap = {};
+        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all'};
 
         // --- REACTION SYSTEM VARIABLES ---
         let userReactions = {};
@@ -2310,6 +2436,7 @@
             upgradeCardsToImageCards(); // Erstellt die schönen Cards & weist Kategorien für den Filter zu
             initThumbnails();           // Fügt runde Bild-Vorschauen in den Tagesplaner ein
             initFilters();              // Startet die Kategorie-Filter
+            initMapFilters();
             initTabs();
             initWeatherChart();
             loadCalendarFromStorage();
@@ -2381,12 +2508,13 @@
 
                     // Reset Button Styles
                     container.querySelectorAll('.filter-btn').forEach(b => {
-                        b.classList.remove('bg-autumn', 'bg-ocean', 'text-white', 'border-transparent');
+                        b.classList.remove('bg-autumn', 'bg-ocean', 'bg-teal-700', 'text-white', 'border-transparent');
                         b.classList.add('bg-white/70', 'text-stone-600', 'border-white');
                     });
 
                     // Activate clicked button (Color depends on region)
                     if (targetGridId === 'okinawa-grid') btn.classList.add('bg-ocean');
+                    else if (targetGridId === 'shikoku-grid') btn.classList.add('bg-teal-700');
                     else btn.classList.add('bg-autumn');
 
                     btn.classList.add('text-white', 'border-transparent');
@@ -2666,7 +2794,196 @@
         const mapCoords = {
             paragliding_okinawa: [26.175, 127.817], bungee_itsuki: [32.398, 130.825], sandbad_ibusuki: [31.237, 130.643], kintsugi_kyoto: [35.016, 135.768], yanbaru: [26.817, 128.250], aoshima: [31.804, 131.474], naruto: [34.238, 134.650], todoroki: [35.605, 139.645], akiyoshido: [34.227, 131.304], motonosumi: [34.424, 131.066], churaumi: [26.694, 127.877], kerama: [26.196, 127.320], shuri: [26.217, 127.719], manzamo: [26.504, 127.850], yachimun: [26.408, 127.741], gangala: [26.144, 127.750], katsuren: [26.330, 127.878], yatai: [33.590, 130.401], dazaifu: [33.521, 130.534], nokonoshima: [33.618, 130.301], itoshima: [33.559, 130.198], takachiho: [32.701, 131.300], yufuin: [33.264, 131.362], kunenan: [33.315, 130.380], aso: [32.884, 131.104], sakurajima: [31.583, 130.650], yanagawa: [33.161, 130.401], dogo_onsen: [33.852, 132.786], iya_valley: [33.876, 133.820], ritsurin: [34.330, 134.045], shimanami: [34.053, 133.003], naoshima: [34.458, 133.987], pilgerweg: [34.158, 134.502], minoo: [34.846, 135.471], katsuo: [34.863, 135.490], kyoto_illumination: [34.994, 135.785], showa: [35.712, 139.394], koishikawa: [35.705, 139.749], shurijo_fest: [26.217, 127.719], balloon_fiesta: [33.250, 130.293], ohara_matsuri: [31.589, 130.551], karatsu_kunchi: [33.450, 129.968], hakata_lightup: [33.593, 130.413], usuki_takeyoi: [33.120, 131.800], sumo_fukuoka: [33.603, 130.395], sennen_akari: [33.323, 130.938], fireworks_nagasaki: [33.086, 129.789], yokai_matsuri: [33.850, 133.800], takachiho_yokagura: [32.705, 131.305], kiyomizu_lightup: [34.994, 135.785], gaien_ginkgo: [35.674, 139.718], rikugien_lightup: [35.733, 139.746], hakata_ori: [33.589, 130.401], hakata_ningyo: [33.592, 130.408], hakata_magemono: [33.598, 130.415], yoron: [27.042, 128.411], kouri: [26.702, 128.024], sefa_utaki: [26.173, 127.826], hakoshima: [33.565, 130.141], nonoma: [33.541, 130.170], okawachiyama: [33.242, 129.873], hamanoura: [33.486, 129.832], kamakura: [35.319, 139.550], yakushima: [30.334, 130.528]
         };
-        let map = null;
+        function normalizeTextForMatching (value) {
+            return (value || "")
+                .toString()
+                .toLowerCase()
+                .replace(/ä/g, "ae")
+                .replace(/ö/g, "oe")
+                .replace(/ü/g, "ue")
+                .replace(/ß/g, "ss")
+                .replace(/[^a-z0-9]+/g, " ")
+                .trim();
+        }
+
+        function getPlannerItemName (item) {
+            if (typeof item === 'string') return item;
+            if (item && typeof item.name === 'string') return item.name;
+            return "";
+        }
+
+        function inferCategoriesFromDetails (details) {
+            const categories = new Set();
+            const text = `${details.badge || ''} ${details.title || ''}`.toLowerCase();
+            if (text.includes('strand') || text.includes('insel') || text.includes('meer') || text.includes('ocean')) categories.add('strand');
+            if (text.includes('tempel') || text.includes('schrein') || text.includes('kultur') || text.includes('kunst') || text.includes('handwerk') || text.includes('fest') || text.includes('matsuri') || text.includes('sumo') || text.includes('pilger') || text.includes('castle') || text.includes('illumination')) categories.add('kultur');
+            if (text.includes('natur') || text.includes('urwald') || text.includes('park') || text.includes('tal') || text.includes('vulkan') || text.includes('garten') || text.includes('höhle') || text.includes('canyon') || text.includes('terrassen') || text.includes('insel') || text.includes('berg') || text.includes('roadtrip')) categories.add('natur');
+            if (text.includes('essen') || text.includes('kulinar') || text.includes('food') || text.includes('yatai') || text.includes('restaurant')) categories.add('essen');
+            if (text.includes('onsen') || text.includes('wellness') || text.includes('entspannung') || text.includes('sandbad') || text.includes('relax')) categories.add('entspannung');
+            return [...categories];
+        }
+
+        function getDestinationCategoriesForMap (key, details) {
+            const defined = destinationCategories[key];
+            if (defined && defined.length > 0) return defined;
+            return inferCategoriesFromDetails(details);
+        }
+
+        function buildPlannerItemKeyMap () {
+            const lookup = {};
+            document.querySelectorAll('button[data-thumbnail]').forEach(btn => {
+                const key = btn.getAttribute('data-thumbnail');
+                const onclickText = btn.getAttribute('onclick') || "";
+                const match = onclickText.match(/quickAdd\('([^']*)'/);
+                if (key && match && match[1]) {
+                    lookup[normalizeTextForMatching(match[1])] = key;
+                }
+            });
+            plannerItemKeyMap = lookup;
+        }
+
+        function resolveDestinationKeyFromPlannerItem (itemName) {
+            const normalizedItem = normalizeTextForMatching(itemName);
+            if (!normalizedItem) return null;
+            if (plannerItemKeyMap[normalizedItem]) return plannerItemKeyMap[normalizedItem];
+
+            for (const [key, details] of Object.entries(destinationDetails)) {
+                const normalizedTitle = normalizeTextForMatching(details.title);
+                if (normalizedTitle && (normalizedItem.includes(normalizedTitle) || normalizedTitle.includes(normalizedItem))) {
+                    return key;
+                }
+            }
+            return null;
+        }
+
+        function rebuildPlannerDestinationIndex () {
+            buildPlannerItemKeyMap();
+            const index = {};
+            schedulerDates.forEach(day => {
+                const dayObj = calendarData[day.notesKey];
+                if (!dayObj || !Array.isArray(dayObj.items)) return;
+
+                dayObj.items.forEach(item => {
+                    const itemName = getPlannerItemName(item);
+                    const explicitKey = (item && typeof item === 'object' && typeof item.key === 'string') ? item.key : null;
+                    const destinationKey = explicitKey || resolveDestinationKeyFromPlannerItem(itemName);
+                    if (!destinationKey) return;
+
+                    if (!index[destinationKey]) index[destinationKey] = {weeks: new Set(), days: new Set()};
+                    index[destinationKey].weeks.add(day.week);
+                    index[destinationKey].days.add(day.notesKey);
+                });
+            });
+            plannerDestinationIndex = index;
+        }
+
+        function updateMapCategoryButtonStyles () {
+            document.querySelectorAll('.map-filter-btn').forEach(btn => {
+                const category = btn.getAttribute('data-category');
+                const isActive = mapFilterState.categories.has(category);
+                btn.classList.toggle('bg-ocean', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('border-transparent', isActive);
+                btn.classList.toggle('bg-white/80', !isActive);
+                btn.classList.toggle('text-stone-600', !isActive);
+                btn.classList.toggle('border-white', !isActive);
+            });
+        }
+
+        function updateMapFilterStatusText (visibleCount, totalCount) {
+            const statusEl = document.getElementById('mapVisiblePinCount');
+            if (!statusEl) return;
+            statusEl.innerText = `${visibleCount} / ${totalCount} Pins sichtbar`;
+        }
+
+        function applyMapFilters (fitToVisible = false) {
+            const markerEntries = Object.values(mapMarkersByKey);
+            if (!map || !mapMarkersLayer || markerEntries.length === 0) {
+                updateMapFilterStatusText(0, markerEntries.length);
+                return;
+            }
+
+            let visibleCount = 0;
+            const visibleBounds = L.latLngBounds([]);
+
+            markerEntries.forEach(entry => {
+                const markerCats = entry.categories || [];
+                const hasCategoryFilter = !mapFilterState.categories.has('all');
+                const matchesCategory = !hasCategoryFilter || markerCats.some(cat => mapFilterState.categories.has(cat));
+
+                const plannerInfo = plannerDestinationIndex[entry.key];
+                const isPlanned = !!plannerInfo;
+                let matchesPlannerStatus = true;
+                if (mapFilterState.plannerStatus === 'planned') matchesPlannerStatus = isPlanned;
+                else if (mapFilterState.plannerStatus === 'unplanned') matchesPlannerStatus = !isPlanned;
+
+                let matchesPlannerWeek = true;
+                if (mapFilterState.plannerWeek !== 'all') {
+                    const weekNum = Number(mapFilterState.plannerWeek);
+                    matchesPlannerWeek = isPlanned && plannerInfo.weeks.has(weekNum);
+                }
+
+                const shouldShow = matchesCategory && matchesPlannerStatus && matchesPlannerWeek;
+                if (shouldShow) {
+                    if (!mapMarkersLayer.hasLayer(entry.marker)) mapMarkersLayer.addLayer(entry.marker);
+                    visibleCount++;
+                    visibleBounds.extend(entry.marker.getLatLng());
+                } else if (mapMarkersLayer.hasLayer(entry.marker)) {
+                    mapMarkersLayer.removeLayer(entry.marker);
+                }
+            });
+
+            if (fitToVisible && visibleCount > 0 && visibleBounds.isValid()) {
+                map.fitBounds(visibleBounds, {padding: [40, 40]});
+            }
+
+            updateMapFilterStatusText(visibleCount, markerEntries.length);
+        }
+
+        function refreshMapPlannerIndexAndFilters () {
+            rebuildPlannerDestinationIndex();
+            applyMapFilters(false);
+        }
+
+        function initMapFilters () {
+            const statusSelect = document.getElementById('mapPlannerStatusFilter');
+            const weekSelect = document.getElementById('mapPlannerWeekFilter');
+
+            document.querySelectorAll('.map-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const category = btn.getAttribute('data-category');
+                    if (!category) return;
+
+                    if (category === 'all') {
+                        mapFilterState.categories = new Set(['all']);
+                    } else {
+                        mapFilterState.categories.delete('all');
+                        if (mapFilterState.categories.has(category)) mapFilterState.categories.delete(category);
+                        else mapFilterState.categories.add(category);
+                        if (mapFilterState.categories.size === 0) mapFilterState.categories.add('all');
+                    }
+
+                    updateMapCategoryButtonStyles();
+                    applyMapFilters(true);
+                });
+            });
+
+            if (statusSelect) {
+                statusSelect.addEventListener('change', () => {
+                    mapFilterState.plannerStatus = statusSelect.value;
+                    applyMapFilters(true);
+                });
+            }
+
+            if (weekSelect) {
+                weekSelect.addEventListener('change', () => {
+                    mapFilterState.plannerWeek = weekSelect.value;
+                    applyMapFilters(true);
+                });
+            }
+
+            updateMapCategoryButtonStyles();
+        }
 
         function initJapanMap () {
             if (map !== null) return;
@@ -2679,10 +2996,12 @@
                 maxZoom: 19
             }).addTo(map);
 
-            const markersLayer = L.featureGroup().addTo(map);
+            mapMarkersLayer = L.featureGroup().addTo(map);
+            mapMarkersByKey = {};
 
             for (const [key, details] of Object.entries(destinationDetails)) {
                 if (mapCoords[key]) {
+                    const categories = getDestinationCategoriesForMap(key, details);
                     const emoji = details.badge.split(' ')[0];
                     let borderColor = 'border-white';
                     let shadowColor = 'shadow-orange-500/30';
@@ -2700,7 +3019,8 @@
                         popupAnchor: [0, -16]
                     });
 
-                    const marker = L.marker(mapCoords[key], {icon: customIcon}).addTo(markersLayer);
+                    const marker = L.marker(mapCoords[key], {icon: customIcon}).addTo(mapMarkersLayer);
+                    mapMarkersByKey[key] = {key, marker, categories};
 
                     const popupContent = `
                         <div class="text-center p-2 min-w-[150px]">
@@ -2713,9 +3033,8 @@
                 }
             }
 
-            if (Object.keys(mapCoords).length > 0) {
-                map.fitBounds(markersLayer.getBounds(), {padding: [40, 40]});
-            }
+            refreshMapPlannerIndexAndFilters();
+            applyMapFilters(true);
         }
 
         // WEATHER CHART VISUALIZATION
@@ -2786,10 +3105,12 @@
                 calendarData = {};
                 saveCalendarToStorage();
             }
+            refreshMapPlannerIndexAndFilters();
         }
 
         function saveCalendarToStorage () {
             localStorage.setItem("japan_travel_calendar_2026", JSON.stringify(calendarData));
+            refreshMapPlannerIndexAndFilters();
         }
 
         // DETAILED MODAL OVERLAYS
@@ -2878,9 +3199,10 @@
                 if (dayObj.items && dayObj.items.length > 0) {
                     itemsHTML = `<div class="space-y-1.5 mt-3">`;
                     dayObj.items.forEach((item, index) => {
+                        const itemLabel = getPlannerItemName(item);
                         itemsHTML += `
                             <div class="flex items-center justify-between bg-white/80 p-2 rounded-xl border border-white text-xs shadow-sm">
-                                <span class="font-semibold text-earth flex items-center gap-1.5"><i class="fa-solid fa-circle-dot text-[7px] text-autumn"></i> ${item}</span>
+                                <span class="font-semibold text-earth flex items-center gap-1.5"><i class="fa-solid fa-circle-dot text-[7px] text-autumn"></i> ${itemLabel}</span>
                                 <button onclick="removeItem('${day.notesKey}', ${index}); event.stopPropagation();" class="text-stone-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-all">
                                     <i class="fa-regular fa-trash-can text-xs"></i>
                                 </button>
@@ -2929,9 +3251,12 @@
         function quickAdd (itemName) {
             if (!selectedDayKey) {showToast("Bitte wähle zuerst einen Tag im Kalender aus!"); return;}
             if (!calendarData[selectedDayKey]) {calendarData[selectedDayKey] = {notes: "", items: []};}
-            if (calendarData[selectedDayKey].items.includes(itemName)) {showToast("Aktivität ist bereits für diesen Tag eingeplant!"); return;}
+            const destinationKey = (window.event && window.event.currentTarget && window.event.currentTarget.getAttribute('data-thumbnail')) || null;
+            const existingNames = calendarData[selectedDayKey].items.map(item => getPlannerItemName(item));
+            if (existingNames.includes(itemName)) {showToast("Aktivität ist bereits für diesen Tag eingeplant!"); return;}
 
-            calendarData[selectedDayKey].items.push(itemName);
+            if (destinationKey) calendarData[selectedDayKey].items.push({name: itemName, key: destinationKey});
+            else calendarData[selectedDayKey].items.push(itemName);
             saveCalendarToStorage();
             renderCalendarDays();
             showToast(`"${itemName}" hinzugefügt!`);
@@ -2939,7 +3264,7 @@
 
         function removeItem (key, index) {
             if (calendarData[key] && calendarData[key].items) {
-                const deletedName = calendarData[key].items[index];
+                const deletedName = getPlannerItemName(calendarData[key].items[index]);
                 calendarData[key].items.splice(index, 1);
                 saveCalendarToStorage();
                 renderCalendarDays();
@@ -2963,7 +3288,7 @@
                 const dayObj = calendarData[day.notesKey];
                 if (dayObj && ((dayObj.items && dayObj.items.length > 0) || dayObj.notes.trim() !== "")) {
                     text += `${day.dateStr} [${day.region}]\n`;
-                    if (dayObj.items && dayObj.items.length > 0) dayObj.items.forEach(item => text += `  • Aktivität: ${item}\n`);
+                    if (dayObj.items && dayObj.items.length > 0) dayObj.items.forEach(item => text += `  • Aktivität: ${getPlannerItemName(item)}\n`);
                     if (dayObj.notes.trim() !== "") text += `  • Notizen: ${dayObj.notes.trim()}\n`;
                     text += "--------------------------------------------------\n";
                 }
@@ -3049,6 +3374,7 @@
                 if (match && destinationDetails[match[1]]) {
                     const key = match[1];
                     const data = destinationDetails[key];
+                    const categories = destinationCategories[key] || [];
 
                     let themeColor = 'text-autumn';
                     if (data.badge.includes('Okinawa') || data.badge.includes('Strand') || data.badge.includes('Luft')) themeColor = 'text-ocean';
@@ -3059,6 +3385,7 @@
                     else if (data.badge.includes('Holz') || data.badge.includes('Puppen') || data.badge.includes('Seiden')) themeColor = 'text-amber-700';
 
                     card.className = "bg-white/60 backdrop-blur-lg rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 cursor-pointer transition-all duration-300 flex flex-col overflow-hidden group relative border border-white/60";
+                    card.setAttribute('data-category', categories.join(' '));
 
                     const rawText = data.description.replace(/<[^>]*>?/gm, ' ');
 
