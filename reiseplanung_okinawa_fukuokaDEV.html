@@ -1520,6 +1520,18 @@
                                 <option value="5">Woche 5</option>
                             </select>
                         </label>
+                        <label class="text-xs font-bold text-stone-600 flex flex-col gap-1 sm:col-span-2 lg:col-span-1">
+                            Reactions
+                            <select id="mapReactionFilter"
+                                class="bg-white/90 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm">
+                                <option value="all">Alle Reactions</option>
+                                <option value="heart">❤️ Herz</option>
+                                <option value="thumbsup">👍 Daumen hoch</option>
+                                <option value="question">❓ Fragezeichen</option>
+                                <option value="cross">❌ Ablehnung</option>
+                                <option value="none">Keine Reaktion</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
                 <div id="mapVisiblePinCount"
@@ -2425,7 +2437,7 @@
         let mapMarkersByKey = {};
         let plannerDestinationIndex = {};
         let plannerItemKeyMap = {};
-        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all'};
+        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all', reaction: 'all'};
 
         // --- REACTION SYSTEM VARIABLES ---
         let userReactions = {};
@@ -2632,6 +2644,7 @@
                 }
             });
             renderReactionsOnCards();
+            applyMapFilters(false);
         }
 
         function renderReactionsOnCards () {
@@ -2923,7 +2936,12 @@
                     matchesPlannerWeek = isPlanned && plannerInfo.weeks.has(weekNum);
                 }
 
-                const shouldShow = matchesCategory && matchesPlannerStatus && matchesPlannerWeek;
+        const reaction = userReactions[entry.key] || null;
+                let matchesReaction = true;
+                if (mapFilterState.reaction === 'none') matchesReaction = !reaction;
+                else if (mapFilterState.reaction !== 'all') matchesReaction = reaction === mapFilterState.reaction;
+
+                const shouldShow = matchesCategory && matchesPlannerStatus && matchesPlannerWeek && matchesReaction;
                 if (shouldShow) {
                     if (!mapMarkersLayer.hasLayer(entry.marker)) mapMarkersLayer.addLayer(entry.marker);
                     visibleCount++;
@@ -2948,6 +2966,7 @@
         function initMapFilters () {
             const statusSelect = document.getElementById('mapPlannerStatusFilter');
             const weekSelect = document.getElementById('mapPlannerWeekFilter');
+            const reactionSelect = document.getElementById('mapReactionFilter');
 
             document.querySelectorAll('.map-filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -2978,6 +2997,13 @@
             if (weekSelect) {
                 weekSelect.addEventListener('change', () => {
                     mapFilterState.plannerWeek = weekSelect.value;
+                    applyMapFilters(true);
+                });
+            }
+
+            if (reactionSelect) {
+                reactionSelect.addEventListener('change', () => {
+                    mapFilterState.reaction = reactionSelect.value;
                     applyMapFilters(true);
                 });
             }
