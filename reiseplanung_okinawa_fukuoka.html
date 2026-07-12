@@ -1473,9 +1473,9 @@
                     Alle eure Highlights, Ausflüge und Matsuris auf einen Blick. Klickt auf einen Pin, um Details
                     anzuzeigen!</p>
             </div>
-            <div class="bg-white/70 backdrop-blur-xl p-4 rounded-3xl shadow-lg border border-white/60 space-y-4">
-                <div class="flex flex-col lg:flex-row gap-4 lg:items-end lg:justify-between">
-                    <div class="space-y-2">
+            <div class="bg-white/70 backdrop-blur-xl p-4 rounded-3xl shadow-lg border border-white/60 space-y-3">
+                <div class="grid gap-4 xl:grid-cols-[1.35fr_1fr] xl:items-start">
+                    <div class="space-y-2 xl:pr-2">
                         <span class="text-[11px] font-black uppercase tracking-wider text-stone-600">Kategorien</span>
                         <div id="mapCategoryFilters" class="flex flex-wrap gap-2">
                             <button
@@ -1498,26 +1498,41 @@
                                 data-category="entspannung">♨️ Entspannung</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto">
-                        <label class="text-xs font-bold text-stone-600 flex flex-col gap-1">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                        <label
+                            class="text-xs font-bold text-stone-600 flex flex-col gap-2 bg-white/60 backdrop-blur-sm p-3 rounded-2xl border border-white/70 shadow-sm">
                             Planer-Status
                             <select id="mapPlannerStatusFilter"
-                                class="bg-white/90 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm">
+                                class="bg-white/95 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm w-full">
                                 <option value="all">Alle Pins</option>
                                 <option value="planned">Nur eingeplante Pins</option>
                                 <option value="unplanned">Nur nicht eingeplante Pins</option>
                             </select>
                         </label>
-                        <label class="text-xs font-bold text-stone-600 flex flex-col gap-1">
+                        <label
+                            class="text-xs font-bold text-stone-600 flex flex-col gap-2 bg-white/60 backdrop-blur-sm p-3 rounded-2xl border border-white/70 shadow-sm">
                             Planer-Woche
                             <select id="mapPlannerWeekFilter"
-                                class="bg-white/90 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm">
+                                class="bg-white/95 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm w-full">
                                 <option value="all">Alle Wochen</option>
                                 <option value="1">Woche 1</option>
                                 <option value="2">Woche 2</option>
                                 <option value="3">Woche 3</option>
                                 <option value="4">Woche 4</option>
                                 <option value="5">Woche 5</option>
+                            </select>
+                        </label>
+                        <label
+                            class="text-xs font-bold text-stone-600 flex flex-col gap-2 bg-white/60 backdrop-blur-sm p-3 rounded-2xl border border-white/70 shadow-sm">
+                            Reactions
+                            <select id="mapReactionFilter"
+                                class="bg-white/95 border border-white rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm w-full">
+                                <option value="all">Alle Reactions</option>
+                                <option value="heart">❤️ Herz</option>
+                                <option value="thumbsup">👍 Daumen hoch</option>
+                                <option value="question">❓ Fragezeichen</option>
+                                <option value="cross">❌ Ablehnung</option>
+                                <option value="none">Keine Reaktion</option>
                             </select>
                         </label>
                     </div>
@@ -2425,7 +2440,7 @@
         let mapMarkersByKey = {};
         let plannerDestinationIndex = {};
         let plannerItemKeyMap = {};
-        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all'};
+        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all', reaction: 'all'};
 
         // --- REACTION SYSTEM VARIABLES ---
         let userReactions = {};
@@ -2632,6 +2647,7 @@
                 }
             });
             renderReactionsOnCards();
+            applyMapFilters(false);
         }
 
         function renderReactionsOnCards () {
@@ -2923,7 +2939,12 @@
                     matchesPlannerWeek = isPlanned && plannerInfo.weeks.has(weekNum);
                 }
 
-                const shouldShow = matchesCategory && matchesPlannerStatus && matchesPlannerWeek;
+        const reaction = userReactions[entry.key] || null;
+                let matchesReaction = true;
+                if (mapFilterState.reaction === 'none') matchesReaction = !reaction;
+                else if (mapFilterState.reaction !== 'all') matchesReaction = reaction === mapFilterState.reaction;
+
+                const shouldShow = matchesCategory && matchesPlannerStatus && matchesPlannerWeek && matchesReaction;
                 if (shouldShow) {
                     if (!mapMarkersLayer.hasLayer(entry.marker)) mapMarkersLayer.addLayer(entry.marker);
                     visibleCount++;
@@ -2948,6 +2969,7 @@
         function initMapFilters () {
             const statusSelect = document.getElementById('mapPlannerStatusFilter');
             const weekSelect = document.getElementById('mapPlannerWeekFilter');
+            const reactionSelect = document.getElementById('mapReactionFilter');
 
             document.querySelectorAll('.map-filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -2978,6 +3000,13 @@
             if (weekSelect) {
                 weekSelect.addEventListener('change', () => {
                     mapFilterState.plannerWeek = weekSelect.value;
+                    applyMapFilters(true);
+                });
+            }
+
+            if (reactionSelect) {
+                reactionSelect.addEventListener('change', () => {
+                    mapFilterState.reaction = reactionSelect.value;
                     applyMapFilters(true);
                 });
             }
