@@ -210,6 +210,91 @@
         .filter-hide {
             display: none !important;
         }
+
+                /* --- THEMATIC AMBIENT BACKGROUNDS --- */
+        .ambient-bg {
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Okinawa Waves */
+        .wave-bg {
+            position: absolute;
+            bottom: -10vh;
+            left: 0;
+            width: 200vw;
+            height: 60vh;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23028090"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-23.8V0Z" opacity=".5" fill="%23028090"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23028090"/></svg>');
+            background-repeat: repeat-x;
+            background-size: 100vw 60vh;
+            animation: waveScroll 25s linear infinite;
+            opacity: 0.15;
+            filter: blur(10px);
+        }
+        .wave-bg-2 {
+            animation: waveScroll 18s linear infinite reverse;
+            opacity: 0.1;
+            bottom: -15vh;
+            height: 70vh;
+        }
+        @keyframes waveScroll {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-50vw) scaleY(1.1); }
+            100% { transform: translateX(-100vw) scaleY(1); }
+        }
+
+        /* Shikoku Whirlpools (Naruto Strudel) */
+        .whirlpool {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 150vw; height: 150vw;
+            margin-top: -75vw; margin-left: -75vw;
+            background: conic-gradient(from 0deg, rgba(13, 148, 136, 0.05), rgba(8, 145, 178, 0.25), rgba(13, 148, 136, 0.05));
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: spin 30s linear infinite;
+        }
+        .whirlpool-inner {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 80vw; height: 80vw;
+            margin-top: -40vw; margin-left: -40vw;
+            background: conic-gradient(from 180deg, rgba(2, 128, 144, 0.1), rgba(16, 185, 129, 0.2), rgba(2, 128, 144, 0.1));
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: spin 15s linear infinite reverse;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Autumn Leaves */
+        .autumn-leaf {
+            position: absolute;
+            top: -10vh;
+            width: 25px; height: 25px;
+            background: linear-gradient(135deg, #e36414, #9a031e);
+            border-radius: 2px 16px;
+            opacity: 0.4;
+            filter: blur(4px);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(30px); }
+        }
+
+        /* Bamboo Leaves (Kyushu) */
+        .bamboo-leaf {
+            position: absolute;
+            width: 15px; height: 45px;
+            background: linear-gradient(135deg, #2d6a4f, #52b788);
+            border-radius: 0 20px 0 20px;
+            opacity: 0.3;
+            filter: blur(5px);
+            animation: sway ease-in-out infinite alternate;
+        }
+        @keyframes sway {
+            0% { transform: rotate(-20deg) translateX(-15px); }
+            100% { transform: rotate(20deg) translateX(15px); }
+        }
     </style>
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -218,22 +303,47 @@
 
 <body class="min-h-screen flex flex-col selection:bg-autumn/20 selection:text-autumn relative">
 
-    <!-- DYNAMIC AMBIENT BACKGROUND (5 BLOBS) -->
+    <!-- DYNAMIC AMBIENT BACKGROUNDS -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div id="blob-1"
-            class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob">
-        </div>
-        <div id="blob-2"
-            class="blob-morph absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] rounded-full mix-blend-multiply filter blur-[120px] animate-blob animation-delay-2000">
-        </div>
-        <div id="blob-3"
-            class="blob-morph absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[150px] animate-blob animation-delay-4000">
-        </div>
-        <div id="blob-4"
-            class="blob-morph absolute bottom-[10%] right-[20%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply filter blur-[130px] animate-blob animation-delay-2000">
-        </div>
-        <div id="blob-5"
-            class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000">
+<!-- 1. Blobs (Planner, Overview, Map) -->
+<div id="bg-blobs" class="ambient-bg absolute inset-0 opacity-100">
+            <div id="blob-1"
+                class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob">
+            </div>
+            <div id="blob-2"
+                class="blob-morph absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] rounded-full mix-blend-multiply filter blur-[120px] animate-blob animation-delay-2000">
+            </div>
+            <div id="blob-3"
+                class="blob-morph absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[150px] animate-blob animation-delay-4000">
+            </div>
+            <div id="blob-4"
+                class="blob-morph absolute bottom-[10%] right-[20%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply filter blur-[130px] animate-blob animation-delay-2000">
+            </div>
+            <div id="blob-5"
+                class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000">
+            </div>
+            </div>
+            
+            <!-- 2. Okinawa (Wellen) -->
+            <div id="bg-okinawa" class="ambient-bg absolute inset-0 opacity-0">
+                <div class="wave-bg"></div>
+                <div class="wave-bg wave-bg-2"></div>
+            </div>
+            
+            <!-- 3. Kyushu (Bambus) -->
+            <div id="bg-kyushu" class="ambient-bg absolute inset-0 opacity-0">
+                <!-- JS generiert hier die Blätter -->
+            </div>
+            
+            <!-- 4. Shikoku (Naruto Whirlpool) -->
+            <div id="bg-shikoku" class="ambient-bg absolute inset-0 opacity-0">
+                <div class="whirlpool"></div>
+                <div class="whirlpool-inner"></div>
+            </div>
+            
+            <!-- 5. Autumn Analysis (Herbstlaub) -->
+            <div id="bg-autumn" class="ambient-bg absolute inset-0 opacity-0">
+                <!-- JS generiert hier die Blätter -->
         </div>
     </div>
 
@@ -2209,7 +2319,32 @@
             renderWeekTabs();
             renderCalendarDays();
             initCountdown();
+            createAmbientParticles(); // Erstellt die dynamischen Hintergrund-Partikel (Blätter, Bambus)
         });
+
+        // --- DYNAMIC BACKGROUND PARTICLE GENERATOR ---
+            function createAmbientParticles () {
+                const autumnBg = document.getElementById('bg-autumn');
+                for (let i = 0; i < 15; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'autumn-leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                    leaf.style.animationDelay = (Math.random() * 5) + 's';
+                    if (autumnBg) autumnBg.appendChild(leaf);
+                }
+
+                const bambooBg = document.getElementById('bg-kyushu');
+                for (let i = 0; i < 12; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'bamboo-leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.top = Math.random() * 100 + 'vh';
+                    leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    leaf.style.animationDelay = (Math.random() * 3) + 's';
+                    if (bambooBg) bambooBg.appendChild(leaf);
+                }
+            }
 
         // --- DYNAMIC THUMBNAILS IN PLANNER ---
         function initThumbnails () {
