@@ -2437,7 +2437,7 @@
         let mapMarkersByKey = {};
         let plannerDestinationIndex = {};
         let plannerItemKeyMap = {};
-        const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all', reaction: 'all'};
+            const mapFilterState = {categories: new Set(['all']), plannerStatus: 'all', plannerWeek: 'all', reaction: 'all'};
 
         // --- REACTION SYSTEM VARIABLES ---
         let userReactions = {};
@@ -2935,9 +2935,8 @@
                     const weekNum = Number(mapFilterState.plannerWeek);
                     matchesPlannerWeek = isPlanned && plannerInfo.weeks.has(weekNum);
                 }
-
         const reaction = userReactions[entry.key] || null;
-                let matchesReaction = true;
+        let matchesReaction = true;
                 if (mapFilterState.reaction === 'none') matchesReaction = !reaction;
                 else if (mapFilterState.reaction !== 'all') matchesReaction = reaction === mapFilterState.reaction;
 
