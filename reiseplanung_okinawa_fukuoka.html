@@ -701,6 +701,38 @@
                             <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
                         </div>
                     </div>
+
+                    <!-- NEW: Kouri Island -->
+                    <div onclick="openDetailModal('kouri')" class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm hover:shadow-md hover:border-ocean/40 hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group relative">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-ocean/10 text-ocean text-xs font-bold px-2.5 py-0.5 rounded-full">🚗 Ocean Roadtrip</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 3 Std.</span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-earth mb-2 group-hover:text-ocean transition-colors">Kouri-jima Brücke</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">Fahrt über eine der längsten und spektakulärsten Brücken Japans, die sich frei über das smaragdgrüne Meer zu einer idyllischen kleinen Insel spannt.</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- NEW: Sefa-Utaki -->
+                    <div onclick="openDetailModal('sefa_utaki')" class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm hover:shadow-md hover:border-ocean/40 hover:scale-[1.01] cursor-pointer transition-all flex flex-col justify-between group relative">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-ocean/10 text-ocean text-xs font-bold px-2.5 py-0.5 rounded-full">⛩️ Heiligster Ort</span>
+                                <span class="text-xs text-stone-500 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ca. 1,5 Std.</span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-earth mb-2 group-hover:text-ocean transition-colors">Sefa-Utaki</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">UNESCO-Welterbe. Die heiligste Pilgerstätte der Ryukyu-Religion. Wandert durch dichten Dschungel zu gigantischen, natürlichen Felsformationen.</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-bold text-ocean">
+                            <span>Bilder &amp; Tipps anzeigen</span>
+                            <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1252,6 +1284,11 @@
                                 <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-leaf text-autumn mr-2"></i> Todoroki Valley</span>
                                 <span class="text-xs text-stone-500 font-bold">ca. 2 Std.</span>
                             </div>
+                            <!-- NEW: Kamakura -->
+                            <div onclick="openDetailModal('kamakura')" class="p-3 bg-stone-50 rounded-xl hover:bg-orange-50 transition-colors cursor-pointer border border-stone-100 flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-gopuram text-autumn mr-2"></i> Kamakura & Hasedera Tempel</span>
+                                <span class="text-xs text-stone-500 font-bold">1 Tag</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1426,22 +1463,22 @@
                                 <span>Yanbaru Trekking</span>
                                 <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">Halber Tag</span>
                             </button>
-                            <!-- NEW: Yoron Island -->
                             <button onclick="quickAdd('Yoron Island Ausflug 🏝️')" class="w-full text-left bg-white hover:bg-ocean/5 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
                                 <span>Yoron Island (Yoronto)</span>
                                 <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">1-2 Tage</span>
                             </button>
+                            <button onclick="quickAdd('Kouri-jima Insel & Brücke 🚗')" class="w-full text-left bg-white hover:bg-ocean/5 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
+                                <span>Kouri-jima Insel</span>
+                                <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">3h</span>
+                            </button>
+                            <button onclick="quickAdd('Sefa-Utaki Pilgerstätte ⛩️')" class="w-full text-left bg-white hover:bg-ocean/5 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
+                                <span>Sefa-Utaki</span>
+                                <span class="text-[10px] bg-ocean/10 text-ocean px-1.5 py-0.5 rounded">1.5h</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Kyushu & Fukuoka -->
-                    <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-autumn mb-2 border-b border-autumn/30 pb-1">🌋 Kyushu &amp; Fukuoka (02. - 20. Nov)</h4>
-                        <div class="space-y-1.5">
-                            <button onclick="quickAdd('Yatai Hakata Streetfood 🍜')" class="w-full text-left bg-white hover:bg-orange-50 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
-                                <span>Hakata Yatai Abend</span>
-                                <span class="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded">3h</span>
-                            </button>
+                    <!-- Kyushu, Fukuoka & Yamaguchi -->
                             <button onclick="quickAdd('Dazaifu Tenmangu & Concept Store ⛩️')" class="w-full text-left bg-white hover:bg-orange-50 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
                                 <span>Dazaifu Schrein</span>
                                 <span class="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded">5h</span>
@@ -1575,6 +1612,10 @@
                             <button onclick="quickAdd('Todoroki Valley Schlucht 🌿')" class="w-full text-left bg-white hover:bg-red-50 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
                                 <span>Todoroki Valley</span>
                                 <span class="text-[10px] bg-red-100 text-red-800 px-1.5 py-0.5 rounded">2h</span>
+                            </button>
+                            <button onclick="quickAdd('Kamakura & Großer Buddha 🏯')" class="w-full text-left bg-white hover:bg-red-50 p-2 rounded-lg border border-stone-200 text-xs flex justify-between items-center transition-all group">
+                                <span>Kamakura Ausflug</span>
+                                <span class="text-[10px] bg-red-100 text-red-800 px-1.5 py-0.5 rounded">Tag</span>
                             </button>
                         </div>
                     </div>
@@ -1841,6 +1882,18 @@
                 description: "Ein absolut surreales Naturwunder mitten in der dicht besiedelten Metropole Tokyo. Man steigt direkt vom Bahnhof über Steinstufen hinab in eine tiefe Flussschlucht.<br><br>Plötzlich befindet man sich in einem dichten Urwald, umgeben von Bambushainen, Farnen und einem plätschernden Bach – der dröhnende Straßenlärm der Großstadt verstummt schlagartig komplett.",
                 tip: "Am Ende des Schluchtenpfads liegt ein versteckter kleiner Schrein mit einem traditionellen japanischen Teahouse (Setsugekka). Holt euch dort einen heißen Matcha und frische Mochi zur Stärkung."
             },
+
+            // NEW: Kamakura
+            kamakura: {
+                title: "Kamakura & Hasedera",
+                badge: "🏯 Samurai-Hauptstadt",
+                location: "Kamakura (Präfektur Kanagawa)",
+                duration: "1 Tag",
+                image: "https://res.cloudinary.com/jnto/image/upload/w_750,h_503,fl_lossy,f_auto/v1648115810/kanagawa/H_00586-2_003",
+                link: "https://www.japan.travel/de/destinations/kanto/kanagawa/kamakura-and-around/",
+                description: "Kamakura ist eine Küstenstadt südlich von Tokyo und war einst das politische Zentrum Japans unter den Minamoto-Shogunen. Sie wird oft als 'Kyoto des Ostens' bezeichnet, wegen ihrer schier endlosen Zahl an historischen Tempeln und Schreinen.<br><br>Das berühmteste Wahrzeichen ist der gewaltige Freiluft-Buddha (Daibutsu) aus Bronze. Für eure Reisezeit Ende November ist besonders der **Hasedera-Tempel** ein Muss: Er ist einer der wenigen Orte um Tokyo, der eine magische abendliche Herbstlaub-Illumination (Light-Up) der Ahornbäume anbietet.",
+                tip: "Kauft euch am Bahnhof Kamakura den 'Enoden' Tagespass. Die nostalgische kleine Straßenbahn bringt euch malerisch entlang der Küste zu allen wichtigen Tempeln."
+            },
             
             // NEW: Akiyoshido Cave
             akiyoshido: {
@@ -1927,6 +1980,31 @@
                 description: "Das spektakuläre Gangala-Tal ist ein uralter, mystischer Dschungelpfad, der in einer eingestürzten Kalksteinhöhle vor Hunderttausenden von Jahren entstanden ist. Riesige, meterlange Luftwurzeln von Banyan-Bäumen ragen spektakulär von den Klippenwänden herab.<br><br>Hier wurden zudem die ältesten Skelette von Urmenschen in ganz Ostasien (die Minatogawa-Menschen) gefunden, was dem nebelverhangenen Dschungel eine einzigartige historische Aura verleiht.",
                 tip: "Das Tal kann ausschließlich im Rahmen einer geführten Wanderung besichtigt werden. Bucht diese unbedingt vorab online. Highlight direkt am Start: Ein wunderschönes, uriges Café, das komplett in einer riesigen, echten Tropfsteinhöhle untergebracht ist!"
             },
+
+            // NEW: Kouri Island
+            kouri: {
+                title: "Kouri-jima & Ocean Tower",
+                badge: "🚗 Ocean Roadtrip",
+                location: "Nakijin (Nord-Okinawa)",
+                duration: "ca. 3 Std.",
+                image: "https://img.activityjapan.com/wi/kourijima-spot5.jpg",
+                link: "https://www.japan.travel/de/spot/586/",
+                description: "Kouri Island ist eine kleine, fast kreisrunde Insel im Norden von Okinawa, die für ihre atemberaubenden weißen Sandstrände und die Legende von Okinawas eigenen 'Adam und Eva' bekannt ist.<br><br>Das absolute Highlight ist jedoch schon der Weg dorthin: Die Kouri-Brücke ist knapp 2 Kilometer lang und spannt sich in sanften Kurven direkt über das glasklare, türkisfarbene Meer. Es fühlt sich an, als würde man mit dem Auto über das Wasser fliegen.",
+                tip: "Dieser Ausflug lässt sich absolut perfekt mit dem Churaumi-Aquarium kombinieren (nur ca. 30 Min Autofahrt entfernt). Fahrt auf der Insel hinauf zum 'Kouri Ocean Tower', um einen spektakulären Blick auf die Brücke von oben zu bekommen."
+            },
+
+            // NEW: Sefa-Utaki
+            sefa_utaki: {
+                title: "Sefa-Utaki Pilgerstätte",
+                badge: "⛩️ Heiligster Ort",
+                location: "Nanjo (Süd-Okinawa)",
+                duration: "ca. 1,5 Std.",
+                image: "https://visitokinawajapan.com/wp-content/uploads/2024/02/di144_kv_sefa-utaki-sacred-grounds.webp",
+                link: "https://visitokinawajapan.com/discover/world-heritage-top/sefa-utaki/",
+                description: "Sefa-Utaki ist der bedeutendste und heiligste spirituelle Ort der indigenen Ryukyu-Religion. Jahrhundertelang durften diesen Ort ausschließlich Priesterinnen (Noro) und der König betreten. Die Stätte besteht nicht aus gebauten Tempeln, sondern aus gigantischen, von der Natur geformten Felsformationen und Klippen, die vom dichten Urwald überwuchert sind.<br><br>Besonders beeindruckend ist der Sangui – eine gewaltige, dreieckige Felsspalte, durch die man das Licht und in der Ferne die heilige Insel Kudaka sehen kann.",
+                tip: "Sefa-Utaki liegt ganz in der Nähe der Ozeanküste im Süden und ist eine geniale Ergänzung zu einem Tag in Okinawa World, dem Gangala-Tal oder dem Motor-Paragliding Erlebnis."
+            },
+
             katsuren: {
                 title: "Katsuren-Burgruine (Katsuren Castle Ruins)",
                 badge: "🏯 UNESCO-Weltkulturerbe",
@@ -2724,7 +2802,7 @@
 
         // MAP INITIALIZER (NEW)
         const mapCoords = {
-            yakushima: [30.339, 130.528], paragliding_okinawa: [26.175, 127.817], bungee_itsuki: [32.398, 130.825], sandbad_ibusuki: [31.237, 130.643], kintsugi_kyoto: [35.016, 135.768], yanbaru: [26.817, 128.250], aoshima: [31.804, 131.474], naruto: [34.238, 134.650], todoroki: [35.605, 139.645], akiyoshido: [34.227, 131.304], motonosumi: [34.424, 131.066], churaumi: [26.694, 127.877], kerama: [26.196, 127.320], shuri: [26.217, 127.719], manzamo: [26.504, 127.850], yachimun: [26.408, 127.741], gangala: [26.144, 127.750], katsuren: [26.330, 127.878], yatai: [33.590, 130.401], dazaifu: [33.521, 130.534], nokonoshima: [33.618, 130.301], itoshima: [33.559, 130.198], takachiho: [32.701, 131.300], yufuin: [33.264, 131.362], kunenan: [33.315, 130.380], aso: [32.884, 131.104], sakurajima: [31.583, 130.650], yanagawa: [33.161, 130.401], dogo_onsen: [33.852, 132.786], iya_valley: [33.876, 133.820], ritsurin: [34.330, 134.045], shimanami: [34.053, 133.003], naoshima: [34.458, 133.987], pilgerweg: [34.158, 134.502], minoo: [34.846, 135.471], katsuo: [34.863, 135.490], kyoto_illumination: [34.994, 135.785], showa: [35.712, 139.394], koishikawa: [35.705, 139.749], shurijo_fest: [26.217, 127.719], balloon_fiesta: [33.250, 130.293], ohara_matsuri: [31.589, 130.551], karatsu_kunchi: [33.450, 129.968], hakata_lightup: [33.593, 130.413], usuki_takeyoi: [33.120, 131.800], sumo_fukuoka: [33.603, 130.395], sennen_akari: [33.323, 130.938], fireworks_nagasaki: [33.086, 129.789], yokai_matsuri: [33.850, 133.800], takachiho_yokagura: [32.705, 131.305], kiyomizu_lightup: [34.994, 135.785], gaien_ginkgo: [35.674, 139.718], rikugien_lightup: [35.733, 139.746]
+            kamakura: [35.319, 139.550], kouri: [26.702, 128.024], sefa_utaki: [26.173, 127.826], paragliding_okinawa: [26.175, 127.817], bungee_itsuki: [32.398, 130.825], sandbad_ibusuki: [31.237, 130.643], kintsugi_kyoto: [35.016, 135.768], yanbaru: [26.817, 128.250], aoshima: [31.804, 131.474], naruto: [34.238, 134.650], todoroki: [35.605, 139.645], akiyoshido: [34.227, 131.304], motonosumi: [34.424, 131.066], churaumi: [26.694, 127.877], kerama: [26.196, 127.320], shuri: [26.217, 127.719], manzamo: [26.504, 127.850], yachimun: [26.408, 127.741], gangala: [26.144, 127.750], katsuren: [26.330, 127.878], yatai: [33.590, 130.401], dazaifu: [33.521, 130.534], nokonoshima: [33.618, 130.301], itoshima: [33.559, 130.198], takachiho: [32.701, 131.300], yufuin: [33.264, 131.362], kunenan: [33.315, 130.380], aso: [32.884, 131.104], sakurajima: [31.583, 130.650], yanagawa: [33.161, 130.401], dogo_onsen: [33.852, 132.786], iya_valley: [33.876, 133.820], ritsurin: [34.330, 134.045], shimanami: [34.053, 133.003], naoshima: [34.458, 133.987], pilgerweg: [34.158, 134.502], minoo: [34.846, 135.471], katsuo: [34.863, 135.490], kyoto_illumination: [34.994, 135.785], showa: [35.712, 139.394], koishikawa: [35.705, 139.749], shurijo_fest: [26.217, 127.719], balloon_fiesta: [33.250, 130.293], ohara_matsuri: [31.589, 130.551], karatsu_kunchi: [33.450, 129.968], hakata_lightup: [33.593, 130.413], usuki_takeyoi: [33.120, 131.800], sumo_fukuoka: [33.603, 130.395], sennen_akari: [33.323, 130.938], fireworks_nagasaki: [33.086, 129.789], yokai_matsuri: [33.850, 133.800], takachiho_yokagura: [32.705, 131.305], kiyomizu_lightup: [34.994, 135.785], gaien_ginkgo: [35.674, 139.718], rikugien_lightup: [35.733, 139.746]
         };
         let map = null;
 
