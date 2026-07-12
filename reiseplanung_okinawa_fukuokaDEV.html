@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Japan Herbstabenteuer: Okinawa, Kyushu & Kansai</title>
-    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -30,21 +28,26 @@
             }
         }
     </script>
-    
+
     <style>
         /* CSS Variables for Dynamic Ambient Background */
         :root {
-            --blob-1: rgba(2, 128, 144, 0.2);     /* Ocean */
-            --blob-2: rgba(227, 100, 20, 0.2);    /* Autumn */
-            --blob-3: rgba(252, 237, 219, 0.5);   /* Leaf */
-            --blob-4: rgba(216, 180, 226, 0.3);   /* Purple */
-            --blob-5: rgba(254, 240, 138, 0.2);   /* Yellow */
+            --blob-1: rgba(2, 128, 144, 0.2);
+            /* Ocean */
+            --blob-2: rgba(227, 100, 20, 0.2);
+            /* Autumn */
+            --blob-3: rgba(252, 237, 219, 0.5);
+            /* Leaf */
+            --blob-4: rgba(216, 180, 226, 0.3);
+            /* Purple */
+            --blob-5: rgba(254, 240, 138, 0.2);
+            /* Yellow */
         }
 
-        body { 
-            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-            background-color: #faf6f0; 
-            color: #3e352c; 
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #faf6f0;
+            color: #3e352c;
             /* Subtle dot pattern for depth behind the glass */
             background-image: radial-gradient(rgba(62, 53, 44, 0.05) 1px, transparent 1px);
             background-size: 24px 24px;
@@ -52,75 +55,140 @@
 
         /* Ambient Blob Animations & Transitions */
         @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(40px, -60px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
         }
+
         .animate-blob {
             animation: blob 20s infinite alternate;
             will-change: transform;
         }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        .animation-delay-6000 { animation-delay: 6s; }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        .animation-delay-6000 {
+            animation-delay: 6s;
+        }
 
         /* Smooth color morphing for the blobs */
         .blob-morph {
             transition: background-color 1.5s ease-in-out;
         }
-        #blob-1 { background-color: var(--blob-1); }
-        #blob-2 { background-color: var(--blob-2); }
-        #blob-3 { background-color: var(--blob-3); }
-        #blob-4 { background-color: var(--blob-4); }
-        #blob-5 { background-color: var(--blob-5); }
 
-        .chart-container { 
-            position: relative; 
-            width: 100%; 
-            height: 350px; 
+        #blob-1 {
+            background-color: var(--blob-1);
         }
-        @media (max-width: 640px) { 
-            .chart-container { height: 260px; } 
+
+        #blob-2 {
+            background-color: var(--blob-2);
         }
-        .tab-btn.active { 
-            border-bottom: 3px solid #e36414; 
-            color: #e36414; 
-            font-weight: 900; 
+
+        #blob-3 {
+            background-color: var(--blob-3);
         }
-        
+
+        #blob-4 {
+            background-color: var(--blob-4);
+        }
+
+        #blob-5 {
+            background-color: var(--blob-5);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 260px;
+            }
+        }
+
+        /* Modifizierter Tab-Style für den Sliding Indicator */
+        .tab-btn.active {
+            color: #e36414;
+            font-weight: 900;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
+
         ::-webkit-scrollbar-track {
-            background: rgba(250, 246, 240, 0.2); 
+            background: rgba(250, 246, 240, 0.2);
         }
+
         ::-webkit-scrollbar-thumb {
-            background: rgba(195, 181, 165, 0.6); 
+            background: rgba(195, 181, 165, 0.6);
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(168, 152, 135, 0.8); 
+            background: rgba(168, 152, 135, 0.8);
         }
-        
+
         /* Leaflet Map Overrides */
-        .leaflet-container { font-family: 'Inter', system-ui, -apple-system, sans-serif; z-index: 10; }
-        .leaflet-popup-content-wrapper { border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); background: rgba(255,255,255,0.95); }
-        .leaflet-popup-content { margin: 12px; }
-        .custom-map-pin { background: transparent; border: none; }
-        
+        .leaflet-container {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            z-index: 10;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .leaflet-popup-content {
+            margin: 12px;
+        }
+
+        .custom-map-pin {
+            background: transparent;
+            border: none;
+        }
+
         /* Ken Burns Header Effect */
         @keyframes kenburns {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.15) translate(-1%, -2%); }
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            100% {
+                transform: scale(1.15) translate(-1%, -2%);
+            }
         }
+
         .animate-kenburns {
             animation: kenburns 25s ease-in-out infinite alternate;
             will-change: transform;
         }
-    </style> 
+    </style>
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -130,11 +198,21 @@
 
     <!-- DYNAMIC AMBIENT BACKGROUND (5 BLOBS) -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div id="blob-1" class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob"></div>
-        <div id="blob-2" class="blob-morph absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] rounded-full mix-blend-multiply filter blur-[120px] animate-blob animation-delay-2000"></div>
-        <div id="blob-3" class="blob-morph absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[150px] animate-blob animation-delay-4000"></div>
-        <div id="blob-4" class="blob-morph absolute bottom-[10%] right-[20%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply filter blur-[130px] animate-blob animation-delay-2000"></div>
-        <div id="blob-5" class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000"></div>
+        <div id="blob-1"
+            class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob">
+        </div>
+        <div id="blob-2"
+            class="blob-morph absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] rounded-full mix-blend-multiply filter blur-[120px] animate-blob animation-delay-2000">
+        </div>
+        <div id="blob-3"
+            class="blob-morph absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[150px] animate-blob animation-delay-4000">
+        </div>
+        <div id="blob-4"
+            class="blob-morph absolute bottom-[10%] right-[20%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply filter blur-[130px] animate-blob animation-delay-2000">
+        </div>
+        <div id="blob-5"
+            class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000">
+        </div>
     </div>
 
     <!-- HEADER -->
@@ -148,29 +226,37 @@
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <span class="bg-autumn/80 text-white shadow-md text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full border border-autumn/50 backdrop-blur-sm">🇯🇵 Herbst &amp; Subtropen Kombireise</span>
-                    <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-3 mb-2 drop-shadow-lg text-white">Abenteuer Japan</h1>
+                    <span
+                        class="bg-autumn/80 text-white shadow-md text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full border border-autumn/50 backdrop-blur-sm">🇯🇵
+                        Herbst &amp; Subtropen Kombireise</span>
+                    <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-3 mb-2 drop-shadow-lg text-white">
+                        Abenteuer Japan</h1>
                     <p class="text-base md:text-xl text-sand/95 max-w-2xl font-light drop-shadow-md">
-                        24. Oktober - 28. November 2026 | Subtropisches Schnorcheln in Okinawa &amp; spektakuläre Herbstlaubfeste in Kyushu und Kansai.
+                        24. Oktober - 28. November 2026 | Subtropisches Schnorcheln in Okinawa &amp; spektakuläre
+                        Herbstlaubfeste in Kyushu und Kansai.
                     </p>
                 </div>
-                
+
                 <div class="flex flex-col items-center md:items-end gap-3 w-full md:w-auto">
                     <!-- Live Countdown -->
                     <div class="flex gap-2 text-center w-full justify-between md:justify-end" id="countdown-timer">
-                        <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
+                        <div
+                            class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
                             <div id="cd-days" class="text-xl md:text-2xl font-black text-white leading-none">--</div>
                             <div class="text-[9px] font-bold uppercase tracking-wider text-sand/80 mt-1">Tage</div>
                         </div>
-                        <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
+                        <div
+                            class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
                             <div id="cd-hours" class="text-xl md:text-2xl font-black text-white leading-none">--</div>
                             <div class="text-[9px] font-bold uppercase tracking-wider text-sand/80 mt-1">Std</div>
                         </div>
-                        <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
+                        <div
+                            class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
                             <div id="cd-mins" class="text-xl md:text-2xl font-black text-white leading-none">--</div>
                             <div class="text-[9px] font-bold uppercase tracking-wider text-sand/80 mt-1">Min</div>
                         </div>
-                        <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
+                        <div
+                            class="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 flex-1 md:flex-none md:min-w-[65px] shadow-lg">
                             <div id="cd-secs" class="text-xl md:text-2xl font-black text-white leading-none">--</div>
                             <div class="text-[9px] font-bold uppercase tracking-wider text-sand/80 mt-1">Sek</div>
                         </div>
@@ -195,31 +281,49 @@
 
     <!-- NAVIGATION TABS (GLASSMORPHISM) -->
     <nav class="bg-white/60 backdrop-blur-2xl shadow-sm sticky top-0 z-30 border-b border-white/60 transition-all">
-        <div class="max-w-6xl mx-auto px-4 flex overflow-x-auto scrollbar-none">
-            <button class="tab-btn active px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="overview">
+        <div class="max-w-6xl mx-auto px-4 flex overflow-x-auto scrollbar-none relative" id="tabContainer">
+            <!-- Sliding Indicator Line -->
+            <div id="tabIndicator"
+                class="absolute bottom-0 h-[3px] bg-autumn transition-all duration-300 ease-out z-10"></div>
+
+            <button
+                class="tab-btn active px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="overview">
                 <i class="fa-solid fa-map"></i>
                 <span>Überblick</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="okinawa">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="okinawa">
                 <i class="fa-solid fa-umbrella-beach text-sky-600"></i>
                 <span>Okinawa</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="kyushu">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="kyushu">
                 <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
                 <span>Fukuoka &amp; Kyushu</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="shikoku">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="shikoku">
                 <i class="fa-solid fa-bridge-water text-teal-600"></i>
                 <span>Shikoku Abstecher</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="autumn-analysis">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="autumn-analysis">
                 <i class="fa-solid fa-leaf text-orange-600"></i>
                 <span>Herbstlaub-Vergleich</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="interactive-planner">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="interactive-planner">
                 <span>📅 Tagesplaner</span>
             </button>
-            <button class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap" data-target="map-view">
+            <button
+                class="tab-btn px-4 md:px-6 py-4 text-sm md:text-base font-medium transition-all flex items-center space-x-2 whitespace-nowrap"
+                data-target="map-view">
                 <i class="fa-solid fa-map-location-dot text-indigo-600"></i>
                 <span>Routen-Karte</span>
             </button>
@@ -231,39 +335,60 @@
         <!-- TAB: OVERVIEW -->
         <section id="overview" class="tab-content block animate-fade-in space-y-12">
             <!-- Travel Intro -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-lg border border-white/60">
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-lg border border-white/60">
                 <div class="md:col-span-2 space-y-4">
                     <h2 class="text-3xl font-black text-earth tracking-tight">Die perfekte Reisedramaturgie</h2>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
-                        Deine Reise erstreckt sich über einen genialen Zeitraum. Du landest am <strong class="text-ocean">26. Oktober</strong> im subtropischen Süden in <strong>Okinawa</strong>, umgehst die feucht-heißen Sommermonate und erlebst die perfekte Badetemperatur. 
+                        Deine Reise erstreckt sich über einen genialen Zeitraum. Du landest am <strong
+                            class="text-ocean">26. Oktober</strong> im subtropischen Süden in <strong>Okinawa</strong>,
+                        umgehst die feucht-heißen Sommermonate und erlebst die perfekte Badetemperatur.
                     </p>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
-                        Danach wechselst du nach <strong>Kyushu (Fukuoka)</strong> und folgst der Kältewelle nach Osten, um genau im richtigen Moment den landesweiten Höhepunkt des spektakulären, tiefen Herbstlaubs (Momiji) zu erleben. Ein Abstecher auf die Nachbarinsel <strong>Shikoku</strong> ist von Kyushu aus wunderbar möglich.
+                        Danach wechselst du nach <strong>Kyushu (Fukuoka)</strong> und folgst der Kältewelle nach Osten,
+                        um genau im richtigen Moment den landesweiten Höhepunkt des spektakulären, tiefen Herbstlaubs
+                        (Momiji) zu erleben. Ein Abstecher auf die Nachbarinsel <strong>Shikoku</strong> ist von Kyushu
+                        aus wunderbar möglich.
                     </p>
                     <div class="flex flex-wrap gap-3 pt-2">
-                        <span class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Okinawa (5-7 Tage)</span>
-                        <span class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Kyushu & Shikoku (ca. 3,5 Wochen)</span>
-                        <span class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Kansai &amp; Tokyo Finale (1 Woche)</span>
+                        <span
+                            class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i
+                                class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Okinawa (5-7 Tage)</span>
+                        <span
+                            class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i
+                                class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Kyushu & Shikoku (ca. 3,5
+                            Wochen)</span>
+                        <span
+                            class="bg-white/80 backdrop-blur-md border border-white text-stone-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow-sm"><i
+                                class="fa-solid fa-location-dot mr-1.5 text-autumn"></i> Kansai &amp; Tokyo Finale (1
+                            Woche)</span>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-leaf/80 to-orange-50/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 text-center shadow-lg hover:shadow-orange-500/20 transition-all">
+                <div
+                    class="bg-gradient-to-br from-leaf/80 to-orange-50/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 text-center shadow-lg hover:shadow-orange-500/20 transition-all">
                     <div class="text-5xl mb-3 drop-shadow-sm animate-bounce">🍁</div>
                     <h3 class="font-bold text-lg text-earth mb-1">Herbstlaub-Tipp</h3>
                     <p class="text-xs text-stone-700 leading-relaxed font-medium">
-                        Während das Laub in Nordjapan und den Bergen (wie Nikko) Ende November bereits vorbei ist, erreichst du Kyushu, Shikoku, Osaka und Kyoto genau zum absoluten Peak!
+                        Während das Laub in Nordjapan und den Bergen (wie Nikko) Ende November bereits vorbei ist,
+                        erreichst du Kyushu, Shikoku, Osaka und Kyoto genau zum absoluten Peak!
                     </p>
                 </div>
             </div>
 
             <!-- FESTIVAL TIMELINE & MATSURI CALENDAR -->
             <div class="space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 border-b border-stone-300/50 pb-4">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 border-b border-stone-300/50 pb-4">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-widest text-autumn">Tradition &amp; Festkultur</span>
-                        <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">🏮 Event-Highlights deiner Reise</h2>
+                        <span class="text-xs font-bold uppercase tracking-widest text-autumn">Tradition &amp;
+                            Festkultur</span>
+                        <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">🏮
+                            Event-Highlights deiner Reise</h2>
                     </div>
-                    <p class="text-sm text-stone-600 font-medium max-w-md bg-white/40 p-3 rounded-xl backdrop-blur-sm border border-white/50">
-                        Diese Feste fallen zeitlich exakt in eure Route. Klicke auf ein Fest, um detaillierte Infos, Bilder und externe Links anzuzeigen!
+                    <p
+                        class="text-sm text-stone-600 font-medium max-w-md bg-white/40 p-3 rounded-xl backdrop-blur-sm border border-white/50">
+                        Diese Feste fallen zeitlich exakt in eure Route. Klicke auf ein Fest, um detaillierte Infos,
+                        Bilder und externe Links anzuzeigen!
                     </p>
                 </div>
 
@@ -292,45 +417,61 @@
                     <i class="fa-solid fa-route mr-2 text-autumn"></i> Routen-Verlauf deiner Reise
                 </h3>
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative py-6">
-                    <div class="hidden md:block absolute top-[64px] left-[10%] right-[10%] h-1 bg-gradient-to-r from-sky-400/50 via-emerald-400/50 to-orange-400/50 -z-10 rounded-full"></div>
-            
-                    <div class="flex flex-col items-center text-center bg-sky-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
+                    <div
+                        class="hidden md:block absolute top-[64px] left-[10%] right-[10%] h-1 bg-gradient-to-r from-sky-400/50 via-emerald-400/50 to-orange-400/50 -z-10 rounded-full">
+                    </div>
+
+                    <div
+                        class="flex flex-col items-center text-center bg-sky-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🌴</span>
                         <h4 class="font-bold text-sm text-sky-900">Okinawa</h4>
                         <p class="text-xs text-stone-600 mt-1 font-medium">26. Okt - 01. Nov</p>
-                        <span class="text-[10px] bg-sky-100 text-sky-800 border border-sky-200 font-bold px-2 py-0.5 rounded-full mt-2">Strand &amp; Subtropen</span>
+                        <span
+                            class="text-[10px] bg-sky-100 text-sky-800 border border-sky-200 font-bold px-2 py-0.5 rounded-full mt-2">Strand
+                            &amp; Subtropen</span>
                     </div>
                     <div class="text-stone-400/50 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
-                    
-                    <div class="flex flex-col items-center text-center bg-emerald-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
+
+                    <div
+                        class="flex flex-col items-center text-center bg-emerald-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🍜</span>
                         <h4 class="font-bold text-sm text-emerald-900">Fukuoka</h4>
                         <p class="text-xs text-stone-600 mt-1 font-medium">02. Nov - 06. Nov</p>
-                        <span class="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold px-2 py-0.5 rounded-full mt-2">Street Food &amp; Kultur</span>
+                        <span
+                            class="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold px-2 py-0.5 rounded-full mt-2">Street
+                            Food &amp; Kultur</span>
                     </div>
                     <div class="text-stone-400/50 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
-                    
-                    <div class="flex flex-col items-center text-center bg-teal-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
+
+                    <div
+                        class="flex flex-col items-center text-center bg-teal-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🥾</span>
                         <h4 class="font-bold text-sm text-teal-900">Kyushu / Shikoku</h4>
                         <p class="text-xs text-stone-600 mt-1 font-medium">07. Nov - 20. Nov</p>
-                        <span class="text-[10px] bg-teal-100 text-teal-800 border border-teal-200 font-bold px-2 py-0.5 rounded-full mt-2">Natur & Onsen</span>
+                        <span
+                            class="text-[10px] bg-teal-100 text-teal-800 border border-teal-200 font-bold px-2 py-0.5 rounded-full mt-2">Natur
+                            & Onsen</span>
                     </div>
                     <div class="text-stone-400/50 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
-                    
-                    <div class="flex flex-col items-center text-center bg-orange-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
+
+                    <div
+                        class="flex flex-col items-center text-center bg-orange-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🍁</span>
                         <h4 class="font-bold text-sm text-orange-900">Osaka &amp; Kyoto</h4>
                         <p class="text-xs text-stone-600 mt-1 font-medium">21. Nov - 23. Nov</p>
-                        <span class="text-[10px] bg-orange-100 text-orange-800 border border-orange-200 font-bold px-2 py-0.5 rounded-full mt-2">Laub-Hauptsaison</span>
+                        <span
+                            class="text-[10px] bg-orange-100 text-orange-800 border border-orange-200 font-bold px-2 py-0.5 rounded-full mt-2">Laub-Hauptsaison</span>
                     </div>
                     <div class="text-stone-400/50 text-xl hidden md:block"><i class="fa-solid fa-angle-right"></i></div>
-                    
-                    <div class="flex flex-col items-center text-center bg-purple-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
+
+                    <div
+                        class="flex flex-col items-center text-center bg-purple-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🗼</span>
                         <h4 class="font-bold text-sm text-purple-900">Tokyo Finale</h4>
                         <p class="text-xs text-stone-600 mt-1 font-medium">24. Nov - 28. Nov</p>
-                        <span class="text-[10px] bg-purple-100 text-purple-800 border border-purple-200 font-bold px-2 py-0.5 rounded-full mt-2">Ginkgos &amp; Abflug</span>
+                        <span
+                            class="text-[10px] bg-purple-100 text-purple-800 border border-purple-200 font-bold px-2 py-0.5 rounded-full mt-2">Ginkgos
+                            &amp; Abflug</span>
                     </div>
                 </div>
             </div>
@@ -343,15 +484,23 @@
                     <i class="fa-solid fa-sun mr-3"></i> Subtropisches Traumwetter Ende Oktober
                 </h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div class="space-y-4 text-stone-700 leading-relaxed font-medium bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/60 shadow-lg">
+                    <div
+                        class="space-y-4 text-stone-700 leading-relaxed font-medium bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/60 shadow-lg">
                         <p class="text-lg">
-                            Während das Hauptland bereits abkühlt, empfängt dich Okinawa Ende Oktober mit herrlichstem Sommerausklang. Die Lufttemperatur liegt am Nachmittag meist bei äußerst angenehmen <strong>25°C bis 28°C</strong>.
+                            Während das Hauptland bereits abkühlt, empfängt dich Okinawa Ende Oktober mit herrlichstem
+                            Sommerausklang. Die Lufttemperatur liegt am Nachmittag meist bei äußerst angenehmen
+                            <strong>25°C bis 28°C</strong>.
                         </p>
-                        <p class="text-lg font-bold text-ocean bg-white/80 p-4 rounded-2xl border border-white shadow-sm">
-                            🌊 Perfekt zum Baden: Das Meerwasser speichert die enorme Sommerhitze und liegt Ende Oktober noch immer bei warmen, glasklaren <strong>26°C</strong>. Du kannst problemlos schnorcheln, schwimmen oder tauchen!
+                        <p
+                            class="text-lg font-bold text-ocean bg-white/80 p-4 rounded-2xl border border-white shadow-sm">
+                            🌊 Perfekt zum Baden: Das Meerwasser speichert die enorme Sommerhitze und liegt Ende Oktober
+                            noch immer bei warmen, glasklaren <strong>26°C</strong>. Du kannst problemlos schnorcheln,
+                            schwimmen oder tauchen!
                         </p>
                         <p class="text-sm text-stone-500">
-                            *Hinweis: Einige offizielle Stadtstrände stellen Ende Oktober formell den Rettungsschwimmer-Betrieb ein. An Naturstränden und den Riffen der Kerama-Inseln kann man jedoch das ganze Jahr über fantastisch baden.
+                            *Hinweis: Einige offizielle Stadtstrände stellen Ende Oktober formell den
+                            Rettungsschwimmer-Betrieb ein. An Naturstränden und den Riffen der Kerama-Inseln kann man
+                            jedoch das ganze Jahr über fantastisch baden.
                         </p>
                     </div>
                     <div class="bg-white/70 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/60">
@@ -365,8 +514,10 @@
 
             <div class="space-y-6">
                 <h3 class="text-2xl font-black text-earth drop-shadow-sm">Entdecke Okinawa: Sights &amp; Erlebnisse</h3>
-                <p class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">Klicke auf ein Reiseziel, um spektakuläre Fotos, Insider-Tipps und Routenlinks anzuzeigen.</p>
-                
+                <p
+                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                    Klicke auf ein Reiseziel, um spektakuläre Fotos, Insider-Tipps und Routenlinks anzuzeigen.</p>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('churaumi')"></div>
                     <div onclick="openDetailModal('kerama')"></div>
@@ -391,14 +542,20 @@
                     <i class="fa-solid fa-volcano mr-3"></i> Fukuoka, Kyushu & Yamaguchi
                 </h2>
                 <p class="text-stone-700 font-medium text-lg leading-relaxed max-w-4xl">
-                    Fukuoka bildet euren idealen Ausgangspunkt auf Kyushu. Mit fast vier Wochen Reisebudget habt ihr ausreichend Zeit, die spektakuläre Vulkanlandschaft, historische Burgen, Handwerkskunst und die weltbesten Thermalquellen-Dörfer (Onsen) entspannt kennenzulernen. Auch lohnenswerte Ausflüge in die benachbarte Präfektur Yamaguchi (Süd-Honshu) sind perfekt machbar.
+                    Fukuoka bildet euren idealen Ausgangspunkt auf Kyushu. Mit fast vier Wochen Reisebudget habt ihr
+                    ausreichend Zeit, die spektakuläre Vulkanlandschaft, historische Burgen, Handwerkskunst und die
+                    weltbesten Thermalquellen-Dörfer (Onsen) entspannt kennenzulernen. Auch lohnenswerte Ausflüge in die
+                    benachbarte Präfektur Yamaguchi (Süd-Honshu) sind perfekt machbar.
                 </p>
             </div>
 
             <div class="space-y-6">
                 <h3 class="text-2xl font-black text-earth drop-shadow-sm">Kyushu Highlights &amp; Aktivitäten</h3>
-                <p class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Buchungslinks anzuzeigen.</p>
-                
+                <p
+                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                    Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Buchungslinks
+                    anzuzeigen.</p>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('yatai')"></div>
                     <div onclick="openDetailModal('hakata_ori')"></div>
@@ -434,14 +591,19 @@
                     <i class="fa-solid fa-bridge-water mr-3"></i> Shikoku & Inlandsee Entdeckungen
                 </h2>
                 <p class="text-stone-700 font-medium text-lg leading-relaxed max-w-4xl">
-                    Ein Abstecher auf die Nachbarinsel Shikoku ist von Kyushu (z.B. per Fähre ab Beppu/Oita nach Yawatahama) wunderbar machbar. Shikoku bietet unberührte Natur, mystische Pilgerwege, abgelegene Täler mit Hängebrücken und weltberühmte heiße Quellen.
+                    Ein Abstecher auf die Nachbarinsel Shikoku ist von Kyushu (z.B. per Fähre ab Beppu/Oita nach
+                    Yawatahama) wunderbar machbar. Shikoku bietet unberührte Natur, mystische Pilgerwege, abgelegene
+                    Täler mit Hängebrücken und weltberühmte heiße Quellen.
                 </p>
             </div>
 
             <div class="space-y-6">
                 <h3 class="text-2xl font-black text-earth drop-shadow-sm">Shikoku Highlights &amp; Aktivitäten</h3>
-                <p class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Routenlinks anzuzeigen.</p>
-                
+                <p
+                    class="text-stone-700 font-medium text-sm -mt-4 bg-white/50 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                    Klicke auf eine Aktivität, um authentische Fotos, Insider-Tipps und exklusive Routenlinks
+                    anzuzeigen.</p>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('dogo_onsen')"></div>
                     <div onclick="openDetailModal('iya_valley')"></div>
@@ -457,79 +619,129 @@
         <!-- TAB: AUTUMN ANALYSIS -->
         <section id="autumn-analysis" class="tab-content hidden animate-fade-in space-y-8">
             <div class="border-b border-stone-300/50 pb-4">
-                <span class="text-xs font-bold uppercase tracking-widest text-autumn drop-shadow-sm">Meteorologischer Vergleich (21. - 25. Nov)</span>
-                <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">Osaka (Kansai) vs. Nikko (Kanto)</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-autumn drop-shadow-sm">Meteorologischer
+                    Vergleich (21. - 25. Nov)</span>
+                <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">Osaka (Kansai) vs. Nikko
+                    (Kanto)</h2>
             </div>
 
             <!-- Meteorological Reality Check -->
-            <div class="bg-orange-50/80 backdrop-blur-xl border border-white shadow-lg p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div
+                class="bg-orange-50/80 backdrop-blur-xl border border-white shadow-lg p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div class="text-5xl text-center md:text-left drop-shadow-sm animate-pulse">💡</div>
                 <div class="space-y-2">
                     <h3 class="font-bold text-earth text-lg">Klimatischer Faktencheck: Höhenlage bestimmt das Laub</h3>
                     <p class="text-stone-700 font-medium text-sm leading-relaxed">
-                        Sowohl <strong>Nikko</strong> (auf 1.000m bis 1.500m Meereshöhe) als auch der heilige Tempelberg <strong>Koyasan bei Osaka</strong> (auf ca. 800m) erleben ihre spektakuläre Laubfärbung extrem früh. <strong>In der Woche vom 21. bis 25. November herrscht dort bereits tiefer Spätherbst oder Winter.</strong> Die Laubbäume sind kahl, die Temperaturen fallen nachts unter den Gefrierpunkt und es weht ein sehr ungemütlicher, eisiger Bergwind.
+                        Sowohl <strong>Nikko</strong> (auf 1.000m bis 1.500m Meereshöhe) als auch der heilige Tempelberg
+                        <strong>Koyasan bei Osaka</strong> (auf ca. 800m) erleben ihre spektakuläre Laubfärbung extrem
+                        früh. <strong>In der Woche vom 21. bis 25. November herrscht dort bereits tiefer Spätherbst oder
+                            Winter.</strong> Die Laubbäume sind kahl, die Temperaturen fallen nachts unter den
+                        Gefrierpunkt und es weht ein sehr ungemütlicher, eisiger Bergwind.
                     </p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Option A: Osaka/Kyoto -->
-                <div class="bg-white/70 backdrop-blur-xl p-8 rounded-3xl border border-white/60 shadow-lg space-y-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                <div
+                    class="bg-white/70 backdrop-blur-xl p-8 rounded-3xl border border-white/60 shadow-lg space-y-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
                     <div class="space-y-4">
-                        <span class="bg-white/90 border border-green-200 shadow-sm text-green-800 text-xs font-extrabold px-3 py-1.5 rounded-full"><i class="fa-solid fa-circle-check mr-1"></i> Unsere Empfehlung</span>
+                        <span
+                            class="bg-white/90 border border-green-200 shadow-sm text-green-800 text-xs font-extrabold px-3 py-1.5 rounded-full"><i
+                                class="fa-solid fa-circle-check mr-1"></i> Unsere Empfehlung</span>
                         <h3 class="text-2xl font-extrabold text-earth mt-3">Option A: Osaka &amp; Kyoto (Kansai)</h3>
                         <p class="text-stone-700 font-medium text-sm leading-relaxed">
                             <strong>Herbstlaub-Zustand: ABSOLUTER HOEHEPUNKT (Koyo-Peak!)</strong><br>
-                            Da das klimatisch milde Tiefland der Region Kansai die Kältewelle verzögert empfängt, erstrahlen Osaka und das benachbarte Kyoto Ende November in einem atemberaubenden, feuerroten und goldgelben Blätterrausch.
+                            Da das klimatisch milde Tiefland der Region Kansai die Kältewelle verzögert empfängt,
+                            erstrahlen Osaka und das benachbarte Kyoto Ende November in einem atemberaubenden,
+                            feuerroten und goldgelben Blätterrausch.
                         </p>
-                        
+
                         <div class="space-y-3 pt-2">
-                            <div onclick="openDetailModal('minoo')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-tree text-autumn mr-2"></i> Minoo Park (Osaka)</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 4-5 Std.</span>
+                            <div onclick="openDetailModal('minoo')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-tree text-autumn mr-2"></i> Minoo Park (Osaka)</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    4-5 Std.</span>
                             </div>
-                            <div onclick="openDetailModal('katsuo')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-gopuram text-autumn mr-2"></i> Katsuo-ji Tempel</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 3 Std.</span>
+                            <div onclick="openDetailModal('katsuo')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-gopuram text-autumn mr-2"></i> Katsuo-ji Tempel</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    3 Std.</span>
                             </div>
-                            <div onclick="openDetailModal('kyoto_illumination')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-lightbulb text-autumn mr-2"></i> Tempel-LightUp (Kyoto)</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">1 Tag</span>
+                            <div onclick="openDetailModal('kyoto_illumination')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-lightbulb text-autumn mr-2"></i> Tempel-LightUp
+                                    (Kyoto)</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">1
+                                    Tag</span>
                             </div>
-                            <div onclick="openDetailModal('kintsugi_kyoto')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-amber-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-amber-800"><i class="fa-solid fa-paint-brush text-amber-600 mr-2"></i> Kintsugi Workshop (Kyoto)</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 2 Std.</span>
+                            <div onclick="openDetailModal('kintsugi_kyoto')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-amber-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-amber-800"><i
+                                        class="fa-solid fa-paint-brush text-amber-600 mr-2"></i> Kintsugi Workshop
+                                    (Kyoto)</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    2 Std.</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Option B: Nikko & Tokyo Alternativen -->
-                <div class="bg-white/70 backdrop-blur-xl p-8 rounded-3xl border border-white/60 shadow-lg space-y-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                <div
+                    class="bg-white/70 backdrop-blur-xl p-8 rounded-3xl border border-white/60 shadow-lg space-y-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
                     <div class="space-y-4">
-                        <span class="bg-white/90 border border-yellow-200 shadow-sm text-yellow-800 text-xs font-extrabold px-3 py-1.5 rounded-full"><i class="fa-solid fa-circle-exclamation mr-1"></i> Nur bedingt ratsam</span>
+                        <span
+                            class="bg-white/90 border border-yellow-200 shadow-sm text-yellow-800 text-xs font-extrabold px-3 py-1.5 rounded-full"><i
+                                class="fa-solid fa-circle-exclamation mr-1"></i> Nur bedingt ratsam</span>
                         <h3 class="text-2xl font-extrabold text-earth mt-3">Option B: Tokyo Alternative</h3>
                         <p class="text-stone-700 font-medium text-sm leading-relaxed">
                             <strong>Herbstlaub-Zustand: VORBEI / SPÄTHERBST</strong><br>
-                            Nikko ist Ende November kahl und winterlich. Wenn ihr dennoch in die Region Tokyo wollt, solltet ihr auf innerstädtische Gärten und mildere Küsten ausweichen.
+                            Nikko ist Ende November kahl und winterlich. Wenn ihr dennoch in die Region Tokyo wollt,
+                            solltet ihr auf innerstädtische Gärten und mildere Küsten ausweichen.
                         </p>
-                        
+
                         <div class="space-y-3 pt-2">
-                            <div onclick="openDetailModal('showa')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-tree text-autumn mr-2"></i> Showa Kinen Park</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 4 Std.</span>
+                            <div onclick="openDetailModal('showa')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-tree text-autumn mr-2"></i> Showa Kinen Park</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    4 Std.</span>
                             </div>
-                            <div onclick="openDetailModal('koishikawa')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-gopuram text-autumn mr-2"></i> Koishikawa Korakuen</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 3 Std.</span>
+                            <div onclick="openDetailModal('koishikawa')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-gopuram text-autumn mr-2"></i> Koishikawa Korakuen</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    3 Std.</span>
                             </div>
-                            <div onclick="openDetailModal('todoroki')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-leaf text-autumn mr-2"></i> Todoroki Valley</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca. 2 Std.</span>
+                            <div onclick="openDetailModal('todoroki')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-leaf text-autumn mr-2"></i> Todoroki Valley</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">ca.
+                                    2 Std.</span>
                             </div>
-                            <div onclick="openDetailModal('kamakura')" class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
-                                <span class="text-sm font-semibold text-earth"><i class="fa-solid fa-gopuram text-autumn mr-2"></i> Kamakura & Hasedera</span>
-                                <span class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">1 Tag</span>
+                            <div onclick="openDetailModal('kamakura')"
+                                class="p-4 bg-white/80 backdrop-blur-md rounded-2xl hover:bg-orange-50 transition-colors cursor-pointer border border-white shadow-sm flex items-center justify-between relative">
+                                <span class="text-sm font-semibold text-earth"><i
+                                        class="fa-solid fa-gopuram text-autumn mr-2"></i> Kamakura & Hasedera</span>
+                                <span
+                                    class="text-[10px] text-stone-600 font-bold bg-white px-2 py-1 rounded-md border border-stone-100">1
+                                    Tag</span>
                             </div>
                         </div>
                     </div>
@@ -539,348 +751,508 @@
 
         <!-- TAB: INTERACTIVE PLANNER -->
         <section id="interactive-planner" class="tab-content hidden animate-fade-in space-y-8">
-            <div class="border-b border-stone-300/50 pb-4 bg-white/60 backdrop-blur-xl p-8 rounded-3xl shadow-lg border border-white/60">
+            <div
+                class="border-b border-stone-300/50 pb-4 bg-white/60 backdrop-blur-xl p-8 rounded-3xl shadow-lg border border-white/60">
                 <span class="text-xs font-bold uppercase tracking-widest text-autumn">Planungs-Zentrale</span>
-                <h2 class="text-3xl font-black text-earth tracking-tight mt-1">📅 Dein interaktiver Tages- &amp; Aktivitätenplaner</h2>
-                <p class="text-stone-700 font-medium text-sm mt-2">Eure Reise läuft vom <strong>24. Oktober bis zum 28. November 2026</strong>. Klickt einfach links auf ein Ziel, um es blitzschnell für euren ausgewählten Tag zu hinterlegen!</p>
+                <h2 class="text-3xl font-black text-earth tracking-tight mt-1">📅 Dein interaktiver Tages- &amp;
+                    Aktivitätenplaner</h2>
+                <p class="text-stone-700 font-medium text-sm mt-2">Eure Reise läuft vom <strong>24. Oktober bis zum 28.
+                        November 2026</strong>. Klickt einfach links auf ein Ziel, um es blitzschnell für euren
+                    ausgewählten Tag zu hinterlegen!</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                
+
                 <!-- Quick Selection Column (Left) -->
-                <div class="lg:col-span-4 bg-white/50 backdrop-blur-xl p-5 rounded-3xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white/60 shadow-xl scrollbar-thin">
-                    <h3 class="font-bold text-lg text-earth border-b border-white/50 pb-2"><i class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
-                    
+                <div
+                    class="lg:col-span-4 bg-white/50 backdrop-blur-xl p-5 rounded-3xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white/60 shadow-xl scrollbar-thin">
+                    <h3 class="font-bold text-lg text-earth border-b border-white/50 pb-2"><i
+                            class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
+
                     <!-- ABENTEUER & ERLEBNISSE -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-indigo-700 mb-2 border-b border-indigo-700/20 pb-1 flex items-center justify-between">
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-indigo-700 mb-2 border-b border-indigo-700/20 pb-1 flex items-center justify-between">
                             <span>🪂 Abenteuer &amp; Erlebnisse</span>
-                            <span class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-indigo-800">Action</span>
+                            <span
+                                class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-indigo-800">Action</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Motor-Paragliding 🪂')" class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-indigo-800">Paragliding am Meer</span>
-                                <span class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
+                            <button onclick="quickAdd('Motor-Paragliding 🪂')"
+                                class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-indigo-800">Paragliding am
+                                    Meer</span>
+                                <span
+                                    class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
                             </button>
-                            <button onclick="quickAdd('Itsuki Bungee Jump 🪂')" class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-indigo-800">66m Bungee Jump</span>
-                                <span class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
+                            <button onclick="quickAdd('Itsuki Bungee Jump 🪂')"
+                                class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-indigo-800">66m Bungee
+                                    Jump</span>
+                                <span
+                                    class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
                             </button>
-                            <button onclick="quickAdd('Ibusuki Vulkan-Sandbad 🌋')" class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-indigo-800">Wellness-Sandbad</span>
-                                <span class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
+                            <button onclick="quickAdd('Ibusuki Vulkan-Sandbad 🌋')"
+                                class="w-full text-left bg-white/80 hover:bg-indigo-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span
+                                    class="font-bold text-stone-700 group-hover:text-indigo-800">Wellness-Sandbad</span>
+                                <span
+                                    class="text-[9px] bg-white border border-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-black uppercase">Kyushu</span>
                             </button>
-                            <button onclick="quickAdd('Kintsugi Workshop 🖌️')" class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Kintsugi Handwerk</span>
-                                <span class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Kyoto</span>
+                            <button onclick="quickAdd('Kintsugi Workshop 🖌️')"
+                                class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Kintsugi
+                                    Handwerk</span>
+                                <span
+                                    class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Kyoto</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- FUKUOKA CRAFTS -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-amber-700 mb-2 border-b border-amber-700/20 pb-1 flex items-center justify-between">
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-amber-700 mb-2 border-b border-amber-700/20 pb-1 flex items-center justify-between">
                             <span>🏺 Fukuoka Crafts & Kurse</span>
-                            <span class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-amber-800">Monozukuri</span>
+                            <span
+                                class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-amber-800">Monozukuri</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Hakata-ori Web-Kurs 🧵')" class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata-ori Seidenweben</span>
-                                <span class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
+                            <button onclick="quickAdd('Hakata-ori Web-Kurs 🧵')"
+                                class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata-ori
+                                    Seidenweben</span>
+                                <span
+                                    class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Ningyo Puppen 🎎')" class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Ningyo Bemalung</span>
-                                <span class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
+                            <button onclick="quickAdd('Hakata Ningyo Puppen 🎎')"
+                                class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Ningyo
+                                    Bemalung</span>
+                                <span
+                                    class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Magemono Holz 🪵')" class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
-                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Magemono Bento</span>
-                                <span class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
+                            <button onclick="quickAdd('Hakata Magemono Holz 🪵')"
+                                class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                                <span class="font-bold text-stone-700 group-hover:text-amber-800">Hakata Magemono
+                                    Bento</span>
+                                <span
+                                    class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Feste & Matsuri -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-darkAutumn mb-2 border-b border-darkAutumn/20 pb-1 flex items-center justify-between">
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-darkAutumn mb-2 border-b border-darkAutumn/20 pb-1 flex items-center justify-between">
                             <span>🏮 Feste &amp; Matsuri</span>
-                            <span class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-darkAutumn">Festes Datum</span>
+                            <span
+                                class="text-[9px] bg-white/70 border border-white px-1.5 py-0.5 rounded-md shadow-sm text-darkAutumn">Festes
+                                Datum</span>
                         </h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Saga Balloon Fiesta 🎈')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Saga Balloon Fiesta 🎈')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">30. Okt - 03. Nov: Saga Balloon</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
                             </button>
-                            <button onclick="quickAdd('Shurijo-Schlossfest 🏯')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Shurijo-Schlossfest 🏯')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">31. Okt - 01. Nov: Shurijo Fest</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Okinawa</span>
                             </button>
-                            <button onclick="quickAdd('Karatsu Kunchi Festival 🏮')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Karatsu Kunchi Festival 🏮')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">02. Nov - 03. Nov: Karatsu Kunchi</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Saga</span>
                             </button>
-                            <button onclick="quickAdd('Ohara Matsuri 💃')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Ohara Matsuri 💃')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">02. Nov - 03. Nov: Ohara Matsuri</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Kago.</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Kago.</span>
                             </button>
-                            <button onclick="quickAdd('Hakata Light Up Walk 🏯')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Hakata Light Up Walk 🏯')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">04. Nov - 08. Nov: Hakata Light Up</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Usuki Takeyoi Laternenfest 🎋')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Usuki Takeyoi Laternenfest 🎋')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">07. Nov - 08. Nov: Usuki Takeyoi</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Oita</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Oita</span>
                             </button>
-                            <button onclick="quickAdd('Kyushu Grand Sumo Tournament 🏆')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kyushu Grand Sumo Tournament 🏆')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">08. Nov - 22. Nov: Sumo Fukuoka</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Fukuoka</span>
                             </button>
-                            <button onclick="quickAdd('Sennen Akari Bambusfest 🎋')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Sennen Akari Bambusfest 🎋')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">13. Nov - 15. Nov: Sennen Akari</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Hita</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Hita</span>
                             </button>
-                            <button onclick="quickAdd('Shikoku Yokai Matsuri 👺')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Shikoku Yokai Matsuri 👺')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Mitte Nov: Yokai Matsuri</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Toku.</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Toku.</span>
                             </button>
-                            <button onclick="quickAdd('Kyushu No.1 Fireworks Festival 🎆')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kyushu No.1 Fireworks Festival 🎆')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Sa, 14. Nov: Nagasaki Feuerwerk</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Nagasaki</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Nagasaki</span>
                             </button>
-                            <button onclick="quickAdd('Takachiho Yokagura Tänze 👹')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Takachiho Yokagura Tänze 👹')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Sa, 14. Nov: Yokagura Nacht</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Taka.</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Taka.</span>
                             </button>
-                            <button onclick="quickAdd('Kiyomizu-dera LightUp 🍁')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kiyomizu-dera LightUp 🍁')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Ab 18. Nov: Kiyomizu-dera</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Kyoto</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Kyoto</span>
                             </button>
-                            <button onclick="quickAdd('Meiji Jingu Gaien 🍂')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Meiji Jingu Gaien 🍂')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Ende Nov: Gaien Ginkgo Fest</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tokyo</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tokyo</span>
                             </button>
-                            <button onclick="quickAdd('Rikugien Garten Illumination 💡')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Rikugien Garten Illumination 💡')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-800">Mitte-Ende Nov: Rikugien Abend</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tokyo</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tokyo</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Okinawa Ausflüge -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-ocean mb-2 border-b border-ocean/20 pb-1">🏝️ Okinawa Sights</h4>
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-ocean mb-2 border-b border-ocean/20 pb-1">
+                            🏝️ Okinawa Sights</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Churaumi Aquarium 🐳')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Churaumi Aquarium 🐳')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Churaumi Aquarium</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Tagesausflug Kerama-Inseln 🐢')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Tagesausflug Kerama-Inseln 🐢')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kerama Schnorcheln</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Yoron Island Ausflug 🏝️')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yoron Island Ausflug 🏝️')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yoron Island (Yoronto)</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1-2 T</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1-2
+                                    T</span>
                             </button>
-                            <button onclick="quickAdd('Kouri-jima Insel & Brücke 🚗')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kouri-jima Insel & Brücke 🚗')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kouri-jima Insel</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Sefa-Utaki Pilgerstätte ⛩️')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Sefa-Utaki Pilgerstätte ⛩️')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Sefa-Utaki</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Naha Erkundung & Kokusai-Dori 🍜')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Naha Erkundung & Kokusai-Dori 🍜')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naha &amp; Shuri Castle</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">6h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Kap Manzamo Klippen 🌅')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kap Manzamo Klippen 🌅')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Cape Manzamo</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">2h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Yachimun no Sato Töpferdorf 🏺')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yachimun no Sato Töpferdorf 🏺')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yachimun Töpferdorf</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Wanderung Gangala-Tal 🌴')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Wanderung Gangala-Tal 🌴')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Gangala-Tal</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Katsuren Ruinen besichtigen 🛖')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Katsuren Ruinen besichtigen 🛖')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Katsuren Castle Ruins</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Yanbaru Urwald-Trekking 🌴')" class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yanbaru Urwald-Trekking 🌴')"
+                                class="w-full text-left bg-white/80 hover:bg-ocean/10 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yanbaru Trekking</span>
-                                <span class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Halb</span>
+                                <span
+                                    class="text-[9px] bg-white border border-ocean/20 text-ocean px-1.5 py-0.5 rounded font-black uppercase">Halb</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Kyushu, Fukuoka & Yamaguchi -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-autumn mb-2 border-b border-autumn/20 pb-1">🌋 Kyushu, Fukuoka &amp; Yamaguchi</h4>
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-autumn mb-2 border-b border-autumn/20 pb-1">
+                            🌋 Kyushu, Fukuoka &amp; Yamaguchi</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Yatai Hakata Streetfood 🍜')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yatai Hakata Streetfood 🍜')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hakata Yatai Abend</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Dazaifu Tenmangu & Concept Store ⛩️')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Dazaifu Tenmangu & Concept Store ⛩️')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Dazaifu Schrein</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Akiyoshido Tropfsteinhöhle 🦇')" class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Akiyoshido Tropfsteinhöhle 🦇')"
+                                class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Akiyoshido Höhle</span>
-                                <span class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Motonosumi Schrein ⛩️')" class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Motonosumi Schrein ⛩️')"
+                                class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Motonosumi Schrein</span>
-                                <span class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Okawachiyama Töpferdorf 🏺')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Okawachiyama Töpferdorf 🏺')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Okawachiyama Dorf</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Hamanoura Reisterrassen 🌾')" class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Hamanoura Reisterrassen 🌾')"
+                                class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hamanoura Terrassen</span>
-                                <span class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1.5h</span>
                             </button>
-                            <button onclick="quickAdd('Tagesausflug Nokonoshima Insel 🌸')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Tagesausflug Nokonoshima Insel 🌸')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Nokonoshima Insel</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Itoshima Coastal Roadtrip 🚗')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Itoshima Coastal Roadtrip 🚗')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Itoshima Halbinsel</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Hakoshima Jinja Schrein ⛩️')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Hakoshima Jinja Schrein ⛩️')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Hakoshima Schrein</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">1h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">1h</span>
                             </button>
-                            <button onclick="quickAdd('Nonoma Restaurant Essen 🍽️')" class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Nonoma Restaurant Essen 🍽️')"
+                                class="w-full text-left bg-white/80 hover:bg-amber-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Nonoma Itoshima</span>
-                                <span class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Takachiho Gorge Ruderboot 🏞️')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Takachiho Gorge Ruderboot 🏞️')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Takachiho Schlucht</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Yufuin Onsen & Kinrin-See ♨️')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yufuin Onsen & Kinrin-See ♨️')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yufuin Bergdorf</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Kunenan Garden Herbstlaub 🍁')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kunenan Garden Herbstlaub 🍁')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kunenan Garten</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Mount Aso Vulkankrater 🌋')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Mount Aso Vulkankrater 🌋')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Mount Aso Krater</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">6h</span>
                             </button>
-                            <button onclick="quickAdd('Sakurajima Lava-Fussbad 🌋')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Sakurajima Lava-Fussbad 🌋')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Sakurajima Vulkan</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Yakushima Urwald-Wanderung 🌲')" class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yakushima Urwald-Wanderung 🌲')"
+                                class="w-full text-left bg-white/80 hover:bg-emerald-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yakushima Trekking</span>
-                                <span class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1-2 T</span>
+                                <span
+                                    class="text-[9px] bg-white border border-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black uppercase">1-2
+                                    T</span>
                             </button>
-                            <button onclick="quickAdd('Yanagawa Gondelfahrt & Unagi 🚣')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Yanagawa Gondelfahrt & Unagi 🚣')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Yanagawa Kanäle</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Aoshima Dschungelinsel 🏝️')" class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Aoshima Dschungelinsel 🏝️')"
+                                class="w-full text-left bg-white/80 hover:bg-orange-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Aoshima Insel</span>
-                                <span class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Halb</span>
+                                <span
+                                    class="text-[9px] bg-white border border-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-black uppercase">Halb</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Shikoku Ausflüge -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-teal-700 mb-2 border-b border-teal-700/20 pb-1">🥾 Shikoku (Optional)</h4>
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-teal-700 mb-2 border-b border-teal-700/20 pb-1">
+                            🥾 Shikoku (Optional)</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Dogo Onsen (Matsuyama) ♨️')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Dogo Onsen (Matsuyama) ♨️')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Dogo Onsen</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Iya-Tal & Kazurabashi Brücken 🏞️')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Iya-Tal & Kazurabashi Brücken 🏞️')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Iya-Tal</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Ritsurin Garten Takamatsu 🍁')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Ritsurin Garten Takamatsu 🍁')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Ritsurin Garten</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Shimanami Kaido Fahrrad-Tour 🚲')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Shimanami Kaido Fahrrad-Tour 🚲')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Shimanami Kaido</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Naoshima Kunstinsel 🎨')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Naoshima Kunstinsel 🎨')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naoshima Insel</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
-                            <button onclick="quickAdd('Shikoku Ohenro Tempel-Etappe 🥾')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Shikoku Ohenro Tempel-Etappe 🥾')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Pilgerweg-Etappe</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Naruto Gezeitenstrudel 🌊')" class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Naruto Gezeitenstrudel 🌊')"
+                                class="w-full text-left bg-white/80 hover:bg-teal-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Naruto Strudel</span>
-                                <span class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Kansai & Tokyo -->
                     <div>
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-darkAutumn mb-2 border-b border-darkAutumn/20 pb-1">🍂 Kansai &amp; Tokyo (21. - 28. Nov)</h4>
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-darkAutumn mb-2 border-b border-darkAutumn/20 pb-1">
+                            🍂 Kansai &amp; Tokyo (21. - 28. Nov)</h4>
                         <div class="space-y-1.5">
-                            <button onclick="quickAdd('Wanderung Minoo-Wasserfall 🍁')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Wanderung Minoo-Wasserfall 🍁')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Minoo Park Osaka</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">5h</span>
                             </button>
-                            <button onclick="quickAdd('Katsuo-ji Tempel & Darumas 🔴')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Katsuo-ji Tempel & Darumas 🔴')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Katsuo-ji Tempel</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Showa Kinen Ginkgo-Tunnel 🍂')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Showa Kinen Ginkgo-Tunnel 🍂')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Showa Kinen Park</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">4h</span>
                             </button>
-                            <button onclick="quickAdd('Koishikawa Korakuen Garten 🍁')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Koishikawa Korakuen Garten 🍁')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Koishikawa Korakuen</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">3h</span>
                             </button>
-                            <button onclick="quickAdd('Todoroki Valley Schlucht 🌿')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Todoroki Valley Schlucht 🌿')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Todoroki Valley</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">2h</span>
                             </button>
-                            <button onclick="quickAdd('Kamakura & Großer Buddha 🏯')" class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
+                            <button onclick="quickAdd('Kamakura & Großer Buddha 🏯')"
+                                class="w-full text-left bg-white/80 hover:bg-red-50/90 p-2.5 rounded-xl border border-white text-xs flex justify-between items-center transition-all group shadow-sm">
                                 <span class="font-bold text-stone-700">Kamakura Ausflug</span>
-                                <span class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
+                                <span
+                                    class="text-[9px] bg-white border border-red-100 text-red-800 px-1.5 py-0.5 rounded font-black uppercase">Tag</span>
                             </button>
                         </div>
                     </div>
                 </div>
-        
+
                 <!-- Calendar View Column (Right) -->
-                <div class="lg:col-span-8 bg-white/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/60 space-y-6">
+                <div
+                    class="lg:col-span-8 bg-white/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/60 space-y-6">
                     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
                         <div class="flex flex-wrap gap-2 w-full xl:w-auto pb-1" id="weekTabsContainer">
                             <!-- Populated Dynamically -->
                         </div>
                         <div class="flex flex-wrap gap-2 w-full xl:w-auto">
-                            <button onclick="confirmResetCalendar()" class="bg-white/80 hover:bg-white text-stone-700 font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-sm border border-stone-200">
+                            <button onclick="confirmResetCalendar()"
+                                class="bg-white/80 hover:bg-white text-stone-700 font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-sm border border-stone-200">
                                 <i class="fa-solid fa-rotate-left mr-1.5"></i> Zurücksetzen
                             </button>
-                            <button onclick="generateShareLink()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-md">
+                            <button onclick="generateShareLink()"
+                                class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-md">
                                 <i class="fa-solid fa-link mr-1.5"></i> Link teilen
                             </button>
-                            <button onclick="copyFullPlanToClipboard()" class="bg-earth hover:bg-earth/90 text-sand font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-md">
+                            <button onclick="copyFullPlanToClipboard()"
+                                class="bg-earth hover:bg-earth/90 text-sand font-bold py-2 px-3 rounded-xl text-xs flex items-center whitespace-nowrap transition-all shadow-md">
                                 <i class="fa-regular fa-copy mr-1.5"></i> Plan kopieren
                             </button>
                         </div>
                     </div>
-        
+
                     <!-- Calendar Grid Day Selector -->
                     <div id="calendarDaysGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Populated Dynamically based on selected week -->
@@ -892,9 +1264,14 @@
         <!-- TAB: MAP VIEW -->
         <section id="map-view" class="tab-content hidden animate-fade-in space-y-8">
             <div class="border-b border-stone-300/50 pb-4">
-                <span class="text-xs font-bold uppercase tracking-widest text-ocean drop-shadow-sm">Routen-Visualisierung</span>
-                <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">🗺️ Interaktive Japan-Karte</h2>
-                <p class="text-stone-700 font-medium text-sm mt-1 bg-white/40 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">Alle eure Highlights, Ausflüge und Matsuris auf einen Blick. Klickt auf einen Pin, um Details anzuzeigen!</p>
+                <span
+                    class="text-xs font-bold uppercase tracking-widest text-ocean drop-shadow-sm">Routen-Visualisierung</span>
+                <h2 class="text-3xl font-black text-earth tracking-tight mt-1 drop-shadow-sm">🗺️ Interaktive
+                    Japan-Karte</h2>
+                <p
+                    class="text-stone-700 font-medium text-sm mt-1 bg-white/40 backdrop-blur-sm p-3 rounded-xl border border-white/50 w-fit">
+                    Alle eure Highlights, Ausflüge und Matsuris auf einen Blick. Klickt auf einen Pin, um Details
+                    anzuzeigen!</p>
             </div>
             <div class="bg-white/70 backdrop-blur-xl p-3 rounded-3xl shadow-lg border border-white/60">
                 <div id="japan-map" class="w-full h-[650px] rounded-2xl z-10 relative"></div>
@@ -906,61 +1283,86 @@
     <footer class="bg-earth text-sand py-10 mt-16 border-t-4 border-autumn relative z-20">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-4">
             <div class="text-3xl animate-pulse">🍁 🏮 🏝️</div>
-            <p class="font-bold text-lg text-sand/90">Dein Premium-Reiseplaner: Okinawa, Kyushu, Shikoku &amp; Kansai</p>
+            <p class="font-bold text-lg text-sand/90">Dein Premium-Reiseplaner: Okinawa, Kyushu, Shikoku &amp; Kansai
+            </p>
             <p class="text-xs text-sand/50 max-w-lg mx-auto leading-relaxed">
-                Interaktive Visualisierungen, tagesgenaue Eventkalender und automatische Zwischenablagen-Funktionen für ein reibungsloses Urlaubserlebnis.
+                Interaktive Visualisierungen, tagesgenaue Eventkalender und automatische Zwischenablagen-Funktionen für
+                ein reibungsloses Urlaubserlebnis.
             </p>
         </div>
     </footer>
 
     <!-- MODAL FOR DETAILED INFOS -->
-    <div id="detailModal" onclick="if(event.target === this) closeDetailModal()" class="fixed inset-0 bg-stone-900/50 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all">
-        <div class="bg-white rounded-3xl overflow-hidden max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl relative border border-stone-200 transform scale-95 transition-transform duration-300" id="modalCard" onclick="event.stopPropagation()">
-            
-            <button onclick="closeDetailModal()" class="absolute top-4 right-4 bg-earth/70 text-sand hover:bg-earth w-10 h-10 rounded-full flex items-center justify-center transition-all z-10 shadow-lg backdrop-blur-md">
+    <div id="detailModal" onclick="if(event.target === this) closeDetailModal()"
+        class="fixed inset-0 bg-earth/60 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white/75 backdrop-blur-2xl rounded-3xl overflow-hidden max-w-2xl w-full max-h-[90vh] flex flex-col shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] relative border border-white transform scale-95 transition-transform duration-300"
+            id="modalCard" onclick="event.stopPropagation()">
+
+            <button onclick="closeDetailModal()"
+                class="absolute top-4 right-4 bg-earth/70 backdrop-blur-md text-sand hover:bg-earth w-10 h-10 rounded-full flex items-center justify-center transition-all z-10 shadow-lg border border-white/20">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
             <div class="relative h-56 md:h-72 bg-stone-100 flex-shrink-0">
-                <img id="modalImage" src="" alt="Destination Image" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/850x450/4a4036/fdfbf7?text=Bild+nicht+verf%C3%BCgbar'">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-6">
+                <img id="modalImage" src="" alt="Destination Image" class="w-full h-full object-cover"
+                    onerror="this.src='https://placehold.co/850x450/4a4036/fdfbf7?text=Bild+nicht+verf%C3%BCgbar'">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-6">
                     <div class="space-y-1">
-                        <span id="modalBadge" class="bg-autumn text-sand text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">Badge</span>
-                        <h3 id="modalTitle" class="text-white text-2xl md:text-3xl font-black tracking-tight drop-shadow-md">Title</h3>
+                        <span id="modalBadge"
+                            class="bg-autumn text-sand text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">Badge</span>
+                        <h3 id="modalTitle"
+                            class="text-white text-2xl md:text-3xl font-black tracking-tight drop-shadow-md">Title</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="p-6 md:p-8 overflow-y-auto space-y-5 text-stone-700 text-sm md:text-base leading-relaxed">
-                <div class="flex flex-wrap gap-4 text-xs font-bold border-b border-stone-100 pb-3">
-                    <span class="text-stone-500"><i class="fa-solid fa-location-dot text-autumn mr-1.5"></i> <span id="modalLocation">Location</span></span>
-                    <span class="text-stone-500"><i class="fa-regular fa-clock text-autumn mr-1.5"></i> <span id="modalDuration">Duration</span></span>
+            <div class="p-6 md:p-8 overflow-y-auto space-y-5 text-stone-800 text-sm md:text-base leading-relaxed">
+                <div class="flex flex-wrap gap-4 text-xs font-bold border-b border-white/40 pb-3">
+                    <span class="text-stone-600"><i class="fa-solid fa-location-dot text-autumn mr-1.5"></i> <span
+                            id="modalLocation">Location</span></span>
+                    <span class="text-stone-600"><i class="fa-regular fa-clock text-autumn mr-1.5"></i> <span
+                            id="modalDuration">Duration</span></span>
                 </div>
 
                 <div id="modalDescription" class="space-y-3 font-medium">
                     <!-- Dynamic Text -->
                 </div>
 
-                <div class="bg-orange-50 border border-orange-100 p-4 rounded-2xl flex items-start gap-3 shadow-inner">
+                <div
+                    class="bg-white/60 backdrop-blur-md border border-white p-4 rounded-2xl flex items-start gap-3 shadow-sm">
                     <span class="text-2xl mt-0.5">💡</span>
                     <div>
-                        <strong class="block text-earth text-xs font-bold uppercase tracking-wider mb-1">Insider-Tipp:</strong>
-                        <p id="modalTip" class="text-stone-600 text-xs md:text-sm leading-relaxed"></p>
+                        <strong
+                            class="block text-earth text-xs font-bold uppercase tracking-wider mb-1">Insider-Tipp:</strong>
+                        <p id="modalTip" class="text-stone-700 text-xs md:text-sm leading-relaxed"></p>
                     </div>
                 </div>
             </div>
 
-            <div class="p-6 border-t border-stone-100 bg-stone-50 flex-shrink-0 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div
+                class="p-6 border-t border-white/50 bg-white/40 flex-shrink-0 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3 w-full md:w-auto justify-center">
-                    <span class="text-[10px] font-black text-stone-400 uppercase tracking-widest">Bewertung:</span>
-                    <div class="flex gap-1 bg-white p-1 rounded-full border border-stone-200 shadow-sm" id="modalReactions">
-                        <button onclick="setReaction(currentModalKey, 'heart'); event.stopPropagation();" class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-stone-100 text-lg" data-type="heart" title="Unbedingt!">❤️</button>
-                        <button onclick="setReaction(currentModalKey, 'thumbsup'); event.stopPropagation();" class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-stone-100 text-lg" data-type="thumbsup" title="Gerne (Muss nicht)">👍</button>
-                        <button onclick="setReaction(currentModalKey, 'question'); event.stopPropagation();" class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-stone-100 text-lg" data-type="question" title="Eventuell">❓</button>
-                        <button onclick="setReaction(currentModalKey, 'cross'); event.stopPropagation();" class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-stone-100 text-lg" data-type="cross" title="Sicher nicht">❌</button>
+                    <span
+                        class="text-[10px] font-black text-stone-500 uppercase tracking-widest drop-shadow-sm">Bewertung:</span>
+                    <div class="flex gap-1 bg-white/60 backdrop-blur-md p-1 rounded-full border border-white shadow-sm"
+                        id="modalReactions">
+                        <button onclick="handleReactionClick(event, currentModalKey, 'heart')"
+                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            data-type="heart" title="Unbedingt!">❤️</button>
+                        <button onclick="handleReactionClick(event, currentModalKey, 'thumbsup')"
+                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            data-type="thumbsup" title="Gerne (Muss nicht)">👍</button>
+                        <button onclick="handleReactionClick(event, currentModalKey, 'question')"
+                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            data-type="question" title="Eventuell">❓</button>
+                        <button onclick="handleReactionClick(event, currentModalKey, 'cross')"
+                            class="reaction-btn w-10 h-10 flex items-center justify-center rounded-full transition-all filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 hover:bg-white text-lg"
+                            data-type="cross" title="Sicher nicht">❌</button>
                     </div>
                 </div>
-                <a id="modalLink" href="" target="_blank" class="bg-autumn hover:bg-autumn/95 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 text-xs md:text-sm shadow-md shadow-orange-500/10 transition-all w-full md:w-auto justify-center">
+                <a id="modalLink" href="" target="_blank"
+                    class="bg-autumn hover:bg-autumn/95 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 text-xs md:text-sm shadow-md shadow-orange-500/10 transition-all w-full md:w-auto justify-center">
                     <span>Offizielle Informationen ansehen</span>
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
@@ -969,20 +1371,24 @@
     </div>
 
     <!-- DYNAMIC POPUP DIALOGS -->
-    <div id="customDialog" class="fixed inset-0 bg-earth/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="customDialog"
+        class="fixed inset-0 bg-earth/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-stone-200 text-center space-y-4">
             <div id="dialogIcon" class="text-4xl animate-bounce">⚠️</div>
             <h3 id="dialogTitle" class="font-extrabold text-lg text-earth">Bestätigung</h3>
             <p id="dialogMessage" class="text-sm text-stone-600 font-medium"></p>
             <div class="flex justify-center gap-3 pt-2">
-                <button id="dialogCancelBtn" class="bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2 px-4 rounded-xl text-xs transition-all"></button>
-                <button id="dialogConfirmBtn" class="bg-autumn hover:bg-autumn/90 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md"></button>
+                <button id="dialogCancelBtn"
+                    class="bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2 px-4 rounded-xl text-xs transition-all"></button>
+                <button id="dialogConfirmBtn"
+                    class="bg-autumn hover:bg-autumn/90 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md"></button>
             </div>
         </div>
     </div>
 
     <!-- TOAST SUCCESS BANNER -->
-    <div id="toastSuccess" class="fixed bottom-6 right-6 bg-earth text-sand py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 border border-autumn/30">
+    <div id="toastSuccess"
+        class="fixed bottom-6 right-6 bg-earth text-sand py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 border border-autumn/30">
         <span class="text-autumn"><i class="fa-solid fa-circle-check text-xl"></i></span>
         <span id="toastText" class="text-xs md:text-sm font-semibold tracking-wide"></span>
     </div>
@@ -1611,13 +2017,13 @@
                 description: "Ein herrlich skurriles und uriges Fest tief in den nebelverhangenen Bergen der Tokushima-Präfektur! Die Region Yamashiro gilt als Brutstätte zahlloser Yokai-Legenden (traditionelle japanische Dämonen und Geister). Bei diesem Festival verkleiden sich die Dorfbewohner als klassische japanische Monster, Tengu (Vogelwesen) und magische Waschbären (Tanuki) und feiern ausgelassen auf den Straßen.",
                 tip: "Ein absoluter Geheimtipp für Fans von japanischer Folklore und Geistergeschichten. Es gibt im Dorf auch ein dauerhaftes Yokai-Museum und tolle Holzschnitzereien der Monster am Wegesrand."
             },
-             usuki_takeyoi: {
+            usuki_takeyoi: {
                 title: "Usuki Takeyoi Laternenfest",
                 badge: "🎋 Romantische Bambuslichter",
                 location: "Usuki (Präfektur Oita, Ost-Kyushu)",
                 duration: "Sa, 7. Nov – So, 8. Nov 2026",
-                 image: "https://res.cloudinary.com/jnto/image/upload/w_670,h_450,fl_lossy,f_auto/v1514403862/oita/Oita2019_8",
-                 link: "https://www.japan.travel/de/spot/319/",
+                image: "https://res.cloudinary.com/jnto/image/upload/w_670,h_450,fl_lossy,f_auto/v1514403862/oita/Oita2019_8",
+                link: "https://www.japan.travel/de/spot/319/",
                 description: "Das Usuki Takeyoi ist ein magisches Laternenfest im historischen Stadtzentrum der ehemaligen Burgstadt Usuki. Über 20.000 handgefertigte Bambuslaternen (Takeakari) säumen die kopfsteingepflasterten Straßen, die alten Samurai-Residenzen und ehrwürdigen Tempelgassen. Die gesamte historische Stadt wird in ein warmes, flackerndes Kerzenlicht getaucht. Ein weiteres Highlight ist die prachtvolle 'Hannya-Hime'-Prozession, bei der eine Legenden-Prinzessin in kostbarer historischer Gewandung durch die illuminierte Stadt zieht.",
                 tip: "Besonders fotogen ist die historische Nioza-Gasse. Verbindet den Besuch unbedingt mit den berühmten steinernen Buddha-Statuen von Usuki (Nationalerbe), die nur eine kurze Busfahrt entfernt liegen."
             },
@@ -1656,65 +2062,65 @@
         // SCHEDULE INITIALIZER FOR INTERACTIVE CALENDAR
         const totalWeeks = 5;
         const schedulerDates = [
-                // Week 1
-                { week: 1, dateStr: "Mo, 26. Okt", notesKey: "2026-10-26", region: "Okinawa 🏝️ Landung", label: "Okinawa" },
-                { week: 1, dateStr: "Di, 27. Okt", notesKey: "2026-10-27", region: "Okinawa 🏝️ Strände", label: "Okinawa" },
-                { week: 1, dateStr: "Mi, 28. Okt", notesKey: "2026-10-28", region: "Okinawa 🏝️ Sightseeing", label: "Okinawa" },
-                { week: 1, dateStr: "Do, 29. Okt", notesKey: "2026-10-29", region: "Okinawa 🏝️ Ausflüge", label: "Okinawa" },
-                { week: 1, dateStr: "Fr, 30. Okt", notesKey: "2026-10-30", region: "Okinawa 🎈 Saga Balloon Start", label: "Okinawa / Kyushu" },
-                { week: 1, dateStr: "Sa, 31. Okt", notesKey: "2026-10-31", region: "Okinawa 🏯 Shurijo Fest", label: "Okinawa" },
-                { week: 1, dateStr: "So, 01. Nov", notesKey: "2026-11-01", region: "Okinawa 🏯 Shurijo / Abreise", label: "Okinawa / Fukuoka" },
+            // Week 1
+            {week: 1, dateStr: "Mo, 26. Okt", notesKey: "2026-10-26", region: "Okinawa 🏝️ Landung", label: "Okinawa"},
+            {week: 1, dateStr: "Di, 27. Okt", notesKey: "2026-10-27", region: "Okinawa 🏝️ Strände", label: "Okinawa"},
+            {week: 1, dateStr: "Mi, 28. Okt", notesKey: "2026-10-28", region: "Okinawa 🏝️ Sightseeing", label: "Okinawa"},
+            {week: 1, dateStr: "Do, 29. Okt", notesKey: "2026-10-29", region: "Okinawa 🏝️ Ausflüge", label: "Okinawa"},
+            {week: 1, dateStr: "Fr, 30. Okt", notesKey: "2026-10-30", region: "Okinawa 🎈 Saga Balloon Start", label: "Okinawa / Kyushu"},
+            {week: 1, dateStr: "Sa, 31. Okt", notesKey: "2026-10-31", region: "Okinawa 🏯 Shurijo Fest", label: "Okinawa"},
+            {week: 1, dateStr: "So, 01. Nov", notesKey: "2026-11-01", region: "Okinawa 🏯 Shurijo / Abreise", label: "Okinawa / Fukuoka"},
 
-                // Week 2
-                { week: 2, dateStr: "Mo, 02. Nov", notesKey: "2026-11-02", region: "Kyushu 🏮 Karatsu Kunchi / Ohara", label: "Kyushu" },
-                { week: 2, dateStr: "Di, 03. Nov", notesKey: "2026-11-03", region: "Kyushu 🏮 Karatsu / Ohara Finale", label: "Kyushu" },
-                { week: 2, dateStr: "Mi, 04. Nov", notesKey: "2026-11-04", region: "Kyushu 🏯 Hakata Light Up Walk", label: "Fukuoka" },
-                { week: 2, dateStr: "Do, 05. Nov", notesKey: "2026-11-05", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka" },
-                { week: 2, dateStr: "Fr, 06. Nov", notesKey: "2026-11-06", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka" },
-                { week: 2, dateStr: "Sa, 07. Nov", notesKey: "2026-11-07", region: "Kyushu 🏮 Usuki Takeyoi Laternenfest", label: "Oita" },
-                { week: 2, dateStr: "So, 08. Nov", notesKey: "2026-11-08", region: "Kyushu 🏆 Sumo Start / 🏮 Usuki Takeyoi", label: "Fukuoka / Oita" },
+            // Week 2
+            {week: 2, dateStr: "Mo, 02. Nov", notesKey: "2026-11-02", region: "Kyushu 🏮 Karatsu Kunchi / Ohara", label: "Kyushu"},
+            {week: 2, dateStr: "Di, 03. Nov", notesKey: "2026-11-03", region: "Kyushu 🏮 Karatsu / Ohara Finale", label: "Kyushu"},
+            {week: 2, dateStr: "Mi, 04. Nov", notesKey: "2026-11-04", region: "Kyushu 🏯 Hakata Light Up Walk", label: "Fukuoka"},
+            {week: 2, dateStr: "Do, 05. Nov", notesKey: "2026-11-05", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka"},
+            {week: 2, dateStr: "Fr, 06. Nov", notesKey: "2026-11-06", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka"},
+            {week: 2, dateStr: "Sa, 07. Nov", notesKey: "2026-11-07", region: "Kyushu 🏮 Usuki Takeyoi Laternenfest", label: "Oita"},
+            {week: 2, dateStr: "So, 08. Nov", notesKey: "2026-11-08", region: "Kyushu 🏆 Sumo Start / 🏮 Usuki Takeyoi", label: "Fukuoka / Oita"},
 
-                // Week 3
-                { week: 3, dateStr: "Mo, 09. Nov", notesKey: "2026-11-09", region: "Kyushu 🏆 Sumo Fukuoka", label: "Fukuoka" },
-                { week: 3, dateStr: "Di, 10. Nov", notesKey: "2026-11-10", region: "Kyushu 🌋 Fukuoka & Ausflüge", label: "Kyushu" },
-                { week: 3, dateStr: "Mi, 11. Nov", notesKey: "2026-11-11", region: "Kyushu 🌋 Erkundung", label: "Kyushu" },
-                { week: 3, dateStr: "Do, 12. Nov", notesKey: "2026-11-12", region: "Kyushu / Shikoku 🥾", label: "Kyushu/Shikoku" },
-                { week: 3, dateStr: "Fr, 13. Nov", notesKey: "2026-11-13", region: "Kyushu 🏮 Sennen Akari Hita Start", label: "Hita / Oita" },
-                { week: 3, dateStr: "Sa, 14. Nov", notesKey: "2026-11-14", region: "Kyushu 🎆 Nagasaki Feuerwerk / 🏮 Sennen Akari / 👹 Yokagura", label: "Kyushu" },
-                { week: 3, dateStr: "So, 15. Nov", notesKey: "2026-11-15", region: "Kyushu 🏮 Sennen Akari Finale", label: "Hita / Oita" },
+            // Week 3
+            {week: 3, dateStr: "Mo, 09. Nov", notesKey: "2026-11-09", region: "Kyushu 🏆 Sumo Fukuoka", label: "Fukuoka"},
+            {week: 3, dateStr: "Di, 10. Nov", notesKey: "2026-11-10", region: "Kyushu 🌋 Fukuoka & Ausflüge", label: "Kyushu"},
+            {week: 3, dateStr: "Mi, 11. Nov", notesKey: "2026-11-11", region: "Kyushu 🌋 Erkundung", label: "Kyushu"},
+            {week: 3, dateStr: "Do, 12. Nov", notesKey: "2026-11-12", region: "Kyushu / Shikoku 🥾", label: "Kyushu/Shikoku"},
+            {week: 3, dateStr: "Fr, 13. Nov", notesKey: "2026-11-13", region: "Kyushu 🏮 Sennen Akari Hita Start", label: "Hita / Oita"},
+            {week: 3, dateStr: "Sa, 14. Nov", notesKey: "2026-11-14", region: "Kyushu 🎆 Nagasaki Feuerwerk / 🏮 Sennen Akari / 👹 Yokagura", label: "Kyushu"},
+            {week: 3, dateStr: "So, 15. Nov", notesKey: "2026-11-15", region: "Kyushu 🏮 Sennen Akari Finale", label: "Hita / Oita"},
 
-                // Week 4
-                { week: 4, dateStr: "Mo, 16. Nov", notesKey: "2026-11-16", region: "Kyushu 🍁 Kunenan Herbst-Peak", label: "Kyushu" },
-                { week: 4, dateStr: "Di, 17. Nov", notesKey: "2026-11-17", region: "Kyushu 🍁 Herbstwald", label: "Kyushu" },
-                { week: 4, dateStr: "Mi, 18. Nov", notesKey: "2026-11-18", region: "Kyushu 🍁 Dazaifu Herbst", label: "Kyushu" },
-                { week: 4, dateStr: "Do, 19. Nov", notesKey: "2026-11-19", region: "Kyushu 🌋 Endspurt Süd-Kyushu", label: "Kyushu" },
-                { week: 4, dateStr: "Fr, 20. Nov", notesKey: "2026-11-20", region: "Kyushu 🌋 Packen & Erholung", label: "Fukuoka" },
-                { week: 4, dateStr: "Sa, 21. Nov", notesKey: "2026-11-21", region: "Kansai 🍂 Transit nach Osaka", label: "Kansai / Osaka" },
-                { week: 4, dateStr: "So, 22. Nov", notesKey: "2026-11-22", region: "Kansai 🍁 Kyoto LightUp", label: "Kansai / Kyoto" },
+            // Week 4
+            {week: 4, dateStr: "Mo, 16. Nov", notesKey: "2026-11-16", region: "Kyushu 🍁 Kunenan Herbst-Peak", label: "Kyushu"},
+            {week: 4, dateStr: "Di, 17. Nov", notesKey: "2026-11-17", region: "Kyushu 🍁 Herbstwald", label: "Kyushu"},
+            {week: 4, dateStr: "Mi, 18. Nov", notesKey: "2026-11-18", region: "Kyushu 🍁 Dazaifu Herbst", label: "Kyushu"},
+            {week: 4, dateStr: "Do, 19. Nov", notesKey: "2026-11-19", region: "Kyushu 🌋 Endspurt Süd-Kyushu", label: "Kyushu"},
+            {week: 4, dateStr: "Fr, 20. Nov", notesKey: "2026-11-20", region: "Kyushu 🌋 Packen & Erholung", label: "Fukuoka"},
+            {week: 4, dateStr: "Sa, 21. Nov", notesKey: "2026-11-21", region: "Kansai 🍂 Transit nach Osaka", label: "Kansai / Osaka"},
+            {week: 4, dateStr: "So, 22. Nov", notesKey: "2026-11-22", region: "Kansai 🍁 Kyoto LightUp", label: "Kansai / Kyoto"},
 
-                // Week 5
-                { week: 5, dateStr: "Mo, 23. Nov", notesKey: "2026-11-23", region: "Kansai 🍁 Osaka Herbst-Peak", label: "Osaka" },
-                { week: 5, dateStr: "Di, 24. Nov", notesKey: "2026-11-24", region: "Tokyo 🍂 Shinkansen nach Tokyo / 🍂 Gaien Ginkgo Fest", label: "Tokyo" },
-                { week: 5, dateStr: "Mi, 25. Nov", notesKey: "2026-11-25", region: "Tokyo 🍂 Herbstgärten", label: "Tokyo" },
-                { week: 5, dateStr: "Do, 26. Nov", notesKey: "2026-11-26", region: "Tokyo 🍂 Einkauf & Genuss", label: "Tokyo" },
-                { week: 5, dateStr: "Fr, 27. Nov", notesKey: "2026-11-27", region: "Tokyo 🍂 Abschiedsabend", label: "Tokyo" },
-                { week: 5, dateStr: "Sa, 28. Nov", notesKey: "2026-11-28", region: "Tokyo ✈️ Rückflug nach Europa", label: "Tokyo" }
+            // Week 5
+            {week: 5, dateStr: "Mo, 23. Nov", notesKey: "2026-11-23", region: "Kansai 🍁 Osaka Herbst-Peak", label: "Osaka"},
+            {week: 5, dateStr: "Di, 24. Nov", notesKey: "2026-11-24", region: "Tokyo 🍂 Shinkansen nach Tokyo / 🍂 Gaien Ginkgo Fest", label: "Tokyo"},
+            {week: 5, dateStr: "Mi, 25. Nov", notesKey: "2026-11-25", region: "Tokyo 🍂 Herbstgärten", label: "Tokyo"},
+            {week: 5, dateStr: "Do, 26. Nov", notesKey: "2026-11-26", region: "Tokyo 🍂 Einkauf & Genuss", label: "Tokyo"},
+            {week: 5, dateStr: "Fr, 27. Nov", notesKey: "2026-11-27", region: "Tokyo 🍂 Abschiedsabend", label: "Tokyo"},
+            {week: 5, dateStr: "Sa, 28. Nov", notesKey: "2026-11-28", region: "Tokyo ✈️ Rückflug nach Europa", label: "Tokyo"}
         ];
 
         // --- DYNAMIC BLOB COLOR PALETTES (THEMES) ---
         const blobPalettes = {
-            'overview':            ['rgba(2, 128, 144, 0.2)',  'rgba(227, 100, 20, 0.2)', 'rgba(252, 237, 219, 0.4)', 'rgba(216, 180, 226, 0.3)', 'rgba(254, 240, 138, 0.2)'],
-            'okinawa':             ['rgba(56, 189, 248, 0.3)', 'rgba(2, 128, 144, 0.3)',  'rgba(103, 232, 249, 0.3)', 'rgba(96, 165, 250, 0.2)',  'rgba(153, 246, 228, 0.3)'], // Oceans & Skies
-            'kyushu':              ['rgba(227, 100, 20, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(52, 211, 153, 0.2)',  'rgba(154, 3, 30, 0.2)',    'rgba(252, 211, 77, 0.3)'], // Volcano & Autumn
-            'shikoku':             ['rgba(45, 212, 191, 0.3)', 'rgba(16, 185, 129, 0.2)', 'rgba(34, 211, 238, 0.2)',  'rgba(134, 239, 172, 0.2)', 'rgba(186, 230, 253, 0.3)'], // Deep Nature Greens/Teals
-            'autumn-analysis':     ['rgba(239, 68, 68, 0.2)',  'rgba(154, 3, 30, 0.3)',   'rgba(249, 115, 22, 0.3)',  'rgba(251, 191, 36, 0.2)',  'rgba(251, 113, 133, 0.3)'], // Deep Red Koyo Peak
-            'interactive-planner': ['rgba(129, 140, 248, 0.2)','rgba(192, 132, 252, 0.2)','rgba(227, 100, 20, 0.2)',  'rgba(125, 211, 252, 0.2)', 'rgba(244, 114, 182, 0.2)'], // Indigo/Purple planning
-            'map-view':            ['rgba(96, 165, 250, 0.2)', 'rgba(129, 140, 248, 0.2)','rgba(52, 211, 153, 0.2)',  'rgba(2, 128, 144, 0.2)',   'rgba(94, 234, 212, 0.2)']  // Map UI colors
+            'overview': ['rgba(2, 128, 144, 0.2)', 'rgba(227, 100, 20, 0.2)', 'rgba(252, 237, 219, 0.4)', 'rgba(216, 180, 226, 0.3)', 'rgba(254, 240, 138, 0.2)'],
+            'okinawa': ['rgba(56, 189, 248, 0.3)', 'rgba(2, 128, 144, 0.3)', 'rgba(103, 232, 249, 0.3)', 'rgba(96, 165, 250, 0.2)', 'rgba(153, 246, 228, 0.3)'], // Oceans & Skies
+            'kyushu': ['rgba(227, 100, 20, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(52, 211, 153, 0.2)', 'rgba(154, 3, 30, 0.2)', 'rgba(252, 211, 77, 0.3)'], // Volcano & Autumn
+            'shikoku': ['rgba(45, 212, 191, 0.3)', 'rgba(16, 185, 129, 0.2)', 'rgba(34, 211, 238, 0.2)', 'rgba(134, 239, 172, 0.2)', 'rgba(186, 230, 253, 0.3)'], // Deep Nature Greens/Teals
+            'autumn-analysis': ['rgba(239, 68, 68, 0.2)', 'rgba(154, 3, 30, 0.3)', 'rgba(249, 115, 22, 0.3)', 'rgba(251, 191, 36, 0.2)', 'rgba(251, 113, 133, 0.3)'], // Deep Red Koyo Peak
+            'interactive-planner': ['rgba(129, 140, 248, 0.2)', 'rgba(192, 132, 252, 0.2)', 'rgba(227, 100, 20, 0.2)', 'rgba(125, 211, 252, 0.2)', 'rgba(244, 114, 182, 0.2)'], // Indigo/Purple planning
+            'map-view': ['rgba(96, 165, 250, 0.2)', 'rgba(129, 140, 248, 0.2)', 'rgba(52, 211, 153, 0.2)', 'rgba(2, 128, 144, 0.2)', 'rgba(94, 234, 212, 0.2)']  // Map UI colors
         };
 
         let selectedWeek = 1;
-        let selectedDayKey = "2026-10-26"; 
-        let calendarData = {}; 
+        let selectedDayKey = "2026-10-26";
+        let calendarData = {};
 
         // --- REACTION SYSTEM VARIABLES ---
         let userReactions = {};
@@ -1726,30 +2132,84 @@
             initTabs();
             initWeatherChart();
             loadCalendarFromStorage();
-            loadReactions(); 
-            renderReactionsOnCards(); 
+            loadReactions();
+            renderReactionsOnCards();
             checkUrlForPlan();
             renderWeekTabs();
             renderCalendarDays();
             initCountdown();
         });
 
-        // --- REACTION SYSTEM FUNCTIONS ---
-        function loadReactions() {
+        // --- MICRO-INTERACTIONS: REACTION PARTICLES ---
+        function handleReactionClick (event, key, type) {
+            event.stopPropagation();
+            setReaction(key, type);
+
+            // Zeige Partikel-Explosion nur, wenn eine Bewertung HINZUGEFÜGT wurde (nicht wenn sie gelöscht wird)
+            if (userReactions[key] === type) {
+                createParticles(event.currentTarget, type);
+            }
+        }
+
+        function createParticles (buttonElement, reactionType) {
+            const emojis = {
+                'heart': ['❤️', '💖', '✨', '😍'],
+                'thumbsup': ['👍', '⭐', '🔥', '✨'],
+                'question': ['❓', '🤔', '💭', '✨'],
+                'cross': ['❌', '💨', '🙅', '💥']
+            };
+            const particleEmojis = emojis[reactionType] || ['✨'];
+
+            // Hole genaue Position des Buttons auf dem Bildschirm
+            const rect = buttonElement.getBoundingClientRect();
+
+            // Erzeuge 8 kleine Partikel pro Klick
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fixed pointer-events-none z-[100] text-xl';
+                particle.innerText = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+
+                // Startposition leicht randomisiert um die Button-Mitte
+                const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 20;
+                const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 20;
+
+                particle.style.left = startX + 'px';
+                particle.style.top = startY + 'px';
+                document.body.appendChild(particle);
+
+                // Animations-Mathematik: Schieße nach oben in Form eines Fächers
+                const angle = (Math.random() * Math.PI) - (Math.PI / 2); // -90 bis +90 Grad
+                const velocity = 50 + Math.random() * 60;
+                const tx = Math.sin(angle) * velocity;
+                const ty = -Math.cos(angle) * velocity - 60; // Vorrangig nach oben (-Y)
+
+                // Nutze die moderne Web Animations API
+                particle.animate([
+                    {transform: 'translate(0, 0) scale(1)', opacity: 1},
+                    {transform: `translate(${tx}px, ${ty}px) scale(${1 + Math.random()}) rotate(${Math.random() * 90 - 45}deg)`, opacity: 0}
+                ], {
+                    duration: 600 + Math.random() * 400, // 0.6s bis 1s
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)' // Schneller Start, langsames Abbremsen
+                }).onfinish = () => particle.remove(); // Lösche Element nach Animation
+            }
+        }
+
+        // --- REACTION SYSTEM CORE ---
+        function loadReactions () {
             try {
                 const stored = localStorage.getItem("japan_travel_reactions_2026");
                 if (stored) userReactions = JSON.parse(stored);
-            } catch(e) {}
+            } catch (e) {}
         }
 
-        function saveReactions() {
+        function saveReactions () {
             localStorage.setItem("japan_travel_reactions_2026", JSON.stringify(userReactions));
         }
 
-        function setReaction(key, reactionType) {
+        function setReaction (key, reactionType) {
             if (!key) return;
             if (userReactions[key] === reactionType) {
-                delete userReactions[key];
+                delete userReactions[key]; // Toggle off if clicked again
             } else {
                 userReactions[key] = reactionType;
             }
@@ -1757,8 +2217,8 @@
             updateReactionUI(key);
         }
 
-        function getReactionEmoji(reaction) {
-            switch(reaction) {
+        function getReactionEmoji (reaction) {
+            switch (reaction) {
                 case 'heart': return '❤️';
                 case 'thumbsup': return '👍';
                 case 'question': return '❓';
@@ -1767,27 +2227,31 @@
             }
         }
 
-        function updateReactionUI(key) {
+        function updateReactionUI (key) {
+            // Update Buttons in Modal
             const reaction = userReactions[key];
             const btns = document.querySelectorAll('.reaction-btn');
             btns.forEach(btn => {
                 btn.classList.add('grayscale', 'opacity-40');
-                btn.classList.remove('grayscale-0', 'opacity-100', 'bg-stone-100', 'scale-110', 'shadow-sm', 'border', 'border-stone-200');
+                btn.classList.remove('grayscale-0', 'opacity-100', 'bg-white', 'scale-110', 'shadow-sm', 'border', 'border-stone-200');
+
                 if (btn.getAttribute('data-type') === reaction) {
                     btn.classList.remove('grayscale', 'opacity-40');
-                    btn.classList.add('grayscale-0', 'opacity-100', 'bg-stone-100', 'scale-110', 'shadow-sm', 'border', 'border-stone-200');
+                    btn.classList.add('grayscale-0', 'opacity-100', 'bg-white', 'scale-110', 'shadow-sm', 'border', 'border-stone-200');
                 }
             });
+            // Update Badges on Cards globally
             renderReactionsOnCards();
         }
 
-        function renderReactionsOnCards() {
+        function renderReactionsOnCards () {
             const cards = document.querySelectorAll('[onclick^="openDetailModal"]');
             cards.forEach(card => {
                 const match = card.getAttribute('onclick').match(/'([^']+)'/);
                 if (match) {
                     const key = match[1];
                     const reaction = userReactions[key];
+
                     const existingBadge = card.querySelector('.reaction-badge');
                     if (existingBadge) existingBadge.remove();
 
@@ -1797,11 +2261,13 @@
                         badge.className = 'reaction-badge absolute -top-3 -right-3 w-8 h-8 bg-white border border-stone-200 rounded-full flex items-center justify-center text-lg shadow-md z-20 transition-all transform hover:scale-110';
                         badge.innerHTML = emoji;
                         card.classList.add('relative');
+
                         if (reaction === 'cross') card.classList.add('opacity-50', 'grayscale');
                         else card.classList.remove('opacity-50', 'grayscale');
+
                         card.appendChild(badge);
                     } else {
-                         card.classList.remove('opacity-50', 'grayscale');
+                        card.classList.remove('opacity-50', 'grayscale');
                     }
                 }
             });
@@ -1809,7 +2275,7 @@
 
 
         // LIVE COUNTDOWN TIMER
-        function initCountdown() {
+        function initCountdown () {
             const targetDate = new Date("2026-10-24T00:00:00").getTime();
             const updateTimer = () => {
                 const now = new Date().getTime();
@@ -1824,15 +2290,15 @@
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
+
                 const elDays = document.getElementById("cd-days");
                 const elHours = document.getElementById("cd-hours");
                 const elMins = document.getElementById("cd-mins");
                 const elSecs = document.getElementById("cd-secs");
-                if(elDays) elDays.innerText = days.toString().padStart(2, '0');
-                if(elHours) elHours.innerText = hours.toString().padStart(2, '0');
-                if(elMins) elMins.innerText = minutes.toString().padStart(2, '0');
-                if(elSecs) elSecs.innerText = seconds.toString().padStart(2, '0');
+                if (elDays) elDays.innerText = days.toString().padStart(2, '0');
+                if (elHours) elHours.innerText = hours.toString().padStart(2, '0');
+                if (elMins) elMins.innerText = minutes.toString().padStart(2, '0');
+                if (elSecs) elSecs.innerText = seconds.toString().padStart(2, '0');
             };
             updateTimer();
             setInterval(updateTimer, 1000);
@@ -1851,8 +2317,17 @@
             document.getElementById("map-view").scrollIntoView({behavior: 'smooth'});
         }
 
-        // TABS NAVIGATION CONTROLLER & DYNAMIC BLOB COLORS
-        function initTabs() {
+        // --- MICRO-INTERACTIONS: SLIDING TAB INDICATOR ---
+        function updateTabIndicator (activeBtn) {
+            const indicator = document.getElementById('tabIndicator');
+            if (indicator && activeBtn) {
+                indicator.style.width = activeBtn.offsetWidth + 'px';
+                indicator.style.left = activeBtn.offsetLeft + 'px';
+            }
+        }
+
+        // TABS NAVIGATION CONTROLLER
+        function initTabs () {
             const tabBtns = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
 
@@ -1860,10 +2335,11 @@
                 btn.addEventListener("click", () => {
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
-                    
+
+                    // Schiebe den farbigen Balken sanft unter den neuen Tab
+                    updateTabIndicator(btn);
+
                     const targetId = btn.getAttribute("data-target");
-                    
-                    // Update Content Visibility
                     tabContents.forEach(content => {
                         if (content.id === targetId) {
                             content.classList.remove("hidden");
@@ -1891,6 +2367,18 @@
                     }
                 });
             });
+
+            // Initiale Balken-Position beim Laden der Seite setzen
+            setTimeout(() => {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (activeBtn) updateTabIndicator(activeBtn);
+            }, 100);
+
+            // Balken-Position anpassen, wenn das Fenster vergrößert/verkleinert wird
+            window.addEventListener('resize', () => {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (activeBtn) updateTabIndicator(activeBtn);
+            });
         }
 
         // MAP INITIALIZER WITH CUSTOM EMOJI PINS
@@ -1899,11 +2387,11 @@
         };
         let map = null;
 
-        function initJapanMap() {
-            if(map !== null) return;
-            
+        function initJapanMap () {
+            if (map !== null) return;
+
             map = L.map('japan-map').setView([33.590, 130.401], 6);
-            
+
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap &copy; CARTO',
                 subdomains: 'abcd',
@@ -1918,7 +2406,7 @@
                     let borderColor = 'border-white';
                     let shadowColor = 'shadow-orange-500/30';
                     let bgCol = 'bg-white/80 backdrop-blur-md';
-                    
+
                     if (details.badge.includes('Okinawa') || details.badge.includes('Strand') || details.badge.includes('Luft')) shadowColor = 'shadow-cyan-500/30';
                     else if (details.badge.includes('Kunst') || details.badge.includes('Shikoku') || details.badge.includes('Inselhüpfen')) shadowColor = 'shadow-teal-500/30';
                     else if (details.badge.includes('Abenteuer') || details.badge.includes('Extrem')) shadowColor = 'shadow-indigo-500/30';
@@ -1950,9 +2438,9 @@
         }
 
         // WEATHER CHART VISUALIZATION
-        function initWeatherChart() {
+        function initWeatherChart () {
             const ctx = document.getElementById('weatherChart');
-            if(!ctx) return;
+            if (!ctx) return;
             const context = ctx.getContext('2d');
             const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
             const airTemp = [17, 17, 19, 21, 24, 27, 29, 29, 28, 25, 22, 18];
@@ -1997,35 +2485,35 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'top', labels: { boxWidth: 15, font: { weight: 'bold' } } },
-                        tooltip: { callbacks: { label: function(context) { return ` ${context.dataset.label}: ${context.parsed.y}°C`; } } }
+                        legend: {position: 'top', labels: {boxWidth: 15, font: {weight: 'bold'}}},
+                        tooltip: {callbacks: {label: function (context) {return ` ${context.dataset.label}: ${context.parsed.y}°C`;}}}
                     },
                     scales: {
-                        y: { min: 15, max: 32, ticks: { stepSize: 2 }, grid: { color: 'rgba(0,0,0,0.03)' } },
-                        x: { grid: { display: false } }
+                        y: {min: 15, max: 32, ticks: {stepSize: 2}, grid: {color: 'rgba(0,0,0,0.03)'}},
+                        x: {grid: {display: false}}
                     }
                 }
             });
         }
 
         // LOCAL STORAGE SCHEDULER CONTROLLER
-        function loadCalendarFromStorage() {
+        function loadCalendarFromStorage () {
             const stored = localStorage.getItem("japan_travel_calendar_2026");
             if (stored) {
-                try { calendarData = JSON.parse(stored); } catch(e) { calendarData = {}; }
+                try {calendarData = JSON.parse(stored);} catch (e) {calendarData = {};}
             } else {
                 calendarData = {};
                 saveCalendarToStorage();
             }
         }
 
-        function saveCalendarToStorage() {
+        function saveCalendarToStorage () {
             localStorage.setItem("japan_travel_calendar_2026", JSON.stringify(calendarData));
         }
 
         // DETAILED MODAL OVERLAYS
-        function openDetailModal(key) {
-            currentModalKey = key; 
+        function openDetailModal (key) {
+            currentModalKey = key;
             const data = destinationDetails[key];
             if (!data) return;
 
@@ -2042,24 +2530,30 @@
 
             const modal = document.getElementById("detailModal");
             const card = document.getElementById("modalCard");
-            
+
             modal.classList.remove("hidden");
             document.body.style.overflow = 'hidden';
-            setTimeout(() => {
-                modal.classList.remove("opacity-0");
-                card.classList.remove("scale-95");
-                card.classList.add("scale-100");
-            }, 10);
+
+            // Force browser reflow to ensure transition works
+            void modal.offsetWidth;
+
+            modal.classList.remove("opacity-0");
+            card.classList.remove("scale-95");
+            card.classList.add("scale-100");
         }
 
-        function closeDetailModal() {
+        function closeDetailModal () {
             const modal = document.getElementById("detailModal");
             const card = document.getElementById("modalCard");
-            
+
             card.classList.remove("scale-100");
             card.classList.add("scale-95");
+            modal.classList.add("opacity-0");
             document.body.style.overflow = '';
-            setTimeout(() => { modal.classList.add("hidden"); }, 250);
+
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
         }
 
         // RENDER WEEKS CHIPS
@@ -2152,9 +2646,9 @@
         }
 
         function quickAdd (itemName) {
-            if (!selectedDayKey) { showToast("Bitte wähle zuerst einen Tag im Kalender aus!"); return; }
-            if (!calendarData[selectedDayKey]) { calendarData[selectedDayKey] = {notes: "", items: []}; }
-            if (calendarData[selectedDayKey].items.includes(itemName)) { showToast("Aktivität ist bereits für diesen Tag eingeplant!"); return; }
+            if (!selectedDayKey) {showToast("Bitte wähle zuerst einen Tag im Kalender aus!"); return;}
+            if (!calendarData[selectedDayKey]) {calendarData[selectedDayKey] = {notes: "", items: []};}
+            if (calendarData[selectedDayKey].items.includes(itemName)) {showToast("Aktivität ist bereits für diesen Tag eingeplant!"); return;}
 
             calendarData[selectedDayKey].items.push(itemName);
             saveCalendarToStorage();
@@ -2217,7 +2711,7 @@
             dialog.classList.remove("hidden");
         }
 
-        function hideCustomDialog () { document.getElementById("customDialog").classList.add("hidden"); }
+        function hideCustomDialog () {document.getElementById("customDialog").classList.add("hidden");}
 
         function generateShareLink () {
             try {
@@ -2231,7 +2725,7 @@
                 document.execCommand("copy");
                 document.body.removeChild(tempInput);
                 showToast("🔗 Teilbarer Link wurde kopiert!");
-            } catch (e) { showToast("❌ Fehler beim Erstellen des Links."); }
+            } catch (e) {showToast("❌ Fehler beim Erstellen des Links.");}
         }
 
         function checkUrlForPlan () {
@@ -2248,7 +2742,7 @@
                         renderCalendarDays();
                         hideCustomDialog();
                         showToast("✅ Plan erfolgreich importiert!");
-                    } catch (e) { hideCustomDialog(); showToast("❌ Fehler: Link beschädigt."); }
+                    } catch (e) {hideCustomDialog(); showToast("❌ Fehler: Link beschädigt.");}
                 });
             }
         }
@@ -2285,15 +2779,13 @@
 
                     card.className = "bg-white/60 backdrop-blur-lg rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 cursor-pointer transition-all duration-300 flex flex-col overflow-hidden group relative border border-white/60";
 
-                    // Remove HTML tags for the preview text, preserve full text in modal
                     const rawText = data.description.replace(/<[^>]*>?/gm, ' ');
 
-                    // Note: Duration is now on the bottom left, Details on the bottom right
                     card.innerHTML = `
                     <div class="h-44 relative overflow-hidden flex-shrink-0 bg-stone-100">
                         <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/800x400/faf6f0/e36414?text=Highlight'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-                        <div class="absolute bottom-3 left-3 flex items-end">
+                        <div class="absolute bottom-3 left-3 flex items-end z-10">
                             <span class="bg-white/20 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border border-white/20 shadow-sm">${data.badge}</span>
                         </div>
                     </div>
@@ -2303,11 +2795,11 @@
                             <p class="text-sm text-stone-700 font-medium leading-relaxed line-clamp-3">${rawText}</p>
                         </div>
                         <div class="mt-4 pt-3 border-t border-white flex justify-between items-center w-full">
-                            <div class="text-[10px] font-bold text-stone-500 bg-white/50 px-2 py-1 rounded-md border border-white flex items-center">
+                            <div class="text-[10px] font-bold text-stone-500 bg-white/50 px-2 py-1 rounded-md border border-white flex items-center shadow-sm">
                                 <i class="fa-regular fa-clock mr-1.5 text-stone-400"></i>
                                 <span>${data.duration}</span>
                             </div>
-                            <div class="flex items-center text-xs font-black ${themeColor} bg-white/50 px-2 py-1 rounded-md border border-white">
+                            <div class="flex items-center text-xs font-black ${themeColor} bg-white/50 px-2 py-1 rounded-md border border-white shadow-sm">
                                 <span>Details ansehen</span>
                                 <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
                             </div>
@@ -2320,4 +2812,5 @@
         }
     </script>
 </body>
+
 </html>
