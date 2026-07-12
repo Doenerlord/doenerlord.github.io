@@ -2591,15 +2591,28 @@
         function initTabs () {
             const tabBtns = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
-
+        
+            // Mapping von Tabs zu den neuen Hintergründen
+            const bgMapping = {
+                'overview': 'bg-blobs',
+                'okinawa': 'bg-okinawa',
+                'kyushu': 'bg-kyushu',
+                'shikoku': 'bg-shikoku',
+                'autumn-analysis': 'bg-autumn',
+                'interactive-planner': 'bg-blobs',
+                'map-view': 'bg-blobs'
+            };
+        
             tabBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
-
+        
                     updateTabIndicator(btn);
-
+        
                     const targetId = btn.getAttribute("data-target");
+                    
+                    // Content Umschaltung
                     tabContents.forEach(content => {
                         if (content.id === targetId) {
                             content.classList.remove("hidden");
@@ -2609,15 +2622,27 @@
                             content.classList.add("hidden");
                         }
                     });
-
-                    // 🎨 UPDATE THEME COLORS DYNAMICALLY
-                    const palette = blobPalettes[targetId] || blobPalettes['overview'];
-                    document.documentElement.style.setProperty('--blob-1', palette[0]);
-                    document.documentElement.style.setProperty('--blob-2', palette[1]);
-                    document.documentElement.style.setProperty('--blob-3', palette[2]);
-                    document.documentElement.style.setProperty('--blob-4', palette[3]);
-                    document.documentElement.style.setProperty('--blob-5', palette[4]);
-
+        
+                    // 🎨 NEU: HINTERGRUND-UMSCHALTUNG
+                    // Alle Hintergrund-Container ausblenden
+                    document.querySelectorAll('.ambient-bg').forEach(bg => {
+                        bg.style.opacity = '0';
+                    });
+                    // Den passenden Container weich einblenden
+                    const activeBgId = bgMapping[targetId];
+                    const targetBg = document.getElementById(activeBgId);
+                    if (targetBg) targetBg.style.opacity = '1';
+        
+                    // Farb-Paletten Update für Blobs (falls der Planner / Map aktiv ist)
+                    if (activeBgId === 'bg-blobs') {
+                        const palette = blobPalettes[targetId] || blobPalettes['overview'];
+                        document.documentElement.style.setProperty('--blob-1', palette[0]);
+                        document.documentElement.style.setProperty('--blob-2', palette[1]);
+                        document.documentElement.style.setProperty('--blob-3', palette[2]);
+                        document.documentElement.style.setProperty('--blob-4', palette[3]);
+                        document.documentElement.style.setProperty('--blob-5', palette[4]);
+                    }
+        
                     // Init Map if needed
                     if (targetId === "map-view") {
                         initJapanMap();
