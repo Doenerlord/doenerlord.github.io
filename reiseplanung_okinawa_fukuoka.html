@@ -2040,7 +2040,7 @@
                 badge: "🏺 Kunsthandwerk",
                 location: "Yomitan Village",
                 duration: "ca. 3 Std.",
-                image: "https://www.oki-islandguide.com/wp-content/uploads/2014/01/yuntanzayaki_store_1.jpg",
+                image: "https://okinawahai.com/wp-content/uploads/2014/12/Yomitan-Pottery-Village-16-696x507.jpg",
                 link: "https://www.oki-islandguide.com/specialfeatures/a-pottery-mecca-yomitan-village-yachimun-no-sato",
                 description: "Abseits der Touristenpfade liegt das malerische Töpferdorf Yachimun no Sato. Das idyllische Viertel ist das schöpferische Zentrum für das traditionelle Keramik-Handwerk Okinawas, genannt 'Yachimun'.<br><br>Hier haben sich über ein Dutzend Meistertöpfer zusammengeschlossen und betreiben gemeinschaftlich traditionelle, mehrstufige Stufenbrandöfen (Noborigama), die an den bewaldeten Hängen emporragen. Die urigen, mit roten Ziegeln gedeckten Atelier-Häuser verkaufen handgemachte Tassen, Teller und die berühmten Shisa-Wächterlöwen.",
                 tip: "Schlendert gemütlich durch die waldigen Gassen und werft einen Blick in die offenen Werkstätten der Künstler. Die Keramiken eignen sich hervorragend als einzigartiges, handgefertigtes Souvenir."
@@ -3216,9 +3216,8 @@
                         <div class="h-44 relative overflow-hidden flex-shrink-0 bg-stone-100">
                             <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/800x400/faf6f0/e36414?text=Highlight'">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+                            <div class="absolute bottom-3 left-3 flex items-end">
                                 <span class="bg-white/20 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded border border-white/20 shadow-sm">${data.badge}</span>
-                                <span class="text-white text-[10px] font-bold drop-shadow-md"><i class="fa-regular fa-clock mr-1 text-white/80"></i>${data.duration.replace('ca. ', '')}</span>
                             </div>
                         </div>
                         <div class="p-5 flex flex-col justify-between flex-grow bg-white">
@@ -3226,9 +3225,15 @@
                                 <h4 class="font-black text-lg text-earth mb-2 group-hover:${themeColor} transition-colors line-clamp-2 leading-tight">${data.title}</h4>
                                 <p class="text-sm text-stone-500 leading-relaxed line-clamp-3">${rawText}</p>
                             </div>
-                            <div class="mt-4 pt-3 border-t border-stone-100 flex items-center text-xs font-black ${themeColor}">
-                                <span>Details ansehen</span>
-                                <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                            <div class="mt-4 pt-3 border-t border-stone-100 flex justify-between items-center w-full">
+                                <div class="text-[10px] font-bold text-stone-400 flex items-center">
+                                    <i class="fa-regular fa-clock mr-1.5 text-stone-300"></i>
+                                    <span>${data.duration}</span>
+                                </div>
+                                <div class="flex items-center text-xs font-black ${themeColor}">
+                                    <span>Details ansehen</span>
+                                    <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                                </div>
                             </div>
                         </div>
                     `;
