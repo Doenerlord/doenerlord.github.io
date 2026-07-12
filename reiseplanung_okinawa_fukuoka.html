@@ -211,7 +211,7 @@
             display: none !important;
         }
 
-        /* --- THEMATIC AMBIENT BACKGROUNDS --- */
+                /* --- THEMATIC AMBIENT BACKGROUNDS --- */
         .ambient-bg {
             transition: opacity 1s ease-in-out;
         }
@@ -230,106 +230,70 @@
             opacity: 0.15;
             filter: blur(10px);
         }
-
         .wave-bg-2 {
             animation: waveScroll 18s linear infinite reverse;
             opacity: 0.1;
             bottom: -15vh;
             height: 70vh;
         }
-
         @keyframes waveScroll {
-            0% {
-                transform: translateX(0) scaleY(1);
-            }
-
-            50% {
-                transform: translateX(-50vw) scaleY(1.1);
-            }
-
-            100% {
-                transform: translateX(-100vw) scaleY(1);
-            }
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-50vw) scaleY(1.1); }
+            100% { transform: translateX(-100vw) scaleY(1); }
         }
 
         /* Shikoku Whirlpools (Naruto Strudel) */
         .whirlpool {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150vw;
-            height: 150vw;
-            margin-top: -75vw;
-            margin-left: -75vw;
+            top: 50%; left: 50%;
+            width: 150vw; height: 150vw;
+            margin-top: -75vw; margin-left: -75vw;
             background: conic-gradient(from 0deg, rgba(13, 148, 136, 0.05), rgba(8, 145, 178, 0.25), rgba(13, 148, 136, 0.05));
             border-radius: 50%;
             filter: blur(50px);
             animation: spin 30s linear infinite;
         }
-
         .whirlpool-inner {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80vw;
-            height: 80vw;
-            margin-top: -40vw;
-            margin-left: -40vw;
+            top: 50%; left: 50%;
+            width: 80vw; height: 80vw;
+            margin-top: -40vw; margin-left: -40vw;
             background: conic-gradient(from 180deg, rgba(2, 128, 144, 0.1), rgba(16, 185, 129, 0.2), rgba(2, 128, 144, 0.1));
             border-radius: 50%;
             filter: blur(40px);
             animation: spin 15s linear infinite reverse;
         }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Autumn Leaves */
         .autumn-leaf {
             position: absolute;
             top: -10vh;
-            width: 25px;
-            height: 25px;
+            width: 25px; height: 25px;
             background: linear-gradient(135deg, #e36414, #9a031e);
             border-radius: 2px 16px;
             opacity: 0.4;
             filter: blur(4px);
             animation: fall linear infinite;
         }
-
         @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg) translateX(0);
-            }
-
-            100% {
-                transform: translateY(110vh) rotate(360deg) translateX(30px);
-            }
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(30px); }
         }
 
         /* Bamboo Leaves (Kyushu) */
         .bamboo-leaf {
             position: absolute;
-            width: 15px;
-            height: 45px;
+            width: 15px; height: 45px;
             background: linear-gradient(135deg, #2d6a4f, #52b788);
             border-radius: 0 20px 0 20px;
             opacity: 0.3;
             filter: blur(5px);
             animation: sway ease-in-out infinite alternate;
         }
-
         @keyframes sway {
-            0% {
-                transform: rotate(-20deg) translateX(-15px);
-            }
-
-            100% {
-                transform: rotate(20deg) translateX(15px);
-            }
+            0% { transform: rotate(-20deg) translateX(-15px); }
+            100% { transform: rotate(20deg) translateX(15px); }
         }
     </style>
     <!-- Leaflet CSS & JS -->
@@ -341,8 +305,8 @@
 
     <!-- DYNAMIC AMBIENT BACKGROUNDS -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <!-- 1. Blobs (Planner, Overview, Map) -->
-        <div id="bg-blobs" class="ambient-bg absolute inset-0 opacity-100">
+<!-- 1. Blobs (Planner, Overview, Map) -->
+<div id="bg-blobs" class="ambient-bg absolute inset-0 opacity-100">
             <div id="blob-1"
                 class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob">
             </div>
@@ -358,17 +322,17 @@
             <div id="blob-5"
                 class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000">
             </div>
-        </div>
-        
-        <!-- 2. Okinawa (Wellen) -->
-        <div id="bg-okinawa" class="ambient-bg absolute inset-0 opacity-0">
-            <div class="wave-bg"></div>
-            <div class="wave-bg wave-bg-2"></div>
-        </div>
-        
-        <!-- 3. Kyushu (Bambus) -->
-        <div id="bg-kyushu" class="ambient-bg absolute inset-0 opacity-0">
-            <!-- JS generiert hier die BlÃ¤tter -->
+            </div>
+            
+            <!-- 2. Okinawa (Wellen) -->
+            <div id="bg-okinawa" class="ambient-bg absolute inset-0 opacity-0">
+                <div class="wave-bg"></div>
+                <div class="wave-bg wave-bg-2"></div>
+            </div>
+            
+            <!-- 3. Kyushu (Bambus) -->
+            <div id="bg-kyushu" class="ambient-bg absolute inset-0 opacity-0">
+                <!-- JS generiert hier die BlÃ¤tter -->
             </div>
             
             <!-- 4. Shikoku (Naruto Whirlpool) -->
@@ -379,7 +343,7 @@
             
             <!-- 5. Autumn Analysis (Herbstlaub) -->
             <div id="bg-autumn" class="ambient-bg absolute inset-0 opacity-0">
-            <!-- JS generiert hier die BlÃ¤tter -->
+                <!-- JS generiert hier die BlÃ¤tter -->
         </div>
     </div>
 
@@ -508,13 +472,12 @@
                 <div class="md:col-span-2 space-y-4">
                     <h2 class="text-3xl font-black text-earth tracking-tight">Die perfekte Reisedramaturgie</h2>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
-                        Deine Reise erstreckt sich Ã¼ber einen genialen Zeitraum. Du landest am <strong class="text-ocean">26. Oktober</strong>
-                        im subtropischen SÃ¼den in <strong>Okinawa</strong>,
+                        Deine Reise erstreckt sich Ã¼ber einen genialen Zeitraum. Du landest am <strong
+                            class="text-ocean">26. Oktober</strong> im subtropischen SÃ¼den in <strong>Okinawa</strong>,
                         umgehst die feucht-heiÃen Sommermonate und erlebst die perfekte Badetemperatur.
                     </p>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
-                        Danach wechselst du nach <strong>Kyushu (Fukuoka)</strong> und folgst der KÃ¤ltewelle nach
-                        Osten,
+                        Danach wechselst du nach <strong>Kyushu (Fukuoka)</strong> und folgst der KÃ¤ltewelle nach Osten,
                         um genau im richtigen Moment den landesweiten HÃ¶hepunkt des spektakulÃ¤ren, tiefen Herbstlaubs
                         (Momiji) zu erleben. Ein Abstecher auf die Nachbarinsel <strong>Shikoku</strong> ist von Kyushu
                         aus wunderbar mÃ¶glich.
@@ -656,15 +619,13 @@
                     <div
                         class="space-y-4 text-stone-700 leading-relaxed font-medium bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/60 shadow-lg">
                         <p class="text-lg">
-                            WÃ¤hrend das Hauptland bereits abkÃ¼hlt, empfÃ¤ngt dich Okinawa Ende Oktober mit
-                            herrlichstem
+                            WÃ¤hrend das Hauptland bereits abkÃ¼hlt, empfÃ¤ngt dich Okinawa Ende Oktober mit herrlichstem
                             Sommerausklang. Die Lufttemperatur liegt am Nachmittag meist bei Ã¤uÃerst angenehmen
                             <strong>25Â°C bis 28Â°C</strong>.
                         </p>
                         <p
                             class="text-lg font-bold text-ocean bg-white/80 p-4 rounded-2xl border border-white shadow-sm">
-                            ð Perfekt zum Baden: Das Meerwasser speichert die enorme Sommerhitze und liegt Ende
-                            Oktober
+                            ð Perfekt zum Baden: Das Meerwasser speichert die enorme Sommerhitze und liegt Ende Oktober
                             noch immer bei warmen, glasklaren <strong>26Â°C</strong>. Du kannst problemlos schnorcheln,
                             schwimmen oder tauchen!
                         </p>
@@ -709,9 +670,9 @@
                             class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
                             data-filter="natur">ð´ Natur</button>
                     </div>
-                </div>
-                
-                <div id="okinawa-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    </div>
+                    
+                    <div id="okinawa-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('churaumi')"></div>
                     <div onclick="openDetailModal('kerama')"></div>
                     <div onclick="openDetailModal('paragliding_okinawa')"></div>
@@ -737,8 +698,7 @@
                 <p class="text-stone-700 font-medium text-lg leading-relaxed max-w-4xl">
                     Fukuoka bildet euren idealen Ausgangspunkt auf Kyushu. Mit fast vier Wochen Reisebudget habt ihr
                     ausreichend Zeit, die spektakulÃ¤re Vulkanlandschaft, historische Burgen, Handwerkskunst und die
-                    weltbesten Thermalquellen-DÃ¶rfer (Onsen) entspannt kennenzulernen. Auch lohnenswerte AusflÃ¼ge in
-                    die
+                    weltbesten Thermalquellen-DÃ¶rfer (Onsen) entspannt kennenzulernen. Auch lohnenswerte AusflÃ¼ge in die
                     benachbarte PrÃ¤fektur Yamaguchi (SÃ¼d-Honshu) sind perfekt machbar.
                 </p>
             </div>
@@ -772,9 +732,9 @@
                             class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
                             data-filter="entspannung">â¨ï¸ Entspannung</button>
                     </div>
-                </div>
-                
-                <div id="kyushu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    </div>
+                    
+                    <div id="kyushu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('yatai')"></div>
                     <div onclick="openDetailModal('hakata_ori')"></div>
                     <div onclick="openDetailModal('hakata_ningyo')"></div>
@@ -839,7 +799,7 @@
                             class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
                             data-filter="entspannung">â¨ï¸ Entspannung</button>
                     </div>
-                    </div>
+                </div>
 
                 <div id="shikoku-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('dogo_onsen')"></div>
@@ -869,11 +829,9 @@
                 <div class="space-y-2">
                     <h3 class="font-bold text-earth text-lg">Klimatischer Faktencheck: HÃ¶henlage bestimmt das Laub</h3>
                     <p class="text-stone-700 font-medium text-sm leading-relaxed">
-                        Sowohl <strong>Nikko</strong> (auf 1.000m bis 1.500m MeereshÃ¶he) als auch der heilige
-                        Tempelberg
+                        Sowohl <strong>Nikko</strong> (auf 1.000m bis 1.500m MeereshÃ¶he) als auch der heilige Tempelberg
                         <strong>Koyasan bei Osaka</strong> (auf ca. 800m) erleben ihre spektakulÃ¤re LaubfÃ¤rbung extrem
-                        frÃ¼h. <strong>In der Woche vom 21. bis 25. November herrscht dort bereits tiefer SpÃ¤therbst
-                            oder
+                        frÃ¼h. <strong>In der Woche vom 21. bis 25. November herrscht dort bereits tiefer SpÃ¤therbst oder
                             Winter.</strong> Die LaubbÃ¤ume sind kahl, die Temperaturen fallen nachts unter den
                         Gefrierpunkt und es weht ein sehr ungemÃ¼tlicher, eisiger Bergwind.
                     </p>
@@ -1648,12 +1606,13 @@
             // Abenteuer & Erlebnisse
             paragliding_okinawa: {
                 title: "Motor-Paragliding",
-                badge:                           location: "Okinawa KÃ¼ste (Nakagusuku/Chinen)",
+                badge: "ðª Luft-Abenteuer",
+                location: "Okinawa KÃ¼ste (Nakagusuku/Chinen)",
                 duration: "ca. 2 Std.",
                 image: "https://img.activityjapan.com/10/62373/10000006237301_1QZm0PTk_4.jpg?version=1768887183",
                 link: "https://en.activityjapan.com/publish/plan/62373",
-                descr                    timativen Vogelperspektive! Be                    it einem erfahrenen Fluglehrer)                    en Sandstrand ab.<br><br>In                     hast du einen vÃ¶llig ungestÃ¶rten                    uf die unzÃ¤hligen kleinen Inse                    orallen durchzogenen KÃ¼stenstre                    ').",
-                tip: "Zie                    s in 200 Metern HÃ¶he etwas kÃ¼                    Handgelenk ist wÃ¤rmstens zu                    sser von oben festzuhalten."
+                description: "Erlebe Okinawa aus der ultimativen Vogelperspektive! Beim Motor-Paragliding (Tandemflug mit einem erfahrenen Fluglehrer) hebst du ganz entspannt vom weiÃen Sandstrand ab.<br><br>In einer HÃ¶he von bis zu 200 Metern hast du einen vÃ¶llig ungestÃ¶rten, atemberaubenden 360-Grad-Blick auf die unzÃ¤hligen kleinen Inseln und die leuchtend blauen, von Korallen durchzogenen KÃ¼stenstreifen (das sogenannte 'Okinawa Blue').",
+                tip: "Zieht euch einen Windbreaker an, da es in 200 Metern HÃ¶he etwas kÃ¼hler sein kann. Eine Actioncam am Handgelenk ist wÃ¤rmstens zu empfehlen, um das tÃ¼rkisblaue Wasser von oben festzuhalten."
             },
             bungee_itsuki: {
                 title: "Itsuki Bungee Jump",
@@ -1662,8 +1621,8 @@
                 duration: "ca. 3 Std.",
                 image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_Fq_a4XRkUCv1sI-OqgVV6PZRlqtPXj4Va8uELHYR7eNItq2YOGvNY5k&s=10",
                 link: "https://www.bungyjapan.com/itsuki/",
-                des                    renalinkick! Tief im bergigen La                     malerische Itsuki-Dorf. Hier                      Kawabe-gawa-BrÃ¼cke.<br><br>Mi                    t dies einer der hÃ¶chsten und                    Japans. Das Besondere: Du fÃ¤ll                    gdgrÃ¼ne Wasser des unberÃ¼hrten Flusses zu.",
-                tip: "Eine Vorausbuchung ist zwingend erforderlich. Verbinde                    ner Fahrt durch das lÃ¤ndliche Kyushu und                    ba' (Buchweizennudeln)."
+                description: "FÃ¼r den ultimativen Adrenalinkick! Tief im bergigen Landesinneren von Kumamoto liegt das malerische Itsuki-Dorf. Hier stÃ¼rzt du dich von der mÃ¤chtigen Kawabe-gawa-BrÃ¼cke.<br><br>Mit einer FallhÃ¶he von 66 Metern ist dies einer der hÃ¶chsten und spektakulÃ¤rsten Bungee-SprÃ¼nge Japans. Das Besondere: Du fÃ¤llst direkt auf das glasklare, smaragdgrÃ¼ne Wasser des unberÃ¼hrten Flusses zu.",
+                tip: "Eine Vorausbuchung ist zwingend erforderlich. Verbindet den Abstecher nach Itsuki Village mit einer Fahrt durch das lÃ¤ndliche Kyushu und probiert vor Ort das berÃ¼hmte 'Itsuki Soba' (Buchweizennudeln)."
             },
             sandbad_ibusuki: {
                 title: "Ibusuki Vulkan-Sandbad",
@@ -1672,8 +1631,8 @@
                 duration: "ca. 2 Std.",
                 image: "https://cdn.erlebe.de/wp-content/uploads/sites/27/2024/07/japan-kyushu-ibusuki-sand-bath.png",
                 link: "https://www.japan.travel/de/spot/606/",
-                description: "Ibusuki ist weltberÃ¼hmt fÃ¼r seine einzi                    hi Onsen). Anstatt in heiÃem Wasser zu baden, legst du dich hier in einem bereitgestellten Baumwoll-Yukata direkt                    eln den von natÃ¼rlichen, vulkanischen Thermalque                    direkt Ã¼ber deinen KÃ¶rper. Das Gewicht des Sande                    eln extrem schnell.",
-                tip: "Bleib nic                    Hitze den Kreislauf stark anregt. Nach dem Ausgraben geht es direkt in die angrenzenden regulÃ¤ren ThermalbÃ¤der."
+                description: "Ibusuki ist weltberÃ¼hmt fÃ¼r seine einzigartigen, natÃ¼rlichen SandbÃ¤der (Sunamushi Onsen). Anstatt in heiÃem Wasser zu baden, legst du dich hier in einem bereitgestellten Baumwoll-Yukata direkt an den Strand.<br><br>Die Mitarbeiter schaufeln den von natÃ¼rlichen, vulkanischen Thermalquellen tief im Boden erhitzten, schwarzen Sand direkt Ã¼ber deinen KÃ¶rper. Das Gewicht des Sandes und die tiefe ErdwÃ¤rme entspannen die Muskeln extrem schnell.",
+                tip: "Bleib nicht lÃ¤nger als 10-15 Minuten im Sand, da die Hitze den Kreislauf stark anregt. Nach dem Ausgraben geht es direkt in die angrenzenden regulÃ¤ren ThermalbÃ¤der."
             },
             kintsugi_kyoto: {
                 title: "Kintsugi Meisterkurs",
@@ -1682,8 +1641,8 @@
                 duration: "ca. 2 Std.",
                 image: "https://res.cloudinary.com/jnto/image/upload/w_2064,h_1300,f_auto,fl_lossy,q_auto,c_fill,q_auto/v1/media/filer_public/56/ee/56ee1814-c095-4cec-9e69-1be6f4994e73/kintsugi-experience-in-kyoto-kv_yj7hcg",
                 link: "https://www.japan.travel/en/sports/adventure/activities/kintsugi-experience-in-kyoto/",
-                description: "Kintsugi ist die jahrhundertealte japanische Kun                    Urushi) zu reparieren, der mit feinstem Gold-, Sil                    >Die zugrundeliegende Zen-Philosophie besagt, dass BrÃ¼c                    lten. Vielmehr sind sie Teil der Geschichte eines Objekts un                    ner.",
-                tip: "Bucht den Workshop am b                    o oder direkt vor der Abreise nach Tokyo. Die selbs                    te Andenken an eure Japanreise."
+                description: "Kintsugi ist die jahrhundertealte japanische Kunst, zerbrochene Keramik mit speziellem Lack (Urushi) zu reparieren, der mit feinstem Gold-, Silber- oder Platinpulver bestÃ¤ubt wird.<br><br>Die zugrundeliegende Zen-Philosophie besagt, dass BrÃ¼che und Reparaturen nicht versteckt werden sollten. Vielmehr sind sie Teil der Geschichte eines Objekts und machen es dadurch noch wertvoller und schÃ¶ner.",
+                tip: "Bucht den Workshop am besten an einem verregneten Nachmittag in Kyoto oder direkt vor der Abreise nach Tokyo. Die selbst reparierte Schale ist das wohl persÃ¶nlichste Andenken an eure Japanreise."
             },
 
             // Fukuoka Crafts
@@ -1694,7 +1653,8 @@
                 duration: "ca. 3 Std.",
                 image: "https://www.crossroadfukuoka.jp/storage/tourism_attractions/931/responsive_images/L1g9vJ36vR5vW8xU1oH7E0Y090J4K6V6L7b2F7Y2__1673_1116.jpeg",
                 link: "https://fukuokacrafts.jp/en/home",
-                descrip                    ta-ori ist eine der prestigetrÃ¤chtigsten Textiltechnike                    Tributgeschenk an das Shogunat gesendet.<br><br>In hist                    der Ã¤ltesten bestehenden Weberei) kÃ¶nnt ihr nicht nur                     our erleben, sondern euch auch selbst an die echten, tra                    itung echter Meister webt ihr euer eigenes kleines Meisterw                    ilien sind extrem dicht und strapazierfÃ¤hig. Sum                    n als Obi-GÃ¼rtel. Der Workshop ist eine perfekte Halbtages-AktivitÃ¤t fÃ¼r Fukuoka!"
+                description: "Die Ã¼ber 770 Jahre alte Webkunst Hakata-ori ist eine der prestigetrÃ¤chtigsten Textiltechniken Japans und wurde in der Edo-Zeit sogar als Tributgeschenk an das Shogunat gesendet.<br><br>In historischen WerkstÃ¤tten wie Nishimura Orimono (der Ã¤ltesten bestehenden Weberei) kÃ¶nnt ihr nicht nur die Geschichte und den Webprozess auf einer Tour erleben, sondern euch auch selbst an die echten, traditionellen HolzwebstÃ¼hle setzen. Unter Anleitung echter Meister webt ihr euer eigenes kleines Meisterwerk.",
+                tip: "Hakata-ori Textilien sind extrem dicht und strapazierfÃ¤hig. Sumo-Ringer verwenden sie noch heute liebend gern als Obi-GÃ¼rtel. Der Workshop ist eine perfekte Halbtages-AktivitÃ¤t fÃ¼r Fukuoka!"
             },
             hakata_ningyo: {
                 title: "Hakata Ningyo Puppen-Bemalung",
@@ -1703,7 +1663,8 @@
                 duration: "ca. 2 Std.",
                 image: "https://www.crossroadfukuoka.jp/storage/tourism_attractions/932/responsive_images/1Wc6731yU7wKzFwA97qZ2K996X04t0VlB80Z7H0D__1673_1116.jpeg",
                 link: "https://fukuokacrafts.jp/en/home",
-                                o) sind weltberÃ¼hmte, unglasierte Keramikfiguren, deren                     Ã¼ckgehen. Sie sind berÃ¼hmt fÃ¼r ihre verblÃ¼ffen                     lebensechten GesichtsausdrÃ¼cke.<br><br>In diesem han                    tigsten Schritt: dem sogenannten 'Menso'. Mit feinste                    urer eigenen Tonfigur Leben ein, malt filigrane Gesichter und                      "Die fertige Figur kÃ¶nnt ihr direkt mit nach Hause ne                    tiges Souvenir, an dem ihr lange Freude haben werdet."
+                description: "Hakata-Puppen (Hakata Ningyo) sind weltberÃ¼hmte, unglasierte Keramikfiguren, deren UrsprÃ¼nge auf das frÃ¼he 17. Jahrhundert zurÃ¼ckgehen. Sie sind berÃ¼hmt fÃ¼r ihre verblÃ¼ffend weichen, flieÃenden Kurven und unglaublich lebensechten GesichtsausdrÃ¼cke.<br><br>In diesem handwerklichen Erlebnis widmet ihr euch dem wichtigsten Schritt: dem sogenannten 'Menso'. Mit feinsten Pinseln und leuchtenden Farben haucht ihr eurer eigenen Tonfigur Leben ein, malt filigrane Gesichter und verziert die Kimonos.",
+                tip: "Die fertige Figur kÃ¶nnt ihr direkt mit nach Hause nehmen. Sie ist ein wundervolles, 100% einzigartiges Souvenir, an dem ihr lange Freude haben werdet."
             },
             hakata_magemono: {
                 title: "Hakata Magemono (Bugholz)",
@@ -1712,8 +1673,8 @@
                 duration: "ca. 2 Std.",
                 image: "https://fukuoka-touch.net/wp-content/uploads/2016/10/hakata-magemono.jpg",
                 link: "https://fukuokacrafts.jp/en/home",
-                                 r 400 Jahre alte, hochgeschÃ¤tzte Tradition des Bugh                    holz wird unter heiÃem Dampf gebogen und an den Ende                    irschbÃ¤ume stabil vernÃ¤ht â komplett ohne NÃ¤gel!<br><                    ister-Familien (wie den Shibatas in der 18. Generation) an                    onelle Holz-Bento-Box oder ein kleines Serviertablett an.",
-                                egulieren die Feuchtigkeit perfekt. Sie halten den Rei                    ch und weich. Ein geniales Utensil fÃ¼r den heimischen Alltag!"
+                description: "Hakata Magemono ist die Ã¼ber 400 Jahre alte, hochgeschÃ¤tzte Tradition des Bugholz-Handwerks. DÃ¼nnes Zedern- oder Zypressenholz wird unter heiÃem Dampf gebogen und an den Enden ausschlieÃlich mit der Rinde japanischer KirschbÃ¤ume stabil vernÃ¤ht â komplett ohne NÃ¤gel!<br><br>In dem Workshop, der in Koaboration mit Meister-Familien (wie den Shibatas in der 18. Generation) angeboten wird, fertigt ihr eure eigene traditionelle Holz-Bento-Box oder ein kleines Serviertablett an.",
+                tip: "Dosen aus unlackiertem Zedernholz regulieren die Feuchtigkeit perfekt. Sie halten den Reis in eurer Bento-Box dadurch unglaublich frisch und weich. Ein geniales Utensil fÃ¼r den heimischen Alltag!"
             },
 
             // Okinawa Erweiterungen
@@ -1724,16 +1685,18 @@
                 duration: "Halber Tag",
                 image: "https://res.cloudinary.com/jnto/image/upload/w_1650,f_auto,fl_lossy,q_auto,c_scale/v1/media_national_parks/filer_public/7e/38/7e38bb06-b797-4158-a117-a5d14c1a29f7/yambaru_national_trekking_sstho2",
                 link: "https://www.japan.travel/de/spot/2135/",
-                description: "Wandert durch die dichten s                    zum UNESCO-Weltnaturerbe gehÃ¶ren. Das Gebiet beherbergt                    fÃ¤hige Yanbaru-Ralle und riesige FarnbÃ¤ume.<br><br>Di                    r gÃ¤nzlich unberÃ¼hrt, was einen genialen Kontrast zu d                                    tip: "Festes Schuhwerk und Insektensch                    chlieÃt die verborgenen Pfade und WasserfÃ¤lle am sichersten."
+                description: "Wandert durch die dichten subtropischen LorbeerwÃ¤lder von Yanbaru, die zum UNESCO-Weltnaturerbe gehÃ¶ren. Das Gebiet beherbergt seltene, endemische Tierarten wie die flugunfÃ¤hige Yanbaru-Ralle und riesige FarnbÃ¤ume.<br><br>Die Luft hier ist unglaublich klar und die Natur gÃ¤nzlich unberÃ¼hrt, was einen genialen Kontrast zu den weiÃen SandstrÃ¤nden Okinawas bietet.",
+                tip: "Festes Schuhwerk und Insektenschutz sind Pflicht. Eine gefÃ¼hrte Eco-Tour erschlieÃt die verborgenen Pfade und WasserfÃ¤lle am sichersten."
             },
             yoron: {
                 title: "Yoron Island (Yoronto)",
-                      ,
+                badge: "ðï¸ Insel-Paradies",
                 location: "Kagoshima PrÃ¤fektur (Nahe Okinawa)",
                 duration: "1-2 Tage",
                 image: "https://www-yorontou-info.translate.goog/wp-content/uploads/2023/03/about_scenery_01.webp?_x_tr_sl=ja&_x_tr_tl=en&_x_tr_hl=ja",
                 link: "https://www.yorontou-info.jp/en/",
-                                in absoluter Inseltraum, der                    wa als am Festland liegt (und oft                    bu in No r d-Okinawa angesteuert wird). Die kleine Insel besticht durch leuchtend weiÃen Sand und unglaublich klares, aquamarinblaues Wasser.<br><br>Das berÃ¼hmteste High                    sternfÃ¶rmige weiÃe Sandbank, die nur bei niedrigem Wasser                     ihrer Architektur und des Klimas wird Yoron auch das 'Grieche                        tip: "Packt eure SchnorchelausrÃ¼stung ein! Rund um die In                    d die AtmosphÃ¤re ist extrem entschleunigt und entspannt."
+                description: "Yoron Island ist ein absoluter Inseltraum, der geographisch nÃ¤her an Okinawa als am Festland liegt (und oft per FÃ¤hre ab dem Hafen Motobu in Nord-Okinawa angesteuert wird). Die kleine Insel besticht durch leuchtend weiÃen Sand und unglaublich klares, aquamarinblaues Wasser.<br><br>Das berÃ¼hmteste Highlight ist der Yurigahama Strand â eine sternfÃ¶rmige weiÃe Sandbank, die nur bei niedrigem Wasserstand mitten im Ozean auftaucht. Aufgrund ihrer Architektur und des Klimas wird Yoron auch das 'Griechenland von Japan' genannt.",
+                tip: "Packt eure SchnorchelausrÃ¼stung ein! Rund um die Insel gibt es fantastische Korallenriffe und die AtmosphÃ¤re ist extrem entschleunigt und entspannt."
             },
             kouri: {
                 title: "Kouri-jima & Ocean Tower",
@@ -2426,28 +2389,28 @@
         });
 
         // --- DYNAMIC BACKGROUND PARTICLE GENERATOR ---
-        function createAmbientParticles () {
-            const autumnBg = document.getElementById('bg-autumn');
-            for (let i = 0; i < 15; i++) {
-                let leaf = document.createElement('div');
-                leaf.className = 'autumn-leaf';
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.animationDuration = (Math.random() * 8 + 10) + 's';
-                leaf.style.animationDelay = (Math.random() * 5) + 's';
-                if (autumnBg) autumnBg.appendChild(leaf);
-            }
+            function createAmbientParticles () {
+                const autumnBg = document.getElementById('bg-autumn');
+                for (let i = 0; i < 15; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'autumn-leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                    leaf.style.animationDelay = (Math.random() * 5) + 's';
+                    if (autumnBg) autumnBg.appendChild(leaf);
+                }
 
-            const bambooBg = document.getElementById('bg-kyushu');
-            for (let i = 0; i < 12; i++) {
-                let leaf = document.createElement('div');
-                leaf.className = 'bamboo-leaf';
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.top = Math.random() * 100 + 'vh';
-                leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                leaf.style.animationDelay = (Math.random() * 3) + 's';
-                if (bambooBg) bambooBg.appendChild(leaf);
+                const bambooBg = document.getElementById('bg-kyushu');
+                for (let i = 0; i < 12; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'bamboo-leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.top = Math.random() * 100 + 'vh';
+                    leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    leaf.style.animationDelay = (Math.random() * 3) + 's';
+                    if (bambooBg) bambooBg.appendChild(leaf);
+                }
             }
-        }
 
         // --- DYNAMIC THUMBNAILS IN PLANNER ---
         function initThumbnails () {
@@ -2463,7 +2426,7 @@
                     btn.classList.remove('p-2.5');
                     btn.classList.add('p-2');
 
-                    // Textinh                            n W                        acken                         uberes Flex-Layout)
+                    // Textinhalte in einen Wrapper packen (fÃ¼r sauberes Flex-Layout)
                     const contentWrapper = document.createElement('div');
                     contentWrapper.className = "flex-grow flex justify-between items-center";
                     while (btn.firstChild) {contentWrapper.appendChild(btn.firstChild);}
@@ -2648,7 +2611,7 @@
                 const timerEl = document.getElementById("countdown-timer");
                 if (!timerEl) return;
                 if (distance < 0) {
-                    timerEl.innerHTML = "<div class='text-sand font-bold bg-autumn/80                         -blur-sm px-4 py-2 rounded-xl border border-white/                        l text-center text-sm'>âï¸ Die Reis                            en!</div>";
+                    timerEl.innerHTML = "<div class='text-sand font-bold bg-autumn/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20 w-full text-center text-sm'>âï¸ Die Reise hat begonnen!</div>";
                     return;
                 }
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -2695,8 +2658,8 @@
         function initTabs () {
             const tabBtns = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
-
-            // Mapping von Tabs                neuen HintergrÃ¼nden
+        
+            // Mapping von Tabs zu den neuen HintergrÃ¼nden
             const bgMapping = {
                 'overview': 'bg-blobs',
                 'okinawa': 'bg-okinawa',
@@ -2706,16 +2669,16 @@
                 'interactive-planner': 'bg-blobs',
                 'map-view': 'bg-blobs'
             };
-
+        
             tabBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
-
+        
                     updateTabIndicator(btn);
-
+        
                     const targetId = btn.getAttribute("data-target");
-
+                    
                     // Content Umschaltung
                     tabContents.forEach(content => {
                         if (content.id === targetId) {
@@ -2726,7 +2689,7 @@
                             content.classList.add("hidden");
                         }
                     });
-
+        
                     // ð¨ NEU: HINTERGRUND-UMSCHALTUNG
                     // Alle Hintergrund-Container ausblenden
                     document.querySelectorAll('.ambient-bg').forEach(bg => {
@@ -2736,7 +2699,7 @@
                     const activeBgId = bgMapping[targetId];
                     const targetBg = document.getElementById(activeBgId);
                     if (targetBg) targetBg.style.opacity = '1';
-
+        
                     // Farb-Paletten Update fÃ¼r Blobs (falls der Planner / Map aktiv ist)
                     if (activeBgId === 'bg-blobs') {
                         const palette = blobPalettes[targetId] || blobPalettes['overview'];
@@ -2746,7 +2709,7 @@
                         document.documentElement.style.setProperty('--blob-4', palette[3]);
                         document.documentElement.style.setProperty('--blob-5', palette[4]);
                     }
-
+        
                     // Init Map if needed
                     if (targetId === "map-view") {
                         initJapanMap();
@@ -3033,7 +2996,7 @@
         function quickAdd (itemName) {
             if (!selectedDayKey) {showToast("Bitte wÃ¤hle zuerst einen Tag im Kalender aus!"); return;}
             if (!calendarData[selectedDayKey]) {calendarData[selectedDayKey] = {notes: "", items: []};}
-            if (calendarData[select                ].items.includes(itemName)) {sho                    vitÃ¤t ist bereits fÃ¼r diesen Tag eingeplant!"); return;}
+            if (calendarData[selectedDayKey].items.includes(itemName)) {showToast("AktivitÃ¤t ist bereits fÃ¼r diesen Tag eingeplant!"); return;}
 
             calendarData[selectedDayKey].items.push(itemName);
             saveCalendarToStorage();
