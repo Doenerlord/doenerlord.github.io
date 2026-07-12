@@ -3113,60 +3113,54 @@
         }
 
         
+            // ==========================================
+            // DYNAMIC CARD GENERATOR (PREMIUM UI UPGRADE)
+            // ==========================================
             function upgradeCardsToImageCards () {
-            // Find all elements that trigger openDetailModal in the main grid
-            const cards = document.querySelectorAll('.grid > [onclick^="openDetailModal"]');
-            cards.forEach(card => {
-            const match = card.getAttribute('onclick').match(/'([^']+)'/);
-            if (match && destinationDetails[match[1]]) {
-            const key = match[1];
-            const data = destinationDetails[key];
-            
-            // Determine theme color based on badge text
-            let themeColor = 'text-autumn';
-            if (data.badge.includes('Okinawa') || data.badge.includes('Strand') || data.badge.includes('Luft')) themeColor =
-            'text-ocean';
-            else if (data.badge.includes('Kunst') || data.badge.includes('Shikoku') || data.badge.includes('Inselhüpfen'))
-            themeColor = 'text-teal-700';
-            else if (data.badge.includes('Abenteuer') || data.badge.includes('Extrem')) themeColor = 'text-indigo-600';
-            else if (data.badge.includes('Naturerbe') || data.badge.includes('Unterwelt')) themeColor = 'text-emerald-700';
-            else if (data.badge.includes('Kansai') || data.badge.includes('Tokyo') || data.badge.includes('Daruma')) themeColor =
-            'text-red-700';
-            
-            card.className = "bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 cursor-pointer transition-all duration-300 flex flex-col overflow-hidden group relative border border-stone-200/60";
-            
-            const cleanDesc = data.description.replace(/<[^>]*>?/gm, '').substring(0, 110) + '...';
-            
-                card.innerHTML = `
-                <div class="h-44 relative overflow-hidden flex-shrink-0 bg-stone-100">
-                    <img src="${data.image}" alt="${data.title}"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onerror="this.src='https://placehold.co/800x400/faf6f0/e36414?text=Highlight'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-                    <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                        <span
-                            class="bg-white/20 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded border border-white/20 shadow-sm">${data.badge}</span>
-                        <span class="text-white text-[10px] font-bold drop-shadow-md"><i
-                                class="fa-regular fa-clock mr-1 text-white/80"></i>${data.duration.replace('ca. ', '')}</span>
-                    </div>
-                </div>
-                <div class="p-5 flex flex-col justify-between flex-grow bg-white">
-                    <div>
-                        <h4
-                            class="font-black text-lg text-earth mb-2 group-hover:${themeColor} transition-colors line-clamp-2 leading-tight">
-                            ${data.title}</h4>
-                        <p class="text-sm text-stone-500 leading-relaxed line-clamp-3">${cleanDesc}</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-stone-100 flex items-center text-xs font-black ${themeColor}">
-                        <span>Details ansehen</span>
-                        <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
-                    </div>
-                </div>
-                `;
-                }
+                const cards = document.querySelectorAll('.grid > [onclick^="openDetailModal"]');
+                cards.forEach(card => {
+                    const match = card.getAttribute('onclick').match(/'([^']+)'/);
+                    if (match && destinationDetails[match[1]]) {
+                        const key = match[1];
+                        const data = destinationDetails[key];
+
+                        let themeColor = 'text-autumn';
+                        if (data.badge.includes('Okinawa') || data.badge.includes('Strand') || data.badge.includes('Luft')) themeColor = 'text-ocean';
+                        else if (data.badge.includes('Kunst') || data.badge.includes('Shikoku') || data.badge.includes('Inselhüpfen')) themeColor = 'text-teal-700';
+                        else if (data.badge.includes('Abenteuer') || data.badge.includes('Extrem')) themeColor = 'text-indigo-600';
+                        else if (data.badge.includes('Naturerbe') || data.badge.includes('Unterwelt')) themeColor = 'text-emerald-700';
+                        else if (data.badge.includes('Kansai') || data.badge.includes('Tokyo') || data.badge.includes('Daruma') || data.badge.includes('Fest')) themeColor = 'text-red-700';
+                        else if (data.badge.includes('Holz') || data.badge.includes('Puppen') || data.badge.includes('Seiden')) themeColor = 'text-amber-700';
+
+                        card.className = "bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 cursor-pointer transition-all duration-300 flex flex-col overflow-hidden group relative border border-stone-200/60";
+
+                        // Sauberes Entfernen der HTML Tags nur für die Vorschau - und KEIN harter Substring-Cut!
+                        const rawText = data.description.replace(/<[^>]*>?/gm, ' ');
+
+                        card.innerHTML = `
+                        <div class="h-44 relative overflow-hidden flex-shrink-0 bg-stone-100">
+                            <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/800x400/faf6f0/e36414?text=Highlight'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+                                <span class="bg-white/20 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded border border-white/20 shadow-sm">${data.badge}</span>
+                                <span class="text-white text-[10px] font-bold drop-shadow-md"><i class="fa-regular fa-clock mr-1 text-white/80"></i>${data.duration.replace('ca. ', '')}</span>
+                            </div>
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow bg-white">
+                            <div>
+                                <h4 class="font-black text-lg text-earth mb-2 group-hover:${themeColor} transition-colors line-clamp-2 leading-tight">${data.title}</h4>
+                                <p class="text-sm text-stone-500 leading-relaxed line-clamp-3">${rawText}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-stone-100 flex items-center text-xs font-black ${themeColor}">
+                                <span>Details ansehen</span>
+                                <i class="fa-solid fa-chevron-right ml-1.5 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                            </div>
+                        </div>
+                    `;
+                    }
                 });
                 renderReactionsOnCards();
-                }
+            }
     </script>
     </body>
     
