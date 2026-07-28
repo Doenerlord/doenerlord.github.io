@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Master-Planer 2026: Ultimate Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Noto+Serif+JP:wght@700&display=swap');
+
+        :root {
+            --okinawa-blue: #0284c7;
+            --fukuoka-slate: #475569;
+            --autumn-red: #b91c1c;
+            --ginkgo-gold: #d97706;
+            --emerald-forest: #059669;
+            --custom-purple: #6d28d9;
+            --bg-soft: #f8fafc;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-soft);
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+        }
+
+        .filter-btn-active {
+            background-color: #1e293b !important;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transform: translateY(-1px);
+        }
+
+        .activity-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .region-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        #map {
+            height: 550px;
+            width: 100%;
+            border-radius: 1.5rem;
+            z-index: 10;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 1rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold">J26</div>
+                <span class="font-bold text-lg tracking-tight">Master-Expedition 2026</span>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-semibold uppercase">
+                <a href="#map-section" class="hover:text-red-600 transition">Interaktive Karte</a>
+                <a href="#scenarios" class="hover:text-red-600 transition">Szenarien A / B / C / D</a>
+                <a href="#activities" class="hover:text-red-600 transition">Aktivitäten</a>
+                <a href="#events" class="hover:text-red-600 transition">Events & Koyo</a>
+                <a href="#logistics" class="hover:text-red-600 transition">Logistik</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="max-w-4xl">
+                <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full mb-4 tracking-widest uppercase">Master-Planer mit Live-Autorouting & Dynamischem Konfigurator</span>
+                <h1 class="text-4xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6">
+                    Japan Arc: <br>
+                    <span class="text-blue-600">Okinawa</span> • 
+                    <span class="text-slate-700">Kyushu</span> • 
+                    <span class="text-emerald-600">Yakushima</span> • 
+                    <span class="text-purple-700">Custom Route</span>
+                </h1>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    Willkommen zur erweiterten Expeditionsplanung 2026. Vergleichen Sie vorgefertigte Reise-Szenarien oder stellen Sie mit **Option D** Ihre ganz persönliche Traumroute zusammen – inklusive automatischer Echtzeit-Routenberechnung, Mautschätzung und individueller Zeitplan-Erstellung.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive Map Section -->
+    <section id="map-section" class="py-12 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Scenario Selector Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <div class="flex flex-wrap gap-2">
+                    <button id="mapBtnA" onclick="switchScenario('A')" class="px-4 py-2.5 bg-white text-slate-700 border border-slate-300 rounded-xl text-xs font-bold shadow transition hover:bg-slate-50">Option A: Kyushu 8T</button>
+                    <button id="mapBtnB" onclick="switchScenario('B')" class="px-4 py-2.5 bg-white text-slate-700 border border-slate-300 rounded-xl text-xs font-bold shadow transition hover:bg-slate-50">Option B: Master 24T</button>
+                    <button id="mapBtnC" onclick="switchScenario('C')" class="px-4 py-2.5 bg-white text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold shadow transition hover:bg-emerald-50">Option C: Grand Arc 28T</button>
+                    <button id="mapBtnD" onclick="switchScenario('D')" class="px-4 py-2.5 bg-white text-purple-800 border border-purple-300 rounded-xl text-xs font-bold shadow transition hover:bg-purple-50">Option D: Custom Route</button>
+                </div>
+                <span class="text-xs text-slate-500 font-semibold">Live-Routen & Mautschätzung</span>
+            </div>
+
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
+                <!-- Dynamic Custom Route Control Panel (Shown for Option D) -->
+                <div id="customControls" class="hidden w-full mb-6 p-6 bg-white rounded-3xl border-2 border-purple-200 shadow-md">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-purple-900 flex items-center gap-2">
+                                <span>⚙️</span> Dynamischer Routen-Konfigurator (Option D)
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Wählen Sie beliebige Haltepunkte aus. Die Straßenroute, Distanz und Mautkosten werden in Echtzeit neu berechnet.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="selectAllCustomPoints(true)" class="px-3 py-1.5 bg-purple-100 text-purple-800 rounded-lg text-xs font-bold hover:bg-purple-200 transition">Alle auswählen</button>
+                            <button onclick="selectAllCustomPoints(false)" class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200 transition">Alle abwählen</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 p-3.5 bg-blue-50 rounded-2xl border border-blue-200 flex flex-wrap items-center justify-between gap-3">
+                        <label class="flex items-center space-x-3 text-xs font-bold text-blue-900 cursor-pointer select-none">
+                            <input type="checkbox" id="enableFerryShortcut" checked onchange="toggleFerryOption(this.checked)" class="rounded text-blue-600 focus:ring-blue-500 w-4 h-4">
+                            <span class="text-sm">⛴️ Direkte Fährverbindungen & Split-Mietwagen aktivieren (z. B. Beppu ➔ Matsuyama via Bungo-Kanal)</span>
+                        </label>
+                        <span class="text-xs text-blue-700 bg-blue-100 px-2.5 py-1 rounded-lg font-semibold">Ersparnis: ~6 Std. Fahrzeit & ~450 km Honshu/Hiroshima-Umweg</span>
+                    </div>
+
+                    <div id="customCheckboxContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
+                        <!-- Dynamically generated checkboxes -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="relative shadow-2xl rounded-3xl overflow-hidden bg-white p-3 border border-slate-200">
+                <div id="map"></div>
+                
+                <div id="routeLoading" class="hidden absolute inset-0 bg-white/70 backdrop-blur-sm z-20 flex items-center justify-center">
+                    <div class="flex items-center space-x-3 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-xl">
+                        <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-sm font-bold">Berechne Straßenroute & Mautkosten...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl font-bold">🚗</div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Reine Fahrstrecke (PKW)</span>
+                        <span id="metricDist" class="text-2xl font-bold text-slate-900">-- km</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-2xl font-bold">⏱️</div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Geschätzte Fahrzeit</span>
+                        <span id="metricTime" class="text-2xl font-bold text-slate-900">-- Std.</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-2xl font-bold">💴</div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Geschätzte Highway-Maut (NEXCO)</span>
+                        <span id="metricToll" class="text-2xl font-bold text-slate-900">-- JPY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenarios Section -->
+    <section id="scenarios" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Reiseverlauf & Etappen</h2>
+                <p id="scenarioSubhead" class="text-slate-600 text-sm">Wählen Sie oben eine Option, um detaillierte Tagesbeschreibungen anzuzeigen.</p>
+            </div>
+
+            <div id="scenarioTimeline" class="space-y-4">
+                <!-- Dynamisch gefüllt durch JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Hub -->
+    <section id="activities" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold mb-3">Der Master-Aktivitätenkatalog</h2>
+                <p class="text-slate-600">Alle Sehenswürdigkeiten, Naturwunder und Kultur-Highlights von Okinawa bis Shikoku.</p>
+                
+                <div class="mt-6 flex flex-wrap justify-center gap-2" id="filterContainer">
+                    <button onclick="filterActivities('all', this)" class="filter-btn-active px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Alle Gebiete</button>
+                    <button onclick="filterActivities('okinawa', this)" class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Okinawa</button>
+                    <button onclick="filterActivities('fukuoka', this)" class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Fukuoka & Saga</button>
+                    <button onclick="filterActivities('kyushu', this)" class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Kyushu Loop & Vulkane</button>
+                    <button onclick="filterActivities('yakushima', this)" class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Yakushima & Ibusuki</button>
+                    <button onclick="filterActivities('shikoku', this)" class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-slate-50 transition">Shikoku & Yokai</button>
+                </div>
+            </div>
+
+            <div id="activityGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamisch gefüllt durch JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Events & Radar -->
+    <section id="events" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Event- & Koyo-Timing Radar</h2>
+                    <p class="text-slate-400 mb-8">Wichtige Herbst-Fixpunkte im November 2026 für Ihre Tages- und Routenplanung.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="text-2xl">🏮</div>
+                            <div>
+                                <h4 class="font-bold text-base">Karatsu Kunchi Festival (02.-04.11.)</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Gigantische Prunkwagen am Meer nahe Fukuoka.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="text-2xl">🎌</div>
+                            <div>
+                                <h4 class="font-bold text-base">Bunka no Hi Kulturtag (03.11.)</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Nationaler Feiertag. Freier Eintritt in viele Museen & Parks.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="text-2xl">🍁</div>
+                            <div>
+                                <h4 class="font-bold text-base">Kunenan Garten Exklusiv-Öffnung (15.-23.11.)</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Saga-Geheimtipp: Das historische Anwesen öffnet nur an 9 Tagen im Jahr zum Herbstlaub-Peak!</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="text-2xl">👘</div>
+                            <div>
+                                <h4 class="font-bold text-base">Kyushu Basho Sumo Tournament (ab 08.11.)</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Das große November-Turnier im Fukuoka Kokusai Center.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="text-2xl">👻</div>
+                            <div>
+                                <h4 class="font-bold text-base">Shikoku Yokai Matsuri (Mitte/Ende Nov.)</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Mystisches Geister-Festival im Iya-Gebirge in Tokushima.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 text-slate-900 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <span class="mr-2">📊</span> Erlebnis-Gewichtung der Optionen
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logistics -->
+    <section id="logistics" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="max-w-3xl mb-10">
+                <h2 class="text-3xl font-bold mb-3">Integrierte Logistik & Split-Mietwagen-Strategie</h2>
+                <p class="text-slate-600">Durch die strategische Mietwagen-Abgabe in Beppu und Neuaufnahme in Shikoku sparen Sie hohe Einwegmieten und Fährgebühren.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                <div class="chart-container">
+                    <canvas id="costChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-5 bg-blue-50 rounded-2xl border-l-4 border-blue-500">
+                        <h4 class="font-bold text-blue-900 mb-1">Insel-Passage: Yakushima</h4>
+                        <p class="text-sm text-blue-800">Mietwagen verbleibt im Hafen von Kagoshima. Schnellfähre "Toppy Jetfoil" bringt Sie in 2 Stunden nach Yakushima.</p>
+                    </div>
+                    <div class="p-5 bg-red-50 rounded-2xl border-l-4 border-red-500">
+                        <h4 class="font-bold text-red-900 mb-1">Split-Mietwagen-Modell</h4>
+                        <p class="text-sm text-red-800">Wagen 1: Fukuoka → Beppu. Passagierfähre nach Matsuyama. Wagen 2: Matsuyama → Takamatsu/Osaka. Ersparnis: ~85.000 JPY.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-200 text-center text-sm text-slate-400">
+        <p>© 2026 Japan Master-Expedition | All-in-One Routen- & Logistikplaner (Optionen A, B, C & D)</p>
+    </footer>
+
+    <script>
+        let map;
+        let routeLayerGroup;
+        let currentActiveOption = 'C';
+
+        function initMap() {
+            map = L.map('map').setView([32.8032, 130.7079], 7);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            routeLayerGroup = L.layerGroup().addTo(map);
+        }
+
+        const activities = [
+            { reg: 'okinawa', title: 'Churaumi Aquarium', desc: 'Eines der weltgrößten Aquarien mit Walhaien in Motobu.', icon: '🦈' },
+            { reg: 'okinawa', title: 'Shuri Castle', desc: 'Das rekonstruierte königliche Herz des Ryukyu-Reiches in Naha.', icon: '🏯' },
+            { reg: 'okinawa', title: 'Cape Manzamo', desc: 'Spektakuläre Elefantenfelsen-Formation an der Klippenküste.', icon: '🐘' },
+            { reg: 'fukuoka', title: 'Nakasu Yatais', desc: 'Legendäre mobile Garküchen direkt am Flussufer.', icon: '🍜' },
+            { reg: 'fukuoka', title: 'Dazaifu Tenmangu', desc: 'Historischer Schrein mit berühmten Pflaumenbäumen.', icon: '⛩️' },
+            { reg: 'fukuoka', title: 'Kyushu Basho Sumo', desc: 'Das traditionelle Grand Tournament im November.', icon: '👘' },
+            { reg: 'kyushu', title: 'Karatsu Kunchi', desc: 'Festival mit riesigen Prunkwagen (02.-04.11.).', icon: '🏮' },
+            { reg: 'kyushu', title: 'Okawachiyama', desc: 'Geheimnisvolles Bergdorf der Porzellan-Meister.', icon: '🏺' },
+            { reg: 'kyushu', title: 'Hamanoura Terrassen', desc: 'Spektakuläre Reisterrassen direkt am Meer.', icon: '🌾' },
+            { reg: 'kyushu', title: 'Kunenan Garten', desc: 'Exklusive 9-Tage Herbstöffnung im November.', icon: '🍁' },
+            { reg: 'kyushu', title: 'Yanagawa Gondel', desc: 'Malerische Grachtenfahrt und gedämpfter Unagi-Aal.', icon: '🚣' },
+            { reg: 'kyushu', title: 'Kumamoto Castle', desc: 'Imposante Samurai-Burg mit goldgelben Ginkgos.', icon: '🏯' },
+            { reg: 'kyushu', title: 'Kikuchi Gorge', desc: 'Smaragdgrünes Wasser im dichten Ahorn-Herbstwald.', icon: '🍂' },
+            { reg: 'kyushu', title: 'Kurokawa Onsen', desc: 'Authentisches Fluss-Onsendorf zum Entschleunigen.', icon: '♨️' },
+            { reg: 'kyushu', title: 'Mt. Aso Caldera', desc: 'Vulkan-Panorama und weite Kusasenri-Grasebenen.', icon: '🌋' },
+            { reg: 'kyushu', title: 'Takachiho Gorge', desc: 'Mystische Schlucht mit Bootsfahrt am Wasserfall.', icon: '🛶' },
+            { reg: 'kyushu', title: 'Beppu Jigoku', desc: 'Geothermische Heißquellen und brodelnde Höllen.', icon: '🔥' },
+            { reg: 'yakushima', title: 'Yakushima Mooswald', desc: 'Uralter Mononoke-Zedernwald (UNESCO-Weltnaturerbe).', icon: '🌲' },
+            { reg: 'yakushima', title: 'Ibusuki Sandbad', desc: 'Vulkanisches Sandbad (Sunamushi Onsen) am Strand.', icon: '🏖️' },
+            { reg: 'shikoku', title: 'Dogo Onsen', desc: 'Ältestes Badehaus Japans (Inspiration für Chihiro).', icon: '🛀' },
+            { reg: 'shikoku', title: 'Iya-Tal Lianenbrücke', desc: 'Antike Kazurabashi-Brücke in tiefer Bergschlucht.', icon: '🌉' },
+            { reg: 'shikoku', title: 'Kochi Castle', desc: 'Original erhaltene Samurai-Burg & Hirome-Markt.', icon: '⚔️' },
+            { reg: 'shikoku', title: 'Ritsurin Garden', desc: 'Historischer Wandelgarten mit Koyo-Abendbeleuchtung.', icon: '🎋' },
+            { reg: 'shikoku', title: 'Shikoku Yokai Matsuri', desc: 'Geister-Festival im mystischen Iya-Gebirge.', icon: '👻' }
+        ];
+
+        const timelineA = [
+            { date: '03.11.', title: 'Ankunft Fukuoka (Bunka no Hi)', desc: 'Kulturtag & Feiertag. Erkundung Ohori Park & Nakasu Yatais.' },
+            { date: '04.11.', title: 'Start Kyushu Loop ➔ Kumamoto', desc: 'Mietwagenübernahme. Fahrt zur Burg Kumamoto mit Ginkgo-Bäumen.' },
+            { date: '05.11.', title: 'Kagoshima & Sakurajima', desc: 'Fahrt gen Süden zum aktiven Vulkan Sakurajima & Sengan-en Garten.' },
+            { date: '06.11.', title: 'Takachiho-Schlucht', desc: 'Fahrt ins mystische Herz von Miyazaki. Bootsfahrt am Manai-Wasserfall.' },
+            { date: '07.11.', title: 'Mt. Aso & Kurokawa Onsen', desc: 'Aso-Caldera Panorama & Entspannung im idyllischen Fluss-Ryokan.' },
+            { date: '08.11.', title: 'Beppu Höllen ➔ Fukuoka', desc: 'Besuch der Beppu Jigoku Heißquellen. Rückfahrt nach Fukuoka.' },
+            { date: '09.-10.11.', title: 'Sumo Turnier & Abreise', desc: 'Kyushu Basho Grand Tournament im Kokusai Center & Rückflug.' }
+        ];
+
+        const timelineB = [
+            { date: '27.-31.10.', title: 'Subtropisches Okinawa', desc: 'Naha, Shuri Castle, Cape Manzamo & Churaumi Aquarium.' },
+            { date: '01.-04.11.', title: 'Flug OKA ➔ FUK & Events', desc: 'Inlandsflug nach Fukuoka. Karatsu Kunchi Festival & Kulturtag.' },
+            { date: '05.-09.11.', title: 'Großer Kyushu Loop', desc: 'Kumamoto, Kagoshima, Takachiho, Mt. Aso, Kurokawa & Beppu.' },
+            { date: '10.-15.11.', title: 'Trans-Insel Shikoku', desc: 'Fähre Beppu ➔ Matsuyama (Dogo Onsen), Iya-Tal & Kochi Castle.' },
+            { date: '16.-20.11.', title: 'Kultur-Finale & Osaka', desc: 'Takamatsu Ritsurin Illumination, Transfer nach Osaka (KIX Rückflug).' }
+        ];
+
+        const timelineC = [
+            { date: '27.-31.10.', title: 'Okinawa Island Start', desc: 'Naha, Kokusai Dori, Motobu & Churaumi Aquarium.' },
+            { date: '01.-04.11.', title: 'Nord-Kyushu & Saga Culture', desc: 'Flug nach Fukuoka, Dazaifu, Karatsu Kunchi, Okawachiyama Töpferdorf & Hamanoura Terrassen.' },
+            { date: '05.-09.11.', title: 'Exklusiv-Koyo & Süd-Kyushu', desc: 'Kunenan Garten 9-Tage Öffnung, Yanagawa Gondel, Kumamoto Castle, Ibusuki Vulkan-Sandbad & Kagoshima.' },
+            { date: '10.-13.11.', title: 'Yakushima Mononoke World', desc: 'Toppy Highspeed-Fähre nach Yakushima. Urzeitlicher Zedern-Mooswald.' },
+            { date: '14.-18.11.', title: 'Mystisches Kyushu & Shikoku Crossing', desc: 'Takachiho Gorge, Mt. Aso, Kurokawa Onsen, Beppu Höllen. Fähre nach Matsuyama (Dogo Onsen).' },
+            { date: '19.-24.11.', title: 'Shikoku Yokai & Ritsurin Illumination', desc: 'Iya Valley Lianenbrücke, Shikoku Yokai Matsuri, Kochi Castle, Takamatsu Ritsurin Garden & Grand Finale in Osaka.' }
+        ];
+
+        const locations = {
+            naha: [26.2124, 127.6809],
+            motobu: [26.6912, 127.8779],
+            fukuoka: [33.5902, 130.4017],
+            dazaifu: [33.5186, 130.5349],
+            karatsu: [33.4485, 129.9676],
+            imari: [33.2428, 129.8973], // Okawachiyama
+            genkai: [33.5042, 129.8378], // Hamanoura Rice Terraces
+            kanzaki: [33.3486, 130.3703], // Kunenan Garden
+            yanagawa: [33.1611, 130.4078],
+            kumamoto: [32.8032, 130.7079],
+            kagoshima: [31.5966, 130.5571],
+            ibusuki: [31.2384, 130.6416],
+            yakushima: [30.3585, 130.5286],
+            takachiho: [32.7103, 131.3048],
+            aso: [32.8841, 131.0827],
+            kurokawa: [33.0783, 131.1396],
+            beppu: [33.2845, 131.4907],
+            matsuyama: [33.8392, 132.7600],
+            iya: [33.8765, 133.8290],
+            kochi: [33.5594, 133.5311],
+            takamatsu: [34.3427, 134.0465],
+            osaka: [34.6937, 135.5023]
+        };
+
+        const allLocationDetails = [
+            { id: 'naha', name: 'Naha (Okinawa)', desc: 'Kokusai Dori & Shuri Castle', reg: 'Okinawa' },
+            { id: 'motobu', name: 'Motobu (Okinawa)', desc: 'Churaumi Aquarium & Cape Manzamo', reg: 'Okinawa' },
+            { id: 'fukuoka', name: 'Fukuoka', desc: 'Yatai Streetfood & Nakasu', reg: 'Kyushu' },
+            { id: 'dazaifu', name: 'Dazaifu Tenmangu', desc: 'Historischer Schrein & Kultur', reg: 'Kyushu' },
+            { id: 'karatsu', name: 'Karatsu', desc: 'Karatsu Kunchi Prunkwagen Festival', reg: 'Kyushu' },
+            { id: 'imari', name: 'Okawachiyama (Imari)', desc: 'Geheimnisvolles Töpferdorf in den Bergen', reg: 'Kyushu' },
+            { id: 'genkai', name: 'Hamanoura', desc: 'Reisterrassen am Genkai-Meer', reg: 'Kyushu' },
+            { id: 'kanzaki', name: 'Kunenan Garden', desc: 'Exklusive 9-Tage Herbstöffnung im Nov.', reg: 'Kyushu' },
+            { id: 'yanagawa', name: 'Yanagawa', desc: 'Kanal-Gondelfahrt & Unagi-Aal', reg: 'Kyushu' },
+            { id: 'kumamoto', name: 'Kumamoto Castle', desc: 'Burg mit goldenen Ginkgo-Bäumen', reg: 'Kyushu' },
+            { id: 'ibusuki', name: 'Ibusuki', desc: 'Vulkanisches Sandbad (Sunamushi)', reg: 'Kyushu' },
+            { id: 'kagoshima', name: 'Kagoshima & Sakurajima', desc: 'Aktiver Vulkan & Sengan-en Garten', reg: 'Kyushu' },
+            { id: 'yakushima', name: 'Yakushima', desc: 'Urzeitlicher Mononoke-Mooswald', reg: 'Yakushima' },
+            { id: 'takachiho', name: 'Takachiho Gorge', desc: 'Mystische Schlucht & Bootsfahrt', reg: 'Kyushu' },
+            { id: 'aso', name: 'Mt. Aso Caldera', desc: 'Vulkan-Panorama & Kusasenri', reg: 'Kyushu' },
+            { id: 'kurokawa', name: 'Kurokawa Onsen', desc: 'Authentisches Fluss-Onsendorf', reg: 'Kyushu' },
+            { id: 'beppu', name: 'Beppu Hells', desc: 'Geothermische Heißquellen & Höllen', reg: 'Kyushu' },
+            { id: 'matsuyama', name: 'Matsuyama (Dogo Onsen)', desc: 'Ältestes Badehaus Japans', reg: 'Shikoku' },
+            { id: 'iya', name: 'Iya Valley', desc: 'Lianenbrücke Kazurabashi & Yokai', reg: 'Shikoku' },
+            { id: 'kochi', name: 'Kochi Castle', desc: 'Original erhaltene Samurai-Burg', reg: 'Shikoku' },
+            { id: 'takamatsu', name: 'Takamatsu (Ritsurin)', desc: 'Wandelgarten Herbstillumination', reg: 'Shikoku' },
+            { id: 'osaka', name: 'Osaka', desc: 'Grand Finale & Rückflug ab KIX', reg: 'Kansai' }
+        ];
+
+        // Currently active custom points for Option D (by default all selected)
+        let customSelectedIds = allLocationDetails.map(item => item.id);
+        let useFerryShortcuts = true;
+
+        function toggleFerryOption(enabled) {
+            useFerryShortcuts = enabled;
+            updateMap(currentActiveOption);
+        }
+
+        function initCustomControls() {
+            const container = document.getElementById('customCheckboxContainer');
+            container.innerHTML = '';
+
+            allLocationDetails.forEach(loc => {
+                const isChecked = customSelectedIds.includes(loc.id);
+                const label = document.createElement('label');
+                label.className = 'flex items-center space-x-2 text-xs p-2 rounded-xl border border-slate-100 hover:bg-purple-50 transition cursor-pointer select-none';
+                label.innerHTML = `
+                    <input type="checkbox" value="${loc.id}" ${isChecked ? 'checked' : ''} onchange="toggleCustomPoint('${loc.id}', this.checked)" class="rounded text-purple-600 focus:ring-purple-500 w-4 h-4">
+                    <span class="font-bold text-slate-700 truncate">${loc.name}</span>
+                `;
+                container.appendChild(label);
+            });
+        }
+
+        function toggleCustomPoint(id, checked) {
+            if (checked) {
+                if (!customSelectedIds.includes(id)) customSelectedIds.push(id);
+            } else {
+                customSelectedIds = customSelectedIds.filter(item => item !== id);
+            }
+            if (currentActiveOption === 'D') {
+                updateMap('D');
+                updateTimelineForOptionD();
+            }
+        }
+
+        function selectAllCustomPoints(selectAll) {
+            if (selectAll) {
+                customSelectedIds = allLocationDetails.map(item => item.id);
+            } else {
+                customSelectedIds = [];
+            }
+            initCustomControls();
+            if (currentActiveOption === 'D') {
+                updateMap('D');
+                updateTimelineForOptionD();
+            }
+        }
+
+        async function fetchOSRMRoute(waypoints) {
+            if (!waypoints || waypoints.length < 2) {
+                return { coordinates: waypoints || [], distanceKm: 0, durationHr: 0, legs: [] };
+            }
+            const coordString = waypoints.map(p => `${p[1]},${p[0]}`).join(';');
+            // Request full step geometries to get exact road coordinates per leg
+            const url = `https://router.project-osrm.org/route/v1/driving/${coordString}?overview=full&steps=true&geometries=geojson`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.routes && data.routes.length > 0) {
+                    const route = data.routes[0];
+                    
+                    const legsData = (route.legs || []).map(leg => {
+                        const legCoords = [];
+                        if (leg.steps && leg.steps.length > 0) {
+                            leg.steps.forEach(step => {
+                                if (step.geometry && step.geometry.coordinates) {
+                                    step.geometry.coordinates.forEach(c => {
+                                        legCoords.push([c[1], c[0]]);
+                                    });
+                                }
+                            });
+                        }
+                        return {
+                            coordinates: legCoords.length > 0 ? legCoords : [],
+                            distanceKm: (leg.distance / 1000),
+                            durationHr: (leg.duration / 3600),
+                            durationMin: Math.round(leg.duration / 60)
+                        };
+                    });
+
+                    return {
+                        coordinates: route.geometry.coordinates.map(c => [c[1], c[0]]),
+                        distanceKm: (route.distance / 1000),
+                        durationHr: (route.duration / 3600),
+                        legs: legsData
+                    };
+                }
+            } catch (e) {
+                console.warn('OSRM routing fallback used:', e);
+            }
+            
+            const fallbackLegs = [];
+            for(let i = 0; i < waypoints.length - 1; i++) {
+                fallbackLegs.push({
+                    coordinates: [waypoints[i].pos || waypoints[i], waypoints[i+1].pos || waypoints[i+1]],
+                    distanceKm: 80,
+                    durationHr: 1.2,
+                    durationMin: 72
+                });
+            }
+            return {
+                coordinates: waypoints,
+                distanceKm: (waypoints.length - 1) * 80,
+                durationHr: (waypoints.length - 1) * 1.2,
+                legs: fallbackLegs
+            };
+        }
+
+        function drawInteractiveLegs(legs, namedWaypoints, color) {
+            if (!legs || legs.length === 0) return;
+
+            legs.forEach((leg, idx) => {
+                const startPoint = namedWaypoints[idx] ? namedWaypoints[idx].name : `Station ${idx + 1}`;
+                const endPoint = namedWaypoints[idx + 1] ? namedWaypoints[idx + 1].name : `Station ${idx + 2}`;
+                
+                // Fall back to direct line only if OSRM returned no road points for this leg
+                const legCoords = (leg.coordinates && leg.coordinates.length > 0) 
+                    ? leg.coordinates 
+                    : [namedWaypoints[idx].pos, namedWaypoints[idx + 1].pos];
+
+                const polyline = L.polyline(legCoords, {
+                    color: color,
+                    weight: 5,
+                    opacity: 0.85,
+                    lineJoin: 'round'
+                }).addTo(routeLayerGroup);
+
+                const hours = Math.floor(leg.durationHr);
+                const mins = leg.durationMin ? (leg.durationMin % 60) : Math.round((leg.durationHr % 1) * 60);
+                const timeStr = hours > 0 ? `${hours} Std. ${mins} Min.` : `${mins} Min.`;
+                const tollJpy = Math.round(leg.distanceKm * 22);
+
+                polyline.bindTooltip(`
+                    <div class="p-1.5 font-sans min-w-[210px]">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-1.5 mb-2">
+                            <span class="text-xs font-bold text-slate-900">${startPoint} ➔ ${endPoint}</span>
+                            <span class="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600 font-mono font-bold">Etappe ${idx + 1}</span>
+                        </div>
+                        <div class="space-y-1 text-xs text-slate-600">
+                            <div class="flex justify-between"><span>🚗 Distanz:</span> <strong class="text-slate-900">${leg.distanceKm.toFixed(1)} km</strong></div>
+                            <div class="flex justify-between"><span>⏱️ Fahrzeit:</span> <strong class="text-slate-900">${timeStr}</strong></div>
+                            <div class="flex justify-between"><span>💴 Geschätzte Maut:</span> <strong class="text-red-600 font-bold">~${tollJpy.toLocaleString('de-DE')} JPY</strong></div>
+                        </div>
+                    </div>
+                `, { sticky: true, opacity: 0.95 });
+
+                polyline.on('mouseover', function() {
+                    this.setStyle({ weight: 9, opacity: 1.0 });
+                    this.bringToFront();
+                });
+                polyline.on('mouseout', function() {
+                    this.setStyle({ weight: 5, opacity: 0.85 });
+                });
+            });
+        }
+
+        function drawTransitLeg(startPos, endPos, title, details, color = '#0284c7', dashArray = '6, 8') {
+            const line = L.polyline([startPos, endPos], {
+                color: color,
+                weight: 3,
+                dashArray: dashArray,
+                opacity: 0.8
+            }).addTo(routeLayerGroup);
+
+            line.bindTooltip(`
+                <div class="p-1.5 font-sans min-w-[190px]">
+                    <div class="font-bold text-xs text-slate-900 border-b border-slate-200 pb-1 mb-1">${title}</div>
+                    <div class="text-xs text-slate-600">${details}</div>
+                </div>
+            `, { sticky: true, opacity: 0.95 });
+
+            line.on('mouseover', function() {
+                this.setStyle({ weight: 6, opacity: 1.0 });
+                this.bringToFront();
+            });
+            line.on('mouseout', function() {
+                this.setStyle({ weight: 3, opacity: 0.8 });
+            });
+        }
+
+        async function updateMap(id) {
+            if (!map || !routeLayerGroup) return;
+            routeLayerGroup.clearLayers();
+
+            const loader = document.getElementById('routeLoading');
+            if (loader) loader.classList.remove('hidden');
+
+            let totalDist = 0;
+            let totalTime = 0;
+
+            if (id === 'A') {
+                const coordsA = [
+                    { name: 'Fukuoka', pos: locations.fukuoka, desc: 'Start (Nakasu Yatais)' },
+                    { name: 'Kumamoto', pos: locations.kumamoto, desc: 'Burg Kumamoto & Kikuchi Gorge' },
+                    { name: 'Kagoshima', pos: locations.kagoshima, desc: 'Sakurajima Vulkan & Sengan-en Garten' },
+                    { name: 'Takachiho Gorge', pos: locations.takachiho, desc: 'Mystische Schlucht & Wasserfall' },
+                    { name: 'Kurokawa Onsen', pos: locations.kurokawa, desc: 'Vulkan-Panorama (Aso) & Kurokawa Onsen' },
+                    { name: 'Beppu', pos: locations.beppu, desc: 'Geothermische Heißquellen & Höllen' },
+                    { name: 'Fukuoka', pos: locations.fukuoka, desc: 'Rückgabe PKW & Sumo Grand Tournament' }
+                ];
+
+                const routeData = await fetchOSRMRoute(coordsA.map(c => c.pos));
+                drawInteractiveLegs(routeData.legs, coordsA, '#b91c1c');
+
+                coordsA.forEach((item, idx) => {
+                    L.circleMarker(item.pos, {
+                        radius: 7,
+                        fillColor: '#b91c1c',
+                        color: '#ffffff',
+                        weight: 2,
+                        fillOpacity: 1
+                    }).addTo(routeLayerGroup).bindPopup(`<b>${idx + 1}. ${item.name}</b><br><span class="text-xs">${item.desc}</span>`);
+                });
+
+                totalDist = Math.round(routeData.distanceKm);
+                totalTime = (routeData.durationHr).toFixed(1);
+                map.fitBounds(L.polyline(coordsA.map(c => c.pos)).getBounds(), { padding: [40, 40] });
+
+            } else if (id === 'B') {
+                const coordsB_Okinawa = [
+                    { name: 'Naha (Okinawa)', pos: locations.naha, desc: 'Kokusai Dori & Shuri Castle' },
+                    { name: 'Motobu', pos: locations.motobu, desc: 'Churaumi Aquarium & Cape Manzamo' }
+                ];
+
+                const coordsB_Kyushu = [
+                    { name: 'Fukuoka', pos: locations.fukuoka, desc: 'LCC-Flug OKA→FUK, Sumo & Nakasu' },
+                    { name: 'Karatsu', pos: locations.karatsu, desc: 'Karatsu Kunchi Festival (02.-04.11.)' },
+                    { name: 'Kumamoto', pos: locations.kumamoto, desc: 'Burg Kumamoto' },
+                    { name: 'Kagoshima', pos: locations.kagoshima, desc: 'Sakurajima Vulkan & Sengan-en Garten' },
+                    { name: 'Takachiho Gorge', pos: locations.takachiho, desc: 'Mystische Schlucht & Bootsfahrt' },
+                    { name: 'Kurokawa Onsen', pos: locations.kurokawa, desc: 'Kikuchi Gorge & Onsen-Entschleunigung' },
+                    { name: 'Beppu', pos: locations.beppu, desc: 'Höllen von Beppu (Fährhafen nach Shikoku)' }
+                ];
+
+                const coordsB_Shikoku = [
+                    { name: 'Matsuyama', pos: locations.matsuyama, desc: 'Dogo Onsen & Burg Matsuyama' },
+                    { name: 'Iya Valley', pos: locations.iya, desc: 'Lianenbrücken & Schluchten' },
+                    { name: 'Kochi', pos: locations.kochi, desc: 'Kochi Castle & Hirome Markt' },
+                    { name: 'Takamatsu', pos: locations.takamatsu, desc: 'Ritsurin Garden Illumination' },
+                    { name: 'Osaka', pos: locations.osaka, desc: 'Expeditions-Ende (KIX)' }
+                ];
+
+                const okiRoute = await fetchOSRMRoute(coordsB_Okinawa.map(c => c.pos));
+                drawInteractiveLegs(okiRoute.legs, coordsB_Okinawa, '#0284c7');
+
+                drawTransitLeg(locations.naha, locations.fukuoka, '✈️ Inlandsflug (OKA ➔ FUK)', 'Dauer: ~1 Std. 45 Min. (LCC Peach / Jetstar)', '#0284c7');
+
+                const kyushuRoute = await fetchOSRMRoute(coordsB_Kyushu.map(c => c.pos));
+                drawInteractiveLegs(kyushuRoute.legs, coordsB_Kyushu, '#b91c1c');
+
+                drawTransitLeg(locations.beppu, locations.matsuyama, '⛴️ Passagierfähre Beppu ➔ Matsuyama', 'Dauer: ~2.5 Std. (Bungo-Kanal)', '#d97706');
+
+                const shikokuRoute = await fetchOSRMRoute(coordsB_Shikoku.map(c => c.pos));
+                drawInteractiveLegs(shikokuRoute.legs, coordsB_Shikoku, '#d97706');
+
+                [...coordsB_Okinawa, ...coordsB_Kyushu, ...coordsB_Shikoku].forEach(item => {
+                    L.circleMarker(item.pos, { radius: 6, fillColor: '#b91c1c', color: '#fff', weight: 2, fillOpacity: 1 })
+                        .addTo(routeLayerGroup).bindPopup(`<b>${item.name}</b><br><span class="text-xs">${item.desc}</span>`);
+                });
+
+                totalDist = Math.round(okiRoute.distanceKm + kyushuRoute.distanceKm + shikokuRoute.distanceKm);
+                totalTime = (okiRoute.durationHr + kyushuRoute.durationHr + shikokuRoute.durationHr).toFixed(1);
+                
+                const allPoints = [...coordsB_Okinawa, ...coordsB_Kyushu, ...coordsB_Shikoku].map(c => c.pos);
+                map.fitBounds(L.polyline(allPoints).getBounds(), { padding: [30, 30] });
+
+            } else if (id === 'C') {
+                const cPointsOkinawa = [
+                    { name: 'Naha (Okinawa)', pos: locations.naha },
+                    { name: 'Motobu (Okinawa)', pos: locations.motobu }
+                ];
+
+                const legKyushuPart1 = [
+                    { name: 'Fukuoka', pos: locations.fukuoka },
+                    { name: 'Dazaifu Tenmangu', pos: locations.dazaifu },
+                    { name: 'Karatsu', pos: locations.karatsu },
+                    { name: 'Okawachiyama', pos: locations.imari },
+                    { name: 'Hamanoura', pos: locations.genkai },
+                    { name: 'Kunenan Garden', pos: locations.kanzaki },
+                    { name: 'Yanagawa', pos: locations.yanagawa },
+                    { name: 'Kumamoto Castle', pos: locations.kumamoto },
+                    { name: 'Ibusuki Sandbad', pos: locations.ibusuki },
+                    { name: 'Kagoshima', pos: locations.kagoshima }
+                ];
+
+                const legKyushuPart2 = [
+                    { name: 'Kagoshima', pos: locations.kagoshima },
+                    { name: 'Takachiho Gorge', pos: locations.takachiho },
+                    { name: 'Mt. Aso Caldera', pos: locations.aso },
+                    { name: 'Kurokawa Onsen', pos: locations.kurokawa },
+                    { name: 'Beppu Hells', pos: locations.beppu }
+                ];
+
+                const legShikoku = [
+                    { name: 'Matsuyama (Dogo Onsen)', pos: locations.matsuyama },
+                    { name: 'Iya Valley', pos: locations.iya },
+                    { name: 'Kochi Castle', pos: locations.kochi },
+                    { name: 'Takamatsu (Ritsurin)', pos: locations.takamatsu },
+                    { name: 'Osaka', pos: locations.osaka }
+                ];
+
+                const rOki = await fetchOSRMRoute(cPointsOkinawa.map(c => c.pos));
+                drawInteractiveLegs(rOki.legs, cPointsOkinawa, '#0284c7');
+
+                drawTransitLeg(locations.naha, locations.fukuoka, '✈️ Inlandsflug (OKA ➔ FUK)', 'Dauer: ~1 Std. 45 Min. (LCC Peach / Jetstar)', '#0284c7');
+
+                const rK1 = await fetchOSRMRoute(legKyushuPart1.map(c => c.pos));
+                drawInteractiveLegs(rK1.legs, legKyushuPart1, '#059669');
+
+                drawTransitLeg(locations.kagoshima, locations.yakushima, '🚤 Highspeed-Fähre Toppy', 'Dauer: ~2 Std. (Kagoshima ➔ Yakushima)', '#059669');
+
+                const rK2 = await fetchOSRMRoute(legKyushuPart2.map(c => c.pos));
+                drawInteractiveLegs(rK2.legs, legKyushuPart2, '#059669');
+
+                drawTransitLeg(locations.beppu, locations.matsuyama, '⛴️ Passagierfähre Beppu ➔ Matsuyama', 'Dauer: ~2.5 Std. (Bungo-Kanal)', '#d97706');
+
+                const rSh = await fetchOSRMRoute(legShikoku.map(c => c.pos));
+                drawInteractiveLegs(rSh.legs, legShikoku, '#d97706');
+
+                const cPointsAll = [
+                    { name: 'Naha (Okinawa)', pos: locations.naha, desc: 'Start & Kokusai Dori Shopping' },
+                    { name: 'Motobu (Okinawa)', pos: locations.motobu, desc: 'Churaumi Aquarium & Cape Manzamo' },
+                    { name: 'Fukuoka', pos: locations.fukuoka, desc: 'LCC Flug Ankunft, Yatai Streetfood & Nakasu' },
+                    { name: 'Dazaifu Tenmangu', pos: locations.dazaifu, desc: 'Historischer Schrein & Pflaumenbäume' },
+                    { name: 'Karatsu', pos: locations.karatsu, desc: 'Karatsu Kunchi Prunkwagen Festival (02.-04.11.)' },
+                    { name: 'Okawachiyama (Imari)', pos: locations.imari, desc: 'Geheimnisvolles Töpferdorf in den Bergen' },
+                    { name: 'Hamanoura', pos: locations.genkai, desc: 'Spektakuläre Reisterrassen am Genkai-Meer' },
+                    { name: 'Kunenan Garden (Saga)', pos: locations.kanzaki, desc: 'Exklusive 9-Tage Koyo-Herbstöffnung im November' },
+                    { name: 'Yanagawa', pos: locations.yanagawa, desc: 'Kanal-Gondelfahrt (Donko) & gedämpfter Unagi-Aal' },
+                    { name: 'Kumamoto Castle', pos: locations.kumamoto, desc: 'Imposante Samurai-Burg mit Ginkgo-Bäumen' },
+                    { name: 'Ibusuki', pos: locations.ibusuki, desc: 'Vulkanisches Sandbad (Sunamushi Onsen)' },
+                    { name: 'Kagoshima & Sakurajima', pos: locations.kagoshima, desc: 'Aktiver Vulkan & historischer Sengan-en Garten' },
+                    { name: 'Yakushima', pos: locations.yakushima, desc: 'Uralter Mononoke-Zedernwald (UNESCO-Weltnaturerbe)' },
+                    { name: 'Takachiho Gorge', pos: locations.takachiho, desc: 'Mystische Schlucht & Bootsfahrt unter dem Wasserfall' },
+                    { name: 'Mt. Aso Caldera', pos: locations.aso, desc: 'Gewaltiges Vulkan-Panorama & Kusasenri Grasland' },
+                    { name: 'Kurokawa Onsen', pos: locations.kurokawa, desc: 'Authentisches Fluss-Onsendorf & Kikuchi Gorge' },
+                    { name: 'Beppu', pos: locations.beppu, desc: 'Geothermische Heißquellen & Höllen (Jigoku)' },
+                    { name: 'Matsuyama (Dogo Onsen)', pos: locations.matsuyama, desc: 'Ältestes Badehaus Japans (Inspiration Chihiro)' },
+                    { name: 'Iya Valley', pos: locations.iya, desc: 'Lianenbrücke Kazurabashi & Shikoku Yokai Matsuri' },
+                    { name: 'Kochi Castle', pos: locations.kochi, desc: 'Original erhaltene Burg & Hirome Markt' },
+                    { name: 'Takamatsu (Ritsurin)', pos: locations.takamatsu, desc: 'Ritsurin Wandelgarten Herbstillumination' },
+                    { name: 'Osaka', pos: locations.osaka, desc: 'Grand Finale & Rückflug ab KIX' }
+                ];
+
+                cPointsAll.forEach(item => {
+                    L.circleMarker(item.pos, { radius: 7, fillColor: '#059669', color: '#fff', weight: 2, fillOpacity: 1 })
+                        .addTo(routeLayerGroup).bindPopup(`<b>${item.name}</b><br><span class="text-xs">${item.desc}</span>`);
+                });
+
+                totalDist = Math.round(rOki.distanceKm + rK1.distanceKm + rK2.distanceKm + rSh.distanceKm);
+                totalTime = (rOki.durationHr + rK1.durationHr + rK2.durationHr + rSh.durationHr).toFixed(1);
+
+                const allPoints = cPointsAll.map(c => c.pos);
+                map.fitBounds(L.polyline(allPoints).getBounds(), { padding: [30, 30] });
+
+            } else if (id === 'D') {
+                const selectedLocs = allLocationDetails.filter(item => customSelectedIds.includes(item.id));
+
+                if (selectedLocs.length === 0) {
+                    if (loader) loader.classList.add('hidden');
+                    document.getElementById('metricDist').innerText = '0 km';
+                    document.getElementById('metricTime').innerText = '0 Std.';
+                    document.getElementById('metricToll').innerText = '0 JPY';
+                    return;
+                }
+
+                const customWaypoints = selectedLocs.map(item => ({ id: item.id, name: item.name, pos: locations[item.id], desc: item.desc, reg: item.reg }));
+
+                if (customWaypoints.length >= 2) {
+                    if (useFerryShortcuts) {
+                        // Split driving routes at sea boundaries (e.g. Beppu/Kyushu -> Matsuyama/Shikoku or Okinawa or Yakushima)
+                        let currentDriveSegment = [];
+                        let totalD = 0;
+                        let totalT = 0;
+
+                        for (let i = 0; i < customWaypoints.length; i++) {
+                            const curr = customWaypoints[i];
+                            const next = customWaypoints[i + 1];
+
+                            currentDriveSegment.push(curr);
+
+                            if (next) {
+                                const isBeppuToMatsuyama = (curr.id === 'beppu' && next.id === 'matsuyama') || (curr.reg === 'Kyushu' && next.reg === 'Shikoku' && (curr.id === 'beppu' || curr.id === 'oita'));
+                                const isOkinawaTransit = (curr.reg === 'Okinawa' && next.reg !== 'Okinawa') || (curr.reg !== 'Okinawa' && next.reg === 'Okinawa');
+                                const isYakushimaTransit = (curr.id === 'yakushima' || next.id === 'yakushima');
+
+                                if (isBeppuToMatsuyama || isOkinawaTransit || isYakushimaTransit) {
+                                    // Calculate road route for current segment before water crossing
+                                    if (currentDriveSegment.length >= 2) {
+                                        const segRoute = await fetchOSRMRoute(currentDriveSegment.map(c => c.pos));
+                                        drawInteractiveLegs(segRoute.legs, currentDriveSegment, '#6d28d9');
+                                        totalD += segRoute.distanceKm;
+                                        totalT += segRoute.durationHr;
+                                    }
+                                    currentDriveSegment = []; // Reset for post-transit segment
+
+                                    // Draw transit leg shortcut
+                                    if (isBeppuToMatsuyama) {
+                                        drawTransitLeg(curr.pos, next.pos, '⛴️ Passagier- & Autofähre (Bungo-Kanal)', 'Direktverbindung Beppu ➔ Matsuyama (~2.5 Std.) | Kein Hiroshima-Umweg', '#d97706');
+                                        totalT += 2.5;
+                                    } else if (isOkinawaTransit) {
+                                        drawTransitLeg(curr.pos, next.pos, '✈️ Inlandsflug (Okinawa ➔ Kyushu)', 'Dauer: ~1 Std. 45 Min.', '#0284c7');
+                                        totalT += 1.75;
+                                    } else if (isYakushimaTransit) {
+                                        drawTransitLeg(curr.pos, next.pos, '🚤 Highspeed-Fähre Toppy', 'Dauer: ~2 Std.', '#059669');
+                                        totalT += 2.0;
+                                    }
+                                }
+                            } else {
+                                // Final segment
+                                if (currentDriveSegment.length >= 2) {
+                                    const segRoute = await fetchOSRMRoute(currentDriveSegment.map(c => c.pos));
+                                    drawInteractiveLegs(segRoute.legs, currentDriveSegment, '#6d28d9');
+                                    totalD += segRoute.distanceKm;
+                                    totalT += segRoute.durationHr;
+                                }
+                            }
+                        }
+
+                        totalDist = Math.round(totalD);
+                        totalTime = totalT.toFixed(1);
+                    } else {
+                        // Direct continuous overland driving route (Forces OSRM to route through Hiroshima/Honshu)
+                        const customRoute = await fetchOSRMRoute(customWaypoints.map(c => c.pos));
+                        drawInteractiveLegs(customRoute.legs, customWaypoints, '#6d28d9');
+                        totalDist = Math.round(customRoute.distanceKm);
+                        totalTime = (customRoute.durationHr).toFixed(1);
+                    }
+                } else {
+                    totalDist = 0;
+                    totalTime = 0;
+                }
+
+                selectedLocs.forEach((item, idx) => {
+                    const pos = locations[item.id];
+                    L.circleMarker(pos, {
+                        radius: 8,
+                        fillColor: '#6d28d9',
+                        color: '#ffffff',
+                        weight: 2,
+                        fillOpacity: 1
+                    }).addTo(routeLayerGroup).bindPopup(`<b>${idx + 1}. ${item.name}</b><br><span class="text-xs">${item.desc}</span>`);
+                });
+
+                if (customWaypoints.length > 0) {
+                    map.fitBounds(L.polyline(customWaypoints.map(c => c.pos)).getBounds(), { padding: [40, 40] });
+                }
+            }
+
+            const estimatedTolls = Math.round(totalDist * 22);
+
+            document.getElementById('metricDist').innerText = `${totalDist} km`;
+            document.getElementById('metricTime').innerText = `${totalTime} Std.`;
+            document.getElementById('metricToll').innerText = `~${estimatedTolls.toLocaleString('de-DE')} JPY`;
+
+            if (loader) loader.classList.add('hidden');
+        }
+
+        function filterActivities(region, btn) {
+            const buttons = document.querySelectorAll('#filterContainer button');
+            buttons.forEach(b => b.classList.remove('filter-btn-active'));
+            if (btn) btn.classList.add('filter-btn-active');
+
+            const grid = document.getElementById('activityGrid');
+            grid.innerHTML = '';
+            const filtered = region === 'all' ? activities : activities.filter(a => a.reg === region);
+            
+            filtered.forEach(a => {
+                const card = document.createElement('div');
+                card.className = 'activity-card bg-white p-5 rounded-3xl border border-slate-100 flex flex-col h-full shadow-sm';
+                card.innerHTML = `
+                    <div class="text-3xl mb-3">${a.icon}</div>
+                    <div class="flex-grow">
+                        <span class="region-tag bg-slate-100 text-slate-600">${a.reg}</span>
+                        <h4 class="font-bold text-base mt-2 mb-1 text-slate-900">${a.title}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">${a.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateTimelineForOptionD() {
+            const container = document.getElementById('scenarioTimeline');
+            const subhead = document.getElementById('scenarioSubhead');
+            subhead.innerText = `Option D: Ihre individuelle Custom-Route mit ${customSelectedIds.length} gewählten Haltepunkten.`;
+
+            container.innerHTML = '';
+            const selectedLocs = allLocationDetails.filter(item => customSelectedIds.includes(item.id));
+
+            if (selectedLocs.length === 0) {
+                container.innerHTML = '<div class="p-6 bg-white rounded-2xl text-slate-400 text-sm italic text-center">Keine Stationen ausgewählt. Bitte wählen Sie oben Haltepunkte für Ihre Custom-Route aus.</div>';
+                return;
+            }
+
+            selectedLocs.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-6 p-4 bg-white rounded-2xl border border-purple-100 shadow-sm';
+                row.innerHTML = `
+                    <div class="text-purple-700 font-bold w-28 shrink-0 text-sm">Etappe ${idx + 1}</div>
+                    <div>
+                        <h4 class="font-bold text-base text-slate-900">${item.name}</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">${item.desc} <span class="ml-2 font-semibold text-purple-600">(${item.reg})</span></p>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function switchScenario(id) {
+            currentActiveOption = id;
+            const container = document.getElementById('scenarioTimeline');
+            const subhead = document.getElementById('scenarioSubhead');
+            const customControls = document.getElementById('customControls');
+
+            const btnA = document.getElementById('mapBtnA');
+            const btnB = document.getElementById('mapBtnB');
+            const btnC = document.getElementById('mapBtnC');
+            const btnD = document.getElementById('mapBtnD');
+
+            const defaultStyle = 'px-4 py-2.5 bg-white text-slate-700 border border-slate-300 rounded-xl text-xs font-bold shadow transition hover:bg-slate-50';
+
+            if (btnA) btnA.className = defaultStyle;
+            if (btnB) btnB.className = defaultStyle;
+            if (btnC) btnC.className = 'px-4 py-2.5 bg-white text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold shadow transition hover:bg-emerald-50';
+            if (btnD) btnD.className = 'px-4 py-2.5 bg-white text-purple-800 border border-purple-300 rounded-xl text-xs font-bold shadow transition hover:bg-purple-50';
+
+            if (customControls) customControls.classList.add('hidden');
+
+            let data = timelineA;
+
+            if (id === 'A') {
+                if (btnA) btnA.className = 'px-4 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow transition';
+                data = timelineA;
+                if (subhead) subhead.innerText = 'Option A: 8 Tage intensiver Kyushu Herbst-Loop ab/bis Fukuoka.';
+            } else if (id === 'B') {
+                if (btnB) btnB.className = 'px-4 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow transition';
+                data = timelineB;
+                if (subhead) subhead.innerText = 'Option B: 24 Tage Master-Expedition (Okinawa -> Fukuoka -> Kyushu -> Shikoku -> Osaka).';
+            } else if (id === 'C') {
+                if (btnC) btnC.className = 'px-4 py-2.5 bg-emerald-700 text-white rounded-xl text-xs font-bold shadow transition';
+                data = timelineC;
+                if (subhead) subhead.innerText = 'Option C: 28 Tage Grand Ultimate Arc (Inkl. Yakushima, Ibusuki Sandbad, Kunenan & Yokai Matsuri).';
+            } else if (id === 'D') {
+                if (btnD) btnD.className = 'px-4 py-2.5 bg-purple-700 text-white rounded-xl text-xs font-bold shadow transition';
+                if (customControls) customControls.classList.remove('hidden');
+                updateTimelineForOptionD();
+                updateMap('D');
+                return;
+            }
+
+            if (container) {
+                container.innerHTML = '';
+                data.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-6 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm';
+                    row.innerHTML = `
+                        <div class="text-red-700 font-bold w-28 shrink-0 text-sm">${item.date}</div>
+                        <div>
+                            <h4 class="font-bold text-base text-slate-900">${item.title}</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">${item.desc}</p>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            updateMap(id);
+        }
+
+        function initCharts() {
+            new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Natur/Wandern', 'Kultur/Schreine', 'Onsen/Wellness', 'Kulinarik', 'Inseln/Strand', 'Events/Yokai'],
+                    datasets: [
+                        { label: 'Option A (Kyushu 8T)', data: [85, 70, 95, 90, 20, 60], borderColor: '#475569', backgroundColor: 'rgba(71, 85, 105, 0.2)' },
+                        { label: 'Option B (Master 24T)', data: [90, 85, 95, 95, 80, 75], borderColor: '#b91c1c', backgroundColor: 'rgba(185, 28, 28, 0.2)' },
+                        { label: 'Option C (Grand Arc 28T)', data: [100, 100, 100, 100, 100, 100], borderColor: '#059669', backgroundColor: 'rgba(5, 150, 105, 0.2)' },
+                        { label: 'Option D (Custom Route)', data: [80, 80, 80, 80, 80, 80], borderColor: '#6d28d9', backgroundColor: 'rgba(109, 40, 217, 0.15)' }
+                    ]
+                },
+                options: { 
+                    maintainAspectRatio: false,
+                    scales: { r: { beginAtZero: true, grid: { color: '#e2e8f0' } } }
+                }
+            });
+
+            new Chart(document.getElementById('costChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Okinawa', 'Fukuoka & Saga', 'Kyushu / Yakushima', 'Shikoku'],
+                    datasets: [
+                        { label: 'Transport / Fähren / Maut', data: [45000, 22000, 78000, 42000], backgroundColor: '#475569' },
+                        { label: 'Unterkunft / Ryokans', data: [65000, 58000, 128000, 85000], backgroundColor: '#b91c1c' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { stacked: true }, y: { stacked: true } }
+                }
+            });
+        }
+
+        window.onload = async () => {
+            initMap();
+            initCustomControls();
+            filterActivities('all', document.querySelector('#filterContainer button'));
+            switchScenario('C');
+            initCharts();
+        };
+    </script>
+</body>
+</html>
