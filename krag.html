@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stillfleet — Krag (Level 5 Tremulant)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sfBg: '#090b0e',
+            sfCard: '#111620',
+            sfBorder: '#1f293a',
+            sfPink: '#ff2a5f',
+            sfGreen: '#20e698',
+            sfGreenGlow: '#00ff9d',
+            sfCyan: '#33d6ff',
+          },
+          fontFamily: {
+            title: ['Orbitron', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #090b0e;
+      color: #20e698;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 42, 95, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(32, 230, 152, 0.05) 0%, transparent 40%);
+    }
+
+    /* Benutzerdefinierte Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090b0e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff2a5f;
+      border-radius: 3px;
+    }
+
+    .sf-glow-pink {
+      box-shadow: 0 0 12px rgba(255, 42, 95, 0.35);
+    }
+    .sf-glow-green {
+      box-shadow: 0 0 12px rgba(32, 230, 152, 0.25);
+    }
+  </style>
+</head>
+<body class="font-sans min-h-screen pb-12 text-sm selection:bg-sfPink selection:text-white">
+
+  <!-- FIXIERTE KOPFZEILE / STATUSLEISTE -->
+  <header class="sticky top-0 z-50 bg-sfBg/95 backdrop-blur border-b border-sfPink/40 px-4 py-3 shadow-lg">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Titel, Klasse & Speicher-Indikator -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full border-2 border-sfPink bg-sfCard flex items-center justify-center font-title text-sfPink font-bold text-xs shadow-md">
+          SF
+        </div>
+        <div>
+          <h1 class="font-title text-xl font-extrabold text-sfPink tracking-wider flex items-center gap-2">
+            STILLFLEET <span class="text-xs px-2 py-0.5 rounded bg-sfPink/20 text-sfPink border border-sfPink/40 font-mono">LVL 5</span>
+          </h1>
+          <div class="flex items-center gap-2">
+            <p class="font-mono text-xs text-sfGreen/80">KRAG — MONGREL TREMULANT (CO. HELL SCIENTIST)</p>
+            <span id="save-indicator" class="opacity-0 transition-opacity duration-300 font-mono text-[10px] text-sfGreen bg-sfGreen/10 border border-sfGreen/30 px-1.5 py-0.5 rounded flex items-center gap-1">
+              <i class="fa-solid fa-check"></i> Gespeichert
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEA & GRT Quick Tracker -->
+      <div class="flex flex-wrap items-center gap-3">
+        
+        <!-- HEA Tracker -->
+        <div class="bg-sfCard border border-sfBorder px-3 py-1.5 rounded flex items-center gap-3">
+          <div class="text-left">
+            <span class="text-[10px] font-bold text-sfPink uppercase tracking-wider block">Health (HEA)</span>
+            <div class="font-mono text-base font-bold text-sfGreen flex items-center gap-1">
+              <span id="hea-current">30</span>
+              <span class="text-sfPink/60">/</span>
+              <input type="number" id="hea-max-input" value="30" onchange="updateMaxStat('heaMax', this.value)" title="Max HEA anpassen" class="w-12 bg-sfBg border border-sfBorder text-center font-mono font-bold text-xs text-sfGreen rounded px-1">
+            </div>
+          </div>
+          <div class="flex gap-1">
+            <button onclick="changeStat('hea', -5)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfPink hover:text-white transition font-mono font-bold text-xs text-sfPink">-5</button>
+            <button onclick="changeStat('hea', -1)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfPink hover:text-white transition font-mono font-bold text-xs text-sfPink">-1</button>
+            <button onclick="changeStat('hea', 1)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfGreen hover:text-sfBg transition font-mono font-bold text-xs text-sfGreen">+1</button>
+            <button onclick="changeStat('hea', 5)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfGreen hover:text-sfBg transition font-mono font-bold text-xs text-sfGreen">+5</button>
+          </div>
+        </div>
+
+        <!-- GRT Tracker -->
+        <div class="bg-sfCard border border-sfBorder px-3 py-1.5 rounded flex items-center gap-3">
+          <div class="text-left">
+            <span class="text-[10px] font-bold text-sfPink uppercase tracking-wider block">Grit (GRT)</span>
+            <div class="font-mono text-base font-bold text-sfCyan flex items-center gap-1">
+              <span id="grt-current">40</span>
+              <span class="text-sfPink/60">/</span>
+              <input type="number" id="grt-max-input" value="40" onchange="updateMaxStat('grtMax', this.value)" title="Max GRT anpassen" class="w-12 bg-sfBg border border-sfBorder text-center font-mono font-bold text-xs text-sfCyan rounded px-1">
+            </div>
+          </div>
+          <div class="flex gap-1">
+            <button onclick="changeStat('grt', -5)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfPink hover:text-white transition font-mono font-bold text-xs text-sfPink">-5</button>
+            <button onclick="changeStat('grt', -1)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfPink hover:text-white transition font-mono font-bold text-xs text-sfPink">-1</button>
+            <button onclick="changeStat('grt', 1)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfCyan hover:text-sfBg transition font-mono font-bold text-xs text-sfCyan">+1</button>
+            <button onclick="changeStat('grt', 5)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfCyan hover:text-sfBg transition font-mono font-bold text-xs text-sfCyan">+5</button>
+          </div>
+        </div>
+
+        <!-- Rast & Speichern/Laden Buttons -->
+        <div class="flex items-center gap-1.5">
+          <button onclick="fullRest()" class="px-2.5 py-1.5 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-xs font-bold transition flex items-center gap-1" title="Rast: HEA und GRT auf Maximum zurücksetzen">
+            <i class="fa-solid fa-bed"></i> Rast
+          </button>
+          
+          <button onclick="exportCharacter()" class="px-2 py-1.5 bg-sfCard border border-sfBorder text-sfGreen hover:border-sfGreen rounded font-mono text-xs transition" title="Charakter als JSON-Datei speichern">
+            <i class="fa-solid fa-download"></i> Export
+          </button>
+
+          <label class="px-2 py-1.5 bg-sfCard border border-sfBorder text-sfGreen hover:border-sfGreen rounded font-mono text-xs transition cursor-pointer" title="Charakter aus JSON-Datei laden">
+            <i class="fa-solid fa-upload"></i> Import
+            <input type="file" id="import-file" accept=".json" onchange="importCharacter(event)" class="hidden">
+          </label>
+
+          <button onclick="confirmReset()" class="px-2 py-1.5 bg-sfCard border border-sfBorder text-sfPink hover:border-sfPink rounded font-mono text-xs transition" title="Auf Standardwerte zurücksetzen">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- HAUPTCONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 mt-6">
+
+    <!-- TAB-NAVIGATION & GLOBAL-CONTROLS -->
+    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-sfBorder pb-4 mb-6">
+      <nav class="flex flex-wrap gap-2" id="nav-tabs">
+        <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="tab-btn active px-4 py-2 rounded font-title text-xs font-bold uppercase transition bg-sfPink text-white shadow">
+          <i class="fa-solid fa-user-astronaut mr-1.5"></i> Übersicht & Vitals
+        </button>
+        <button onclick="switchTab('tab-class')" id="btn-tab-class" class="tab-btn px-4 py-2 rounded font-title text-xs font-bold uppercase transition bg-sfCard border border-sfBorder text-sfGreen hover:border-sfPink">
+          <i class="fa-solid fa-bolt mr-1.5"></i> Klassen & Spezies
+        </button>
+        <button onclick="switchTab('tab-hell')" id="btn-tab-hell" class="tab-btn px-4 py-2 rounded font-title text-xs font-bold uppercase transition bg-sfCard border border-sfBorder text-sfGreen hover:border-sfPink">
+          <i class="fa-solid fa-skull-crossbones mr-1.5"></i> Hell Science & Level-Up
+        </button>
+        <button onclick="switchTab('tab-gear')" id="btn-tab-gear" class="tab-btn px-4 py-2 rounded font-title text-xs font-bold uppercase transition bg-sfCard border border-sfBorder text-sfGreen hover:border-sfPink">
+          <i class="fa-solid fa-gun mr-1.5"></i> Ausrüstung & Waffen
+        </button>
+        <button onclick="switchTab('tab-dice')" id="btn-tab-dice" class="tab-btn px-4 py-2 rounded font-title text-xs font-bold uppercase transition bg-sfCard border border-sfBorder text-sfGreen hover:border-sfPink">
+          <i class="fa-solid fa-dice-d20 mr-1.5"></i> Würfel & Log
+        </button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleAllCards(true)" class="px-3 py-1.5 bg-sfCard border border-sfBorder hover:border-sfGreen text-xs font-mono rounded transition">
+          <i class="fa-solid fa-chevron-down text-sfGreen mr-1"></i> Alle aufklappen
+        </button>
+        <button onclick="toggleAllCards(false)" class="px-3 py-1.5 bg-sfCard border border-sfBorder hover:border-sfPink text-xs font-mono rounded transition">
+          <i class="fa-solid fa-chevron-up text-sfPink mr-1"></i> Alle einklappen
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: ÜBERSICHT & ATTRIBUTE -->
+    <section id="tab-overview" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- SPALTE 1: Attribute -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1 flex items-center justify-between">
+            <span><i class="fa-solid fa-chart-simple mr-2"></i> Attribute</span>
+            <span class="text-[10px] font-mono text-sfGreen">Klick = Würfeln</span>
+          </h2>
+
+          <div class="grid grid-cols-2 gap-3">
+            <!-- COM -->
+            <button onclick="rollDie('COM', state.attributes.COM.die)" class="bg-sfCard border border-sfBorder hover:border-sfPink p-3 rounded text-left transition group">
+              <span class="text-xs font-bold text-sfPink group-hover:text-white block">COM (Combat)</span>
+              <span class="font-title text-xl font-extrabold text-sfGreen">d<span id="attr-com-display">4</span></span>
+            </button>
+            <!-- MOV -->
+            <button onclick="rollDie('MOV', state.attributes.MOV.die)" class="bg-sfCard border border-sfBorder hover:border-sfPink p-3 rounded text-left transition group">
+              <span class="text-xs font-bold text-sfPink group-hover:text-white block">MOV (Movement)</span>
+              <span class="font-title text-xl font-extrabold text-sfGreen">d<span id="attr-mov-display">10</span></span>
+            </button>
+            <!-- REA -->
+            <button onclick="rollDie('REA', state.attributes.REA.die)" class="bg-sfCard border border-sfBorder hover:border-sfPink p-3 rounded text-left transition group">
+              <span class="text-xs font-bold text-sfPink group-hover:text-white block">REA (Reason)</span>
+              <span class="font-title text-xl font-extrabold text-sfGreen">d<span id="attr-rea-display">12</span></span>
+            </button>
+            <!-- WIL -->
+            <button onclick="rollDie('WIL', state.attributes.WIL.die)" class="bg-sfCard border border-sfBorder hover:border-sfPink p-3 rounded text-left transition group">
+              <span class="text-xs font-bold text-sfPink group-hover:text-white block">WIL (Will)</span>
+              <span class="font-title text-xl font-extrabold text-sfGreen">d<span id="attr-wil-display">8</span></span>
+            </button>
+            <!-- CHA -->
+            <button onclick="rollDie('CHA', state.attributes.CHA.die)" class="bg-sfCard border border-sfBorder hover:border-sfPink p-3 rounded text-left transition group">
+              <span class="text-xs font-bold text-sfPink group-hover:text-white block">CHA (Charisma)</span>
+              <span class="font-title text-xl font-extrabold text-sfGreen">d<span id="attr-cha-display">8</span></span>
+            </button>
+            <!-- DR -->
+            <div class="bg-sfCard border border-sfBorder p-3 rounded text-left flex flex-col justify-between">
+              <span class="text-xs font-bold text-sfPink block">DR (Damage Red.)</span>
+              <div class="flex items-center justify-between mt-1">
+                <button onclick="changeDr(-1)" class="w-6 h-6 rounded bg-sfBorder hover:bg-sfPink text-white font-mono text-xs font-bold">-</button>
+                <span class="font-title text-xl font-extrabold text-sfCyan" id="dr-display">0</span>
+                <button onclick="changeDr(1)" class="w-6 h-6 rounded bg-sfBorder hover:bg-sfGreen text-sfBg font-mono text-xs font-bold">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Finanzen & Währung -->
+          <div class="bg-sfCard border border-sfBorder p-4 rounded space-y-3">
+            <h3 class="font-title text-xs font-bold text-sfPink uppercase border-b border-sfBorder pb-1">Finanzen & Voidguilders</h3>
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs">Voidguilders (gl):</span>
+              <div class="flex items-center gap-2">
+                <button onclick="changeGl(-10)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfPink text-white font-mono font-bold text-xs">-10</button>
+                <input type="number" id="input-gl" value="160" onchange="updateGl(this.value)" class="w-20 bg-sfBg border border-sfBorder text-center font-mono font-bold text-sfGreen py-1 rounded">
+                <button onclick="changeGl(10)" class="w-7 h-7 rounded bg-sfBorder hover:bg-sfGreen text-sfBg font-mono font-bold text-xs">+10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPALTE 2: Charakter-Profil & Hustle -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-address-card mr-2"></i> Charakter-Profil
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span><i class="fa-solid fa-id-badge mr-2"></i> Status & Rang</span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p><span class="text-sfPink font-bold">Rang:</span> Stillfleeter Minima Nonfactor, Subclass Petty –A</p>
+              <p><span class="text-sfPink font-bold">Klasse:</span> Co. Hell Scientist</p>
+              <p class="text-sfGreen/80">Du wurdest als Co. Hell Scientist ausgebildet und jahrelang von den Archivaren gefoltert, um die *Weird* kontrollieren zu können.</p>
+              <p><span class="text-sfPink font-bold">Spezies:</span> Mongrel</p>
+              <p class="text-sfGreen/80">Riesige, vage säugetierähnliche, dauerhaft deprimierte Humanoiden. Vor 200M Jahren in der Zukunft erschaffen, um Dæmonen zu töten.</p>
+              <p><span class="text-sfPink font-bold">Herkunft:</span> The Deep Void</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span><i class="fa-solid fa-shield-halved mr-2"></i> Hustle — Hell Paladyn</span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Du spürst gefährliche Xenos, Zeitreisende, Escher'sche Entitäten und politische Aufrührer auf.</p>
+              <div class="bg-sfBg p-2.5 rounded border border-sfPink/30 space-y-1">
+                <p><span class="text-sfPink font-bold">Gewählter Dæmon:</span> Time Traveler</p>
+                <p><span class="text-sfGreen font-bold">Vorteil (Advantage):</span> Vorteil auf alle Würfe bezüglich Zeitreisenden (Time Travelers).</p>
+                <p><span class="text-sfPink font-bold">Nachteil (Disadvantage):</span> Nachteil bei Würfen bezüglich ziviler Ordnung (Steuern, Nahrung, Etikette) in Nicht-Void-Umgebungen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPALTE 3: Biografie & Details -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-book-open mr-2"></i> Biografie & Details
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span><i class="fa-solid fa-scroll mr-2"></i> Biografie & Kin</span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Aufgewachsen mit Geschichten der Sterne während des Tachquakes. Du jagst dem Licht einer Sonne nach, die du nie gesehen hast.</p>
+              <div class="border-t border-sfBorder pt-2">
+                <span class="text-sfPink font-bold block mb-1">Kin (Verwandte):</span>
+                <ul class="list-disc pl-4 space-y-1 text-sfGreen/80">
+                  <li>Ein Chronik-Kopierer im Arkheion, der Fußnoten ändert.</li>
+                  <li>Eine mächtige Mutanten-Xeno-Pflanze/Tier (kostenlose Telepathie).</li>
+                </ul>
+              </div>
+              <div class="border-t border-sfBorder pt-2">
+                <p><span class="text-sfPink font-bold">Telos (Service):</span> Du erfüllst dein Telos, wenn du *Dem Ganzen* durch Selbstopfer hilfst.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span><i class="fa-solid fa-mask mr-2"></i> Geheimnisse & Eigenheiten</span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p><span class="text-sfPink font-bold">Presentation:</span> Bärig</p>
+              <p><span class="text-sfPink font-bold">Geheimnis (Tell No One):</span> Dem Redaktor begegnet... du kannst dich nicht erinnern warum dies so wichtig ist.</p>
+              <p><span class="text-sfPink font-bold">Weird Flaw:</span> Deine Pürze riechen zunehmend scharf nach schwarzem Pfeffer.</p>
+              <p><span class="text-sfPink font-bold">Sprachen:</span> Spin, Futurecommon, Yellow Order's Secret Cant</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: KLASSEN & SPEZIES -->
+    <section id="tab-class" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Klassen-Fähigkeiten -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Klassen-Fähigkeiten (Hell Scientist)
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Control Hell Science <span class="text-sfGreen font-mono font-normal">(Varies)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Durch qualvolle Jahre des Trainings kontrollierst du das Weird. Psyonsicher COM-Ersatz ist REA. Gegner würfeln WIL statt MOV zum Ausweichen.</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Drain <span class="text-sfGreen font-mono font-normal">(10 Min / 1x pro Tag)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Saugt <span class="font-mono font-bold text-sfCyan">dWIL + Level (5)</span> GRT von einem Wesen innerhalb von 3 M ab.</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Memorize <span class="text-sfGreen font-mono font-normal">(10 Min / Free Action)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Bereite Hell-Science-Kräfte vor, indem du Grit reservierst. Das Wirken einer gemerkten Kraft ist immer eine **Free Action**.</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfPink/50 rounded overflow-hidden sf-glow-pink">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Phase <span class="text-sfGreen font-mono font-normal">(Free)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfPink font-mono font-bold">Kosten: d20 - dMOV + X GRT (X > 0)</p>
+              <p class="text-sfGreen/90">Du wirkst extrem seltsam auf deine Umgebung. Wähle 1 Effekt:</p>
+              <ul class="list-disc pl-4 space-y-1.5 text-sfGreen/80">
+                <li><strong class="text-sfPink">Blink:</strong> Teleportiere 10X Meter. Bewegst du dich in ein Lebewesen, wird es zerstört, aber du erleidest 5X HEA physischen & 2X GRT mentalen Schaden.</li>
+                <li><strong class="text-sfPink">Decorporealize:</strong> Für 2X Runden immateriell: HEA-Schaden trifft den Angreifer; GRT-Schaden verringert um -X.</li>
+                <li><strong class="text-sfPink">Overmirror:</strong> Erschaffe X Kopien für X Runden. Am Ende erleidest du X HEA Schaden.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spezies-Fähigkeiten -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-dna mr-2"></i> Spezies-Eigenschaften (Mongrel)
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Claws and Bearhug <span class="text-sfGreen font-mono font-normal">(Standard / 3d6 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Unbewaffneter Angriff verursacht <span class="font-mono text-sfPink font-bold">2d4</span> Schaden. Verbrenne 3d6 GRT für 3 Angriffe. Treffen alle 3 = Bärenumarmung & Immobilisierung.</p>
+              <button onclick="burnGrit(10, 'Claws & Bearhug (3d6 GRT est.)')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">
+                <i class="fa-solid fa-fire mr-1"></i> ~10 GRT verbrauchen
+              </button>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Huge <span class="text-sfGreen font-mono font-normal">(Permanent)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-1 text-xs">
+              <p class="text-sfGreen/90">+8 HEA permanent bereits verrechnet. +2 auf Grappling-Proben. Passt nicht in enge Räume.</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Knock Knock <span class="text-sfGreen font-mono font-normal">(Permanent)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-1 text-xs">
+              <p class="text-sfGreen/90">Keine Angst vor alten Ruinen. <strong class="text-sfPink">+1 Bonus</strong> auf alle `WIL/perceive`, `WIL/resist other` und `WIL/resist world` Proben in Technoruinen & Frackbauten.</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Weitere Spezies-Eigenschaften</span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p><strong class="text-sfPink">Neurosis:</strong> Verliere 1 GRT bei jeder misslungenen Probe.</p>
+              <p><strong class="text-sfPink">Poison Resistance:</strong> 3 Riesenlebern. +3 auf Proben gegen Gifte/Toxine/Alkohol.</p>
+              <p><strong class="text-sfPink">Posthaunted:</strong> +3 auf WIL/resist other Proben; -3 auf CHA/control Proben (Intimidate).</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: HELL SCIENCE & LEVEL-UP -->
+    <section id="tab-hell" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Hell Science Kräfe -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-fire-flame-curved mr-2"></i> Hell Sciencekräfte
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfPink/50 rounded overflow-hidden sf-glow-pink">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Expand <span class="text-sfGreen font-mono font-normal">(Standard / 11 od. 23 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Wachse für 1 Stunde zu einem Giganten oder Koloss heran.</p>
+              <div class="bg-sfBg p-2 rounded border border-sfBorder space-y-1">
+                <p><strong class="text-sfPink">Giant (11 GRT):</strong> COM wird d20, Unbewaffneter Schaden 2d20, -6 Ausweichen. Wände durchschlagen & Fahrzeuge werfen.</p>
+                <p><strong class="text-sfPink">Colossus (23 GRT):</strong> COM wird d100, Schaden 2d100. Immun gegen normale Angriffe (Messer etc.), halbiere HEA. Raumschiffe & Hochhäuser schleudern!</p>
+              </div>
+              <div class="flex gap-2 pt-1">
+                <button onclick="burnGrit(11, 'Expand: Giant')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">
+                  <i class="fa-solid fa-up-right-and-down-left-from-center mr-1"></i> Giant (11 GRT)
+                </button>
+                <button onclick="burnGrit(23, 'Expand: Colossus')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">
+                  <i class="fa-solid fa-mountain mr-1"></i> Colossus (23 GRT)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfPink/50 rounded overflow-hidden sf-glow-pink">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Fray <span class="text-sfGreen font-mono font-normal">(Standard / d20 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Erschaffe ein unsichtbares, masseloses antidimensionales Bivector-Messer. Es schneidet durch Dimensionen.</p>
+              <ul class="list-disc pl-4 space-y-1 text-sfGreen/80">
+                <li><strong class="text-sfGreen">Treffer (Hit):</strong> Ziel wird 2D und kann dich nicht mehr beeinflussen.</li>
+                <li><strong class="text-sfPink">Fehlschlag (Miss):</strong> Raum um Ziel wird 2D. Alle müssen fliehen oder werden in der nächsten Runde 2D!</li>
+              </ul>
+              <button onclick="burnGrit(10, 'Fray (d20 GRT est.)')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">
+                <i class="fa-solid fa-scissors mr-1"></i> ~10 GRT verbrauchen
+              </button>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Armor the Soul / Expunge <span class="text-sfGreen font-mono font-normal">(Free / 8 or 28 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">8 GRT: Widerstehe einem Weird-Effekt ohne Wurf. +20 GRT: Vertreibe ein *Old One* für Stunden = Level (5).</p>
+              <div class="flex gap-2">
+                <button onclick="burnGrit(8, 'Armor the Soul')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">8 GRT</button>
+                <button onclick="burnGrit(28, 'Expunge Old One')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">28 GRT</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level-Up Kräfe -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-angles-up mr-2"></i> Level-Up Gewonnene Kräfte
+          </h2>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Power Up <span class="text-sfGreen font-mono font-normal">(Free / X GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Lade technische Objekte oder Energiewaffen auf. 2X (persönlich), 3X (Ancient/High Tephnian), 5X (alien/Late Tephnian).</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Lighten the Mood <span class="text-sfGreen font-mono font-normal">(Passive)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Erhalt <span class="text-sfCyan font-bold">+dCHA (d8)</span> GRT jedes Mal, wenn du In-Character einen Witz machst, der einen Mitspieler IRL zum Lachen bringt!</p>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Sense Deep Wires <span class="text-sfGreen font-mono font-normal">(Standard / 4 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Finde Technologie in Ruinen & Wracks. Verbrenne 4 GRT, würfele REA + Level (5). Erfolg bei 10+.</p>
+              <button onclick="burnGrit(4, 'Sense Deep Wires')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">4 GRT verbrauchen</button>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Kickfix <span class="text-sfGreen font-mono font-normal">(Standard / 2 GRT) — AKA, The Fonz</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Bei fehlgeschlagenem Hack: Verbrenne 2 GRT & würfele COM Probe (6+). Du trittst gegen das Teil und es funktioniert!</p>
+              <button onclick="burnGrit(2, 'Kickfix')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">2 GRT verbrauchen</button>
+            </div>
+          </div>
+
+          <div class="card-collapsible bg-sfCard border border-sfBorder rounded overflow-hidden">
+            <button onclick="toggleCard(this)" class="w-full p-3 bg-sfCard border-b border-sfBorder flex items-center justify-between text-left font-title text-xs font-bold text-sfPink uppercase">
+              <span>Resculpt <span class="text-sfGreen font-mono font-normal">(Standard / 5 GRT)</span></span>
+              <i class="fa-solid fa-chevron-down text-sfPink transition-transform duration-200"></i>
+            </button>
+            <div class="card-body p-3 space-y-2 text-xs">
+              <p class="text-sfGreen/90">Rekonfiguriere Materie (max. 2.5 m², max. 50 kg). Funktionsfähige Technologie erfordert REA Probe (4 + 2t).</p>
+              <button onclick="burnGrit(5, 'Resculpt')" class="px-2.5 py-1 bg-sfPink/20 border border-sfPink text-sfPink hover:bg-sfPink hover:text-white rounded font-mono text-[11px] font-bold transition">5 GRT verbrauchen</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: AUSRÜSTUNG & WAFFEN -->
+    <section id="tab-gear" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Waffen & Inventar -->
+        <div class="md:col-span-2 space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1 flex items-center justify-between">
+            <span><i class="fa-solid fa-crosshairs mr-2"></i> Waffen & Angriffstabelle</span>
+            <button onclick="openAddItemModal('weapon')" class="text-xs bg-sfPink/20 border border-sfPink text-sfPink px-2.5 py-1 rounded hover:bg-sfPink hover:text-white transition">
+              <i class="fa-solid fa-plus mr-1"></i> Waffe hinzufügen
+            </button>
+          </h2>
+
+          <div class="overflow-x-auto bg-sfCard border border-sfBorder rounded">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-sfBorder/50 text-sfPink uppercase">
+                <tr>
+                  <th class="p-3">Name</th>
+                  <th class="p-3">Schaden</th>
+                  <th class="p-3">Reichweite</th>
+                  <th class="p-3">Tech-Typ</th>
+                  <th class="p-3">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="weapons-list-body" class="divide-y divide-sfBorder text-sfGreen">
+                <!-- Dynamisch per JS injiziert -->
+              </tbody>
+            </table>
+          </div>
+
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1 pt-4 flex items-center justify-between">
+            <span><i class="fa-solid fa-box-archive mr-2"></i> Gegenstände & Ausrüstung</span>
+            <button onclick="openAddItemModal('gear')" class="text-xs bg-sfPink/20 border border-sfPink text-sfPink px-2.5 py-1 rounded hover:bg-sfPink hover:text-white transition">
+              <i class="fa-solid fa-plus mr-1"></i> Item hinzufügen
+            </button>
+          </h2>
+
+          <div id="gear-cards-container" class="space-y-3">
+            <!-- Dynamisch per JS injiziert -->
+          </div>
+        </div>
+
+        <!-- Notizen -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-pen-to-square mr-2"></i> Notizen
+          </h2>
+
+          <div class="bg-sfCard border border-sfBorder p-3 rounded space-y-2">
+            <textarea id="session-notes" rows="12" oninput="saveNotes(this.value)" placeholder="Hier kannst du temporäre Buffs, Beute, Quest-Notizen eintragen..." class="w-full bg-sfBg border border-sfBorder text-sfGreen p-3 rounded font-mono text-xs focus:border-sfPink focus:outline-none"></textarea>
+            <p class="text-[10px] text-sfGreen/60 font-mono text-right"><i class="fa-solid fa-floppy-disk mr-1"></i> Automatisch gespeichert</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 5: WÜRFEL & LOG -->
+    <section id="tab-dice" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Virtueller Würfelbecher -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1">
+            <i class="fa-solid fa-dice mr-2"></i> Virtueller Würfelbecher
+          </h2>
+
+          <div class="bg-sfCard border border-sfBorder p-4 rounded space-y-4">
+            <div class="flex flex-wrap gap-2">
+              <button onclick="rollCustomDie(4)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d4</button>
+              <button onclick="rollCustomDie(6)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d6</button>
+              <button onclick="rollCustomDie(8)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d8</button>
+              <button onclick="rollCustomDie(10)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d10</button>
+              <button onclick="rollCustomDie(12)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d12</button>
+              <button onclick="rollCustomDie(20)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d20</button>
+              <button onclick="rollCustomDie(100)" class="flex-1 py-2 bg-sfBorder hover:bg-sfPink hover:text-white font-title text-sm font-bold text-sfGreen rounded transition">d100</button>
+            </div>
+
+            <div class="flex items-center gap-4 pt-2">
+              <label class="font-mono text-xs text-sfPink font-bold">Modifikator:</label>
+              <input type="number" id="dice-mod" value="0" class="w-16 bg-sfBg border border-sfBorder text-center font-mono font-bold text-sfGreen py-1 rounded">
+            </div>
+          </div>
+        </div>
+
+        <!-- Aktions-Log -->
+        <div class="space-y-4">
+          <h2 class="font-title text-base font-bold text-sfPink uppercase tracking-wider border-b border-sfPink/40 pb-1 flex items-center justify-between">
+            <span><i class="fa-solid fa-list-check mr-2"></i> Aktions- & Würfel-Log</span>
+            <button onclick="clearLog()" class="text-xs text-sfPink hover:underline font-mono"><i class="fa-solid fa-trash mr-1"></i> Log leeren</button>
+          </h2>
+
+          <div id="action-log" class="bg-sfCard border border-sfBorder p-3 rounded h-64 overflow-y-auto font-mono text-xs space-y-1.5 text-sfGreen/90">
+            <!-- Dynamisch per JS injiziert -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ITEM HINZUFÜGEN / EDITIEREN MODAL -->
+  <div id="item-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-sfCard border border-sfPink p-6 rounded-lg max-w-md w-full space-y-4 sf-glow-pink">
+      <h3 class="font-title text-lg font-bold text-sfPink uppercase" id="modal-title">Neues Item</h3>
+      <input type="hidden" id="modal-type" value="gear">
+      <input type="hidden" id="modal-edit-id" value="">
+
+      <div class="space-y-3 font-mono text-xs">
+        <div>
+          <label class="block text-sfPink mb-1">Name:</label>
+          <input type="text" id="modal-name" class="w-full bg-sfBg border border-sfBorder text-sfGreen p-2 rounded focus:outline-none focus:border-sfPink">
+        </div>
+        <div id="modal-field-damage">
+          <label class="block text-sfPink mb-1">Schaden (z.B. 2d6):</label>
+          <input type="text" id="modal-damage" class="w-full bg-sfBg border border-sfBorder text-sfGreen p-2 rounded focus:outline-none focus:border-sfPink">
+        </div>
+        <div>
+          <label class="block text-sfPink mb-1">Tech-Typ / Kosten:</label>
+          <input type="text" id="modal-tech" class="w-full bg-sfBg border border-sfBorder text-sfGreen p-2 rounded focus:outline-none focus:border-sfPink">
+        </div>
+        <div>
+          <label class="block text-sfPink mb-1">Beschreibung:</label>
+          <textarea id="modal-desc" rows="3" class="w-full bg-sfBg border border-sfBorder text-sfGreen p-2 rounded focus:outline-none focus:border-sfPink"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button onclick="closeAddItemModal()" class="px-4 py-2 bg-sfBorder hover:bg-sfBorder/80 text-white font-mono text-xs rounded">Abbrechen</button>
+        <button onclick="saveNewItem()" class="px-4 py-2 bg-sfPink text-white font-title text-xs font-bold rounded hover:bg-sfPink/80">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT & SPEICHER-LOGIK -->
+  <script>
+    // Standard-Zustand
+    const defaultState = {
+      name: 'Krag',
+      level: 5,
+      hea: 30,
+      heaMax: 30,
+      grt: 40,
+      grtMax: 40,
+      dr: 0,
+      gl: 160,
+      attributes: {
+        COM: { die: 4 },
+        MOV: { die: 10 },
+        REA: { die: 12 },
+        WIL: { die: 8 },
+        CHA: { die: 8 }
+      },
+      weapons: [
+        { id: 1, name: 'Unarmed (Fäuste)', damage: '2d4', range: '-', tech: '1 bio', desc: 'Unbewaffneter Nahkampf (Claws & Bearhug)' }
+      ],
+      gear: [
+        { id: 2, name: 'Standard Environment Suit', tech: '5 clank, 2 bio', desc: 'Ermöglicht sicheres Operieren in gefahrvollen Umgebungen für 12 Stunden.' },
+        { id: 3, name: 'Oddment', tech: 'Unknown', desc: 'Uraltes Smartphone. Explosionsgefahr nach 5 Nutzungen (d6 Schaden). +1 auf Code-Proben.' }
+      ],
+      notes: '',
+      log: []
+    };
+
+    let state = loadInitialState();
+    let saveTimeout = null;
+
+    function loadInitialState() {
+      try {
+        const stored = localStorage.getItem('sf_krag_sheet_v3');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          return {
+            ...defaultState,
+            ...parsed,
+            attributes: { ...defaultState.attributes, ...(parsed.attributes || {}) },
+            weapons: parsed.weapons || defaultState.weapons,
+            gear: parsed.gear || defaultState.gear,
+            log: parsed.log || defaultState.log
+          };
+        }
+      } catch (e) {
+        console.error('Fehler beim Laden aus localStorage:', e);
+      }
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+
+    // Initialisierung beim Laden der Seite
+    window.addEventListener('DOMContentLoaded', () => {
+      renderVitals();
+      renderAttributes();
+      renderWeapons();
+      renderGear();
+      renderLog();
+      document.getElementById('session-notes').value = state.notes || '';
+    });
+
+    // Zentrale Speicherfunktion mit visuellem Feedback
+    function saveState() {
+      localStorage.setItem('sf_krag_sheet_v3', JSON.stringify(state));
+      
+      const indicator = document.getElementById('save-indicator');
+      if (indicator) {
+        indicator.classList.remove('opacity-0');
+        if (saveTimeout) clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          indicator.classList.add('opacity-0');
+        }, 1200);
+      }
+    }
+
+    // Vitals Logic
+    function renderVitals() {
+      document.getElementById('hea-current').innerText = state.hea;
+      document.getElementById('hea-max-input').value = state.heaMax;
+      document.getElementById('grt-current').innerText = state.grt;
+      document.getElementById('grt-max-input').value = state.grtMax;
+      document.getElementById('dr-display').innerText = state.dr;
+      document.getElementById('input-gl').value = state.gl;
+    }
+
+    function renderAttributes() {
+      if (state.attributes.COM) document.getElementById('attr-com-display').innerText = state.attributes.COM.die;
+      if (state.attributes.MOV) document.getElementById('attr-mov-display').innerText = state.attributes.MOV.die;
+      if (state.attributes.REA) document.getElementById('attr-rea-display').innerText = state.attributes.REA.die;
+      if (state.attributes.WIL) document.getElementById('attr-wil-display').innerText = state.attributes.WIL.die;
+      if (state.attributes.CHA) document.getElementById('attr-cha-display').innerText = state.attributes.CHA.die;
+    }
+
+    function changeStat(type, val) {
+      if (type === 'hea') {
+        state.hea = Math.min(state.heaMax, Math.max(0, state.hea + val));
+      } else if (type === 'grt') {
+        state.grt = Math.min(state.grtMax, Math.max(0, state.grt + val));
+      }
+      renderVitals();
+      saveState();
+    }
+
+    function updateMaxStat(type, val) {
+      const parsed = parseInt(val) || 1;
+      if (type === 'heaMax') {
+        state.heaMax = parsed;
+        if (state.hea > state.heaMax) state.hea = state.heaMax;
+      } else if (type === 'grtMax') {
+        state.grtMax = parsed;
+        if (state.grt > state.grtMax) state.grt = state.grtMax;
+      }
+      renderVitals();
+      saveState();
+    }
+
+    function changeDr(val) {
+      state.dr = Math.max(0, state.dr + val);
+      renderVitals();
+      saveState();
+    }
+
+    function burnGrit(amount, source) {
+      state.grt = Math.max(0, state.grt - amount);
+      renderVitals();
+      addLogEntry(`🔥 ${amount} GRT verbraucht für: ${source}`);
+      saveState();
+    }
+
+    function fullRest() {
+      state.hea = state.heaMax;
+      state.grt = state.grtMax;
+      renderVitals();
+      addLogEntry(`💤 Volle Rast genommen. HEA (${state.heaMax}) und GRT (${state.grtMax}) vollständig wiederhergestellt.`);
+      saveState();
+    }
+
+    function updateGl(val) {
+      state.gl = parseInt(val) || 0;
+      saveState();
+    }
+
+    function changeGl(val) {
+      state.gl = Math.max(0, state.gl + val);
+      document.getElementById('input-gl').value = state.gl;
+      saveState();
+    }
+
+    // Tab Switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-sfPink', 'text-white', 'shadow');
+        btn.classList.add('bg-sfCard', 'text-sfGreen');
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.add('bg-sfPink', 'text-white', 'shadow');
+      activeBtn.classList.remove('bg-sfCard', 'text-sfGreen');
+    }
+
+    // Card Collapsible
+    function toggleCard(btn) {
+      const card = btn.closest('.card-collapsible');
+      const body = card.querySelector('.card-body');
+      const icon = btn.querySelector('.fa-chevron-down');
+
+      body.classList.toggle('hidden');
+      if (icon) {
+        icon.classList.toggle('rotate-180');
+      }
+    }
+
+    function toggleAllCards(expand) {
+      document.querySelectorAll('.card-collapsible').forEach(card => {
+        const body = card.querySelector('.card-body');
+        const icon = card.querySelector('.fa-chevron-down');
+        if (expand) {
+          body.classList.remove('hidden');
+          if (icon) icon.classList.add('rotate-180');
+        } else {
+          body.classList.add('hidden');
+          if (icon) icon.classList.remove('rotate-180');
+        }
+      });
+    }
+
+    // Dice Roller
+    function rollDie(attr, sides) {
+      const result = Math.floor(Math.random() * sides) + 1;
+      addLogEntry(`🎲 <strong>${attr} (d${sides})</strong> Probe gewürfelt: <span class="text-sfPink font-bold text-sm">${result}</span>`);
+    }
+
+    function rollCustomDie(sides) {
+      const mod = parseInt(document.getElementById('dice-mod').value) || 0;
+      const raw = Math.floor(Math.random() * sides) + 1;
+      const total = raw + mod;
+      addLogEntry(`🎲 <strong>d${sides}</strong> + ${mod}: [${raw}] = <span class="text-sfPink font-bold text-sm">${total}</span>`);
+    }
+
+    // Action Log
+    function addLogEntry(text) {
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      state.log.unshift(`[${time}] ${text}`);
+      if (state.log.length > 50) state.log.pop();
+      renderLog();
+      saveState();
+    }
+
+    function renderLog() {
+      const container = document.getElementById('action-log');
+      if (!state.log.length) {
+        container.innerHTML = '<p class="text-sfGreen/50 italic">Noch keine Aktionen aufgezeichnet.</p>';
+        return;
+      }
+      container.innerHTML = state.log.map(entry => `<div class="border-b border-sfBorder/40 pb-1">${entry}</div>`).join('');
+    }
+
+    function clearLog() {
+      state.log = [];
+      renderLog();
+      saveState();
+    }
+
+    // Notes
+    function saveNotes(text) {
+      state.notes = text;
+      saveState();
+    }
+
+    // Items Logic
+    function renderWeapons() {
+      const tbody = document.getElementById('weapons-list-body');
+      tbody.innerHTML = state.weapons.map(w => `
+        <tr>
+          <td class="p-3 font-bold text-white">${w.name}</td>
+          <td class="p-3 text-sfPink font-bold">${w.damage}</td>
+          <td class="p-3">${w.range || '-'}</td>
+          <td class="p-3">${w.tech || '-'}</td>
+          <td class="p-3 flex items-center gap-2">
+            <button onclick="editWeapon(${w.id})" class="text-xs text-sfGreen hover:underline"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteWeapon(${w.id})" class="text-xs text-sfPink hover:underline"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderGear() {
+      const container = document.getElementById('gear-cards-container');
+      container.innerHTML = state.gear.map(g => `
+        <div class="bg-sfCard border border-sfBorder p-3 rounded flex items-start justify-between gap-2">
+          <div>
+            <h4 class="font-bold text-sfPink text-xs">${g.name} <span class="text-[10px] text-sfGreen font-mono font-normal">(${g.tech || '-'})</span></h4>
+            <p class="text-xs text-sfGreen/80 mt-1">${g.desc || ''}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="editGear(${g.id})" class="text-xs text-sfGreen hover:underline p-1"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteGear(${g.id})" class="text-xs text-sfPink hover:underline p-1"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openAddItemModal(type) {
+      document.getElementById('modal-type').value = type;
+      document.getElementById('modal-edit-id').value = '';
+      document.getElementById('modal-title').innerText = type === 'weapon' ? 'Neue Waffe hinzufügen' : 'Neues Item hinzufügen';
+      document.getElementById('modal-field-damage').style.display = type === 'weapon' ? 'block' : 'none';
+      document.getElementById('modal-name').value = '';
+      document.getElementById('modal-damage').value = '';
+      document.getElementById('modal-tech').value = '';
+      document.getElementById('modal-desc').value = '';
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function editWeapon(id) {
+      const item = state.weapons.find(w => w.id === id);
+      if (!item) return;
+      document.getElementById('modal-type').value = 'weapon';
+      document.getElementById('modal-edit-id').value = id;
+      document.getElementById('modal-title').innerText = 'Waffe bearbeiten';
+      document.getElementById('modal-field-damage').style.display = 'block';
+      document.getElementById('modal-name').value = item.name;
+      document.getElementById('modal-damage').value = item.damage;
+      document.getElementById('modal-tech').value = item.tech;
+      document.getElementById('modal-desc').value = item.desc || '';
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function editGear(id) {
+      const item = state.gear.find(g => g.id === id);
+      if (!item) return;
+      document.getElementById('modal-type').value = 'gear';
+      document.getElementById('modal-edit-id').value = id;
+      document.getElementById('modal-title').innerText = 'Item bearbeiten';
+      document.getElementById('modal-field-damage').style.display = 'none';
+      document.getElementById('modal-name').value = item.name;
+      document.getElementById('modal-tech').value = item.tech;
+      document.getElementById('modal-desc').value = item.desc || '';
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function closeAddItemModal() {
+      document.getElementById('item-modal').classList.add('hidden');
+    }
+
+    function saveNewItem() {
+      const type = document.getElementById('modal-type').value;
+      const editId = document.getElementById('modal-edit-id').value;
+      const name = document.getElementById('modal-name').value.trim();
+      const tech = document.getElementById('modal-tech').value.trim();
+      const desc = document.getElementById('modal-desc').value.trim();
+
+      if (!name) return;
+
+      if (type === 'weapon') {
+        const damage = document.getElementById('modal-damage').value.trim() || '1d6';
+        if (editId) {
+          const idx = state.weapons.findIndex(w => w.id == editId);
+          if (idx !== -1) state.weapons[idx] = { ...state.weapons[idx], name, damage, tech, desc };
+        } else {
+          state.weapons.push({ id: Date.now(), name, damage, range: '-', tech, desc });
+        }
+        renderWeapons();
+      } else {
+        if (editId) {
+          const idx = state.gear.findIndex(g => g.id == editId);
+          if (idx !== -1) state.gear[idx] = { ...state.gear[idx], name, tech, desc };
+        } else {
+          state.gear.push({ id: Date.now(), name, tech, desc });
+        }
+        renderGear();
+      }
+
+      saveState();
+      closeAddItemModal();
+    }
+
+    function deleteWeapon(id) {
+      state.weapons = state.weapons.filter(w => w.id !== id);
+      renderWeapons();
+      saveState();
+    }
+
+    function deleteGear(id) {
+      state.gear = state.gear.filter(g => g.id !== id);
+      renderGear();
+      saveState();
+    }
+
+    // Export & Import Backup Funktionen
+    function exportCharacter() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Krag_Level5_Stillfleet.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importCharacter(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedState = JSON.parse(e.target.result);
+          state = {
+            ...defaultState,
+            ...importedState,
+            weapons: importedState.weapons || defaultState.weapons,
+            gear: importedState.gear || defaultState.gear
+          };
+          renderVitals();
+          renderAttributes();
+          renderWeapons();
+          renderGear();
+          renderLog();
+          document.getElementById('session-notes').value = state.notes || '';
+          saveState();
+          addLogEntry(`📥 Charakter erfolgreich aus Datei importiert.`);
+        } catch (err) {
+          alert('Fehler beim Importieren der Datei. Ungültiges JSON-Format.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function confirmReset() {
+      if (confirm('Möchtest du wirklich alle Werte auf den Standard von Level 5 zurücksetzen? Ungespeicherte Änderungen gehen verloren.')) {
+        state = JSON.parse(JSON.stringify(defaultState));
+        renderVitals();
+        renderAttributes();
+        renderWeapons();
+        renderGear();
+        renderLog();
+        document.getElementById('session-notes').value = '';
+        saveState();
+        addLogEntry(`🔄 Charakterbogen auf Level 5 Standard zurückgesetzt.`);
+      }
+    }
+  </script>
+
+</body>
+</html>
