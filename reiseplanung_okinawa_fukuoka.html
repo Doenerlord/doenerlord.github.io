@@ -211,7 +211,7 @@
             display: none !important;
         }
 
-                /* --- THEMATIC AMBIENT BACKGROUNDS --- */
+        /* --- THEMATIC AMBIENT BACKGROUNDS --- */
         .ambient-bg {
             transition: opacity 1s ease-in-out;
         }
@@ -230,70 +230,106 @@
             opacity: 0.15;
             filter: blur(10px);
         }
+
         .wave-bg-2 {
             animation: waveScroll 18s linear infinite reverse;
             opacity: 0.1;
             bottom: -15vh;
             height: 70vh;
         }
+
         @keyframes waveScroll {
-            0% { transform: translateX(0) scaleY(1); }
-            50% { transform: translateX(-50vw) scaleY(1.1); }
-            100% { transform: translateX(-100vw) scaleY(1); }
+            0% {
+                transform: translateX(0) scaleY(1);
+            }
+
+            50% {
+                transform: translateX(-50vw) scaleY(1.1);
+            }
+
+            100% {
+                transform: translateX(-100vw) scaleY(1);
+            }
         }
 
         /* Shikoku Whirlpools (Naruto Strudel) */
         .whirlpool {
             position: absolute;
-            top: 50%; left: 50%;
-            width: 150vw; height: 150vw;
-            margin-top: -75vw; margin-left: -75vw;
+            top: 50%;
+            left: 50%;
+            width: 150vw;
+            height: 150vw;
+            margin-top: -75vw;
+            margin-left: -75vw;
             background: conic-gradient(from 0deg, rgba(13, 148, 136, 0.05), rgba(8, 145, 178, 0.25), rgba(13, 148, 136, 0.05));
             border-radius: 50%;
             filter: blur(50px);
             animation: spin 30s linear infinite;
         }
+
         .whirlpool-inner {
             position: absolute;
-            top: 50%; left: 50%;
-            width: 80vw; height: 80vw;
-            margin-top: -40vw; margin-left: -40vw;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vw;
+            margin-top: -40vw;
+            margin-left: -40vw;
             background: conic-gradient(from 180deg, rgba(2, 128, 144, 0.1), rgba(16, 185, 129, 0.2), rgba(2, 128, 144, 0.1));
             border-radius: 50%;
             filter: blur(40px);
             animation: spin 15s linear infinite reverse;
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Autumn Leaves */
         .autumn-leaf {
             position: absolute;
             top: -10vh;
-            width: 25px; height: 25px;
+            width: 25px;
+            height: 25px;
             background: linear-gradient(135deg, #e36414, #9a031e);
             border-radius: 2px 16px;
             opacity: 0.4;
             filter: blur(4px);
             animation: fall linear infinite;
         }
+
         @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg) translateX(0); }
-            100% { transform: translateY(110vh) rotate(360deg) translateX(30px); }
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(30px);
+            }
         }
 
         /* Bamboo Leaves (Kyushu) */
         .bamboo-leaf {
             position: absolute;
-            width: 15px; height: 45px;
+            width: 15px;
+            height: 45px;
             background: linear-gradient(135deg, #2d6a4f, #52b788);
             border-radius: 0 20px 0 20px;
             opacity: 0.3;
             filter: blur(5px);
             animation: sway ease-in-out infinite alternate;
         }
+
         @keyframes sway {
-            0% { transform: rotate(-20deg) translateX(-15px); }
-            100% { transform: rotate(20deg) translateX(15px); }
+            0% {
+                transform: rotate(-20deg) translateX(-15px);
+            }
+
+            100% {
+                transform: rotate(20deg) translateX(15px);
+            }
         }
     </style>
     <!-- Leaflet CSS & JS -->
@@ -305,8 +341,8 @@
 
     <!-- DYNAMIC AMBIENT BACKGROUNDS -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-<!-- 1. Blobs (Planner, Overview, Map) -->
-<div id="bg-blobs" class="ambient-bg absolute inset-0 opacity-100">
+        <!-- 1. Blobs (Planner, Overview, Map) -->
+        <div id="bg-blobs" class="ambient-bg absolute inset-0 opacity-100">
             <div id="blob-1"
                 class="blob-morph absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] animate-blob">
             </div>
@@ -322,28 +358,28 @@
             <div id="blob-5"
                 class="blob-morph absolute top-[40%] left-[30%] w-[35vw] h-[35vw] rounded-full mix-blend-multiply filter blur-[110px] animate-blob animation-delay-6000">
             </div>
-            </div>
-            
-            <!-- 2. Okinawa (Wellen) -->
-            <div id="bg-okinawa" class="ambient-bg absolute inset-0 opacity-0">
-                <div class="wave-bg"></div>
-                <div class="wave-bg wave-bg-2"></div>
-            </div>
-            
-            <!-- 3. Kyushu (Bambus) -->
-            <div id="bg-kyushu" class="ambient-bg absolute inset-0 opacity-0">
-                <!-- JS generiert hier die Blätter -->
-            </div>
-            
-            <!-- 4. Shikoku (Naruto Whirlpool) -->
-            <div id="bg-shikoku" class="ambient-bg absolute inset-0 opacity-0">
-                <div class="whirlpool"></div>
-                <div class="whirlpool-inner"></div>
-            </div>
-            
-            <!-- 5. Autumn Analysis (Herbstlaub) -->
-            <div id="bg-autumn" class="ambient-bg absolute inset-0 opacity-0">
-                <!-- JS generiert hier die Blätter -->
+        </div>
+
+        <!-- 2. Okinawa (Wellen) -->
+        <div id="bg-okinawa" class="ambient-bg absolute inset-0 opacity-0">
+            <div class="wave-bg"></div>
+            <div class="wave-bg wave-bg-2"></div>
+        </div>
+
+        <!-- 3. Kyushu (Bambus) -->
+        <div id="bg-kyushu" class="ambient-bg absolute inset-0 opacity-0">
+            <!-- JS generiert hier die Blätter -->
+        </div>
+
+        <!-- 4. Shikoku (Naruto Whirlpool) -->
+        <div id="bg-shikoku" class="ambient-bg absolute inset-0 opacity-0">
+            <div class="whirlpool"></div>
+            <div class="whirlpool-inner"></div>
+        </div>
+
+        <!-- 5. Autumn Analysis (Herbstlaub) -->
+        <div id="bg-autumn" class="ambient-bg absolute inset-0 opacity-0">
+            <!-- JS generiert hier die Blätter -->
         </div>
     </div>
 
@@ -364,7 +400,7 @@
                     <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-3 mb-2 drop-shadow-lg text-white">
                         Abenteuer Japan</h1>
                     <p class="text-base md:text-xl text-sand/95 max-w-2xl font-light drop-shadow-md">
-                        24. Oktober - 28. November 2026 | Subtropisches Schnorcheln in Okinawa &amp; spektakuläre
+                        23. Oktober - 28. November 2026 | Subtropisches Schnorcheln in Okinawa &amp; spektakuläre
                         Herbstlaubfeste in Kyushu und Kansai.
                     </p>
                 </div>
@@ -472,8 +508,8 @@
                 <div class="md:col-span-2 space-y-4">
                     <h2 class="text-3xl font-black text-earth tracking-tight">Die perfekte Reisedramaturgie</h2>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
-                        Deine Reise erstreckt sich über einen genialen Zeitraum. Du landest am <strong
-                            class="text-ocean">26. Oktober</strong> im subtropischen Süden in <strong>Okinawa</strong>,
+                        Deine Reise erstreckt sich über einen genialen Zeitraum. Du startest am <strong
+                            class="text-ocean">23. Oktober</strong> im subtropischen Süden in <strong>Okinawa</strong>,
                         umgehst die feucht-heißen Sommermonate und erlebst die perfekte Badetemperatur.
                     </p>
                     <p class="text-stone-700 leading-relaxed text-base font-medium">
@@ -557,7 +593,7 @@
                         class="flex flex-col items-center text-center bg-sky-50/70 backdrop-blur-md p-4 rounded-2xl border border-white w-full md:w-1/5 shadow-md hover:-translate-y-1 transition-transform">
                         <span class="text-3xl mb-1 drop-shadow-sm">🌴</span>
                         <h4 class="font-bold text-sm text-sky-900">Okinawa</h4>
-                        <p class="text-xs text-stone-600 mt-1 font-medium">26. Okt - 01. Nov</p>
+                        <p class="text-xs text-stone-600 mt-1 font-medium">23. Okt - 01. Nov</p>
                         <span
                             class="text-[10px] bg-sky-100 text-sky-800 border border-sky-200 font-bold px-2 py-0.5 rounded-full mt-2">Strand
                             &amp; Subtropen</span>
@@ -670,9 +706,9 @@
                             class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
                             data-filter="natur">🌴 Natur</button>
                     </div>
-                    </div>
-                    
-                    <div id="okinawa-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                </div>
+
+                <div id="okinawa-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('churaumi')"></div>
                     <div onclick="openDetailModal('kerama')"></div>
                     <div onclick="openDetailModal('paragliding_okinawa')"></div>
@@ -732,9 +768,9 @@
                             class="filter-btn bg-white/70 text-stone-600 border border-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all hover:bg-white"
                             data-filter="entspannung">♨️ Entspannung</button>
                     </div>
-                    </div>
-                    
-                    <div id="kyushu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                </div>
+
+                <div id="kyushu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openDetailModal('yatai')"></div>
                     <div onclick="openDetailModal('hakata_ori')"></div>
                     <div onclick="openDetailModal('hakata_ningyo')"></div>
@@ -953,7 +989,7 @@
                 <span class="text-xs font-bold uppercase tracking-widest text-autumn">Planungs-Zentrale</span>
                 <h2 class="text-3xl font-black text-earth tracking-tight mt-1">📅 Dein interaktiver Tages- &amp;
                     Aktivitätenplaner</h2>
-                <p class="text-stone-700 font-medium text-sm mt-2">Eure Reise läuft vom <strong>24. Oktober bis zum 28.
+                <p class="text-stone-700 font-medium text-sm mt-2">Eure Reise läuft vom <strong>23. Oktober bis zum 28.
                         November 2026</strong>. Klickt einfach links auf ein Ziel, um es blitzschnell für euren
                     ausgewählten Tag zu hinterlegen!</p>
             </div>
@@ -965,6 +1001,39 @@
                     class="lg:col-span-4 bg-white/50 backdrop-blur-xl p-5 rounded-3xl space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto border border-white/60 shadow-xl scrollbar-thin z-20">
                     <h3 class="font-bold text-lg text-earth border-b border-white/50 pb-2"><i
                             class="fa-solid fa-circle-plus mr-2 text-autumn"></i> Schnellauswahl</h3>
+
+                    <!-- CUSTOM EVENT FORM -->
+                    <div
+                        class="bg-white/80 backdrop-blur-md p-3.5 rounded-2xl border border-white shadow-sm space-y-2.5">
+                        <h4
+                            class="text-xs font-extrabold uppercase tracking-wider text-autumn flex items-center justify-between">
+                            <span>✨ Eigenes Event erstellen</span>
+                            <span
+                                class="text-[9px] bg-autumn/10 text-autumn px-1.5 py-0.5 rounded font-bold">Custom</span>
+                        </h4>
+                        <div class="space-y-2">
+                            <input type="text" id="customEventInput" placeholder="z.B. Hotel Check-in, Flug LH714..."
+                                class="w-full text-xs bg-white border border-stone-200 rounded-xl px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-autumn/50 shadow-inner"
+                                onkeypress="if(event.key === 'Enter') addCustomEventFromSidebar()" />
+                            <div class="flex gap-2">
+                                <select id="customEventCategory"
+                                    class="text-xs bg-white border border-stone-200 rounded-xl px-2 py-1.5 font-medium text-stone-700 focus:outline-none focus:ring-2 focus:ring-autumn/50 shadow-sm flex-1">
+                                    <option value="📍">📍 Allgemein</option>
+                                    <option value="✈️">✈️ Flug / Anreise</option>
+                                    <option value="🏨">🏨 Hotel / Unterkunft</option>
+                                    <option value="🍜">🍜 Essen & Trinken</option>
+                                    <option value="🎟️">🎟️ Ticket / Tour</option>
+                                    <option value="🚗">🚗 Transport / Fahrt</option>
+                                    <option value="🛍️">🛍️ Shopping</option>
+                                    <option value="📸">📸 Ausflug / Spot</option>
+                                </select>
+                                <button onclick="addCustomEventFromSidebar()"
+                                    class="bg-autumn hover:bg-orange-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm transition-all flex items-center whitespace-nowrap">
+                                    <i class="fa-solid fa-plus mr-1"></i> Hinzufügen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- ABENTEUER & ERLEBNISSE -->
                     <div>
@@ -2385,40 +2454,43 @@
         // SCHEDULE INITIALIZER FOR INTERACTIVE CALENDAR
         const totalWeeks = 5;
         const schedulerDates = [
-            {week: 1, dateStr: "Mo, 26. Okt", notesKey: "2026-10-26", region: "Okinawa 🏝️ Landung", label: "Okinawa"},
-            {week: 1, dateStr: "Di, 27. Okt", notesKey: "2026-10-27", region: "Okinawa 🏝️ Strände", label: "Okinawa"},
-            {week: 1, dateStr: "Mi, 28. Okt", notesKey: "2026-10-28", region: "Okinawa 🏝️ Sightseeing", label: "Okinawa"},
-            {week: 1, dateStr: "Do, 29. Okt", notesKey: "2026-10-29", region: "Okinawa 🏝️ Ausflüge", label: "Okinawa"},
-            {week: 1, dateStr: "Fr, 30. Okt", notesKey: "2026-10-30", region: "Okinawa 🎈 Saga Balloon Start", label: "Okinawa / Kyushu"},
-            {week: 1, dateStr: "Sa, 31. Okt", notesKey: "2026-10-31", region: "Okinawa 🏯 Shurijo Fest", label: "Okinawa"},
-            {week: 1, dateStr: "So, 01. Nov", notesKey: "2026-11-01", region: "Okinawa 🏯 Shurijo / Abreise", label: "Okinawa / Fukuoka"},
-            {week: 2, dateStr: "Mo, 02. Nov", notesKey: "2026-11-02", region: "Kyushu 🏮 Karatsu Kunchi / Ohara", label: "Kyushu"},
-            {week: 2, dateStr: "Di, 03. Nov", notesKey: "2026-11-03", region: "Kyushu 🏮 Karatsu / Ohara Finale", label: "Kyushu"},
-            {week: 2, dateStr: "Mi, 04. Nov", notesKey: "2026-11-04", region: "Kyushu 🏯 Hakata Light Up Walk", label: "Fukuoka"},
-            {week: 2, dateStr: "Do, 05. Nov", notesKey: "2026-11-05", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka"},
-            {week: 2, dateStr: "Fr, 06. Nov", notesKey: "2026-11-06", region: "Kyushu 🏯 Hakata Light Up", label: "Fukuoka"},
-            {week: 2, dateStr: "Sa, 07. Nov", notesKey: "2026-11-07", region: "Kyushu 🏮 Usuki Takeyoi Laternenfest", label: "Oita"},
-            {week: 2, dateStr: "So, 08. Nov", notesKey: "2026-11-08", region: "Kyushu 🏆 Sumo Start / 🏮 Usuki Takeyoi", label: "Fukuoka / Oita"},
-            {week: 3, dateStr: "Mo, 09. Nov", notesKey: "2026-11-09", region: "Kyushu 🏆 Sumo Fukuoka", label: "Fukuoka"},
-            {week: 3, dateStr: "Di, 10. Nov", notesKey: "2026-11-10", region: "Kyushu 🌋 Fukuoka & Ausflüge", label: "Kyushu"},
-            {week: 3, dateStr: "Mi, 11. Nov", notesKey: "2026-11-11", region: "Kyushu 🌋 Erkundung", label: "Kyushu"},
-            {week: 3, dateStr: "Do, 12. Nov", notesKey: "2026-11-12", region: "Kyushu / Shikoku 🥾", label: "Kyushu/Shikoku"},
-            {week: 3, dateStr: "Fr, 13. Nov", notesKey: "2026-11-13", region: "Kyushu 🏮 Sennen Akari Hita Start", label: "Hita / Oita"},
-            {week: 3, dateStr: "Sa, 14. Nov", notesKey: "2026-11-14", region: "Kyushu 🎆 Nagasaki Feuerwerk / 🏮 Sennen Akari / 👹 Yokagura", label: "Kyushu"},
-            {week: 3, dateStr: "So, 15. Nov", notesKey: "2026-11-15", region: "Kyushu 🏮 Sennen Akari Finale", label: "Hita / Oita"},
-            {week: 4, dateStr: "Mo, 16. Nov", notesKey: "2026-11-16", region: "Kyushu 🍁 Kunenan Herbst-Peak", label: "Kyushu"},
-            {week: 4, dateStr: "Di, 17. Nov", notesKey: "2026-11-17", region: "Kyushu 🍁 Herbstwald", label: "Kyushu"},
-            {week: 4, dateStr: "Mi, 18. Nov", notesKey: "2026-11-18", region: "Kyushu 🍁 Dazaifu Herbst", label: "Kyushu"},
-            {week: 4, dateStr: "Do, 19. Nov", notesKey: "2026-11-19", region: "Kyushu 🌋 Endspurt Süd-Kyushu", label: "Kyushu"},
-            {week: 4, dateStr: "Fr, 20. Nov", notesKey: "2026-11-20", region: "Kyushu 🌋 Packen & Erholung", label: "Fukuoka"},
-            {week: 4, dateStr: "Sa, 21. Nov", notesKey: "2026-11-21", region: "Kansai 🍂 Transit nach Osaka", label: "Kansai / Osaka"},
-            {week: 4, dateStr: "So, 22. Nov", notesKey: "2026-11-22", region: "Kansai 🍁 Kyoto LightUp", label: "Kansai / Kyoto"},
-            {week: 5, dateStr: "Mo, 23. Nov", notesKey: "2026-11-23", region: "Kansai 🍁 Osaka Herbst-Peak", label: "Osaka"},
-            {week: 5, dateStr: "Di, 24. Nov", notesKey: "2026-11-24", region: "Tokyo 🍂 Shinkansen nach Tokyo / 🍂 Gaien Ginkgo Fest", label: "Tokyo"},
-            {week: 5, dateStr: "Mi, 25. Nov", notesKey: "2026-11-25", region: "Tokyo 🍂 Herbstgärten", label: "Tokyo"},
-            {week: 5, dateStr: "Do, 26. Nov", notesKey: "2026-11-26", region: "Tokyo 🍂 Einkauf & Genuss", label: "Tokyo"},
-            {week: 5, dateStr: "Fr, 27. Nov", notesKey: "2026-11-27", region: "Tokyo 🍂 Abschiedsabend", label: "Tokyo"},
-            {week: 5, dateStr: "Sa, 28. Nov", notesKey: "2026-11-28", region: "Tokyo ✈️ Rückflug nach Europa", label: "Tokyo"}
+            {week: 1, dateStr: "Fr, 23. Okt", notesKey: "2026-10-23", region: "", label: "Tag 1"},
+            {week: 1, dateStr: "Sa, 24. Okt", notesKey: "2026-10-24", region: "", label: "Tag 2"},
+            {week: 1, dateStr: "So, 25. Okt", notesKey: "2026-10-25", region: "", label: "Tag 3"},
+            {week: 1, dateStr: "Mo, 26. Okt", notesKey: "2026-10-26", region: "", label: "Tag 4"},
+            {week: 1, dateStr: "Di, 27. Okt", notesKey: "2026-10-27", region: "", label: "Tag 5"},
+            {week: 1, dateStr: "Mi, 28. Okt", notesKey: "2026-10-28", region: "", label: "Tag 6"},
+            {week: 1, dateStr: "Do, 29. Okt", notesKey: "2026-10-29", region: "", label: "Tag 7"},
+            {week: 1, dateStr: "Fr, 30. Okt", notesKey: "2026-10-30", region: "", label: "Tag 8"},
+            {week: 1, dateStr: "Sa, 31. Okt", notesKey: "2026-10-31", region: "", label: "Tag 9"},
+            {week: 1, dateStr: "So, 01. Nov", notesKey: "2026-11-01", region: "", label: "Tag 10"},
+            {week: 2, dateStr: "Mo, 02. Nov", notesKey: "2026-11-02", region: "", label: "Tag 11"},
+            {week: 2, dateStr: "Di, 03. Nov", notesKey: "2026-11-03", region: "", label: "Tag 12"},
+            {week: 2, dateStr: "Mi, 04. Nov", notesKey: "2026-11-04", region: "", label: "Tag 13"},
+            {week: 2, dateStr: "Do, 05. Nov", notesKey: "2026-11-05", region: "", label: "Tag 14"},
+            {week: 2, dateStr: "Fr, 06. Nov", notesKey: "2026-11-06", region: "", label: "Tag 15"},
+            {week: 2, dateStr: "Sa, 07. Nov", notesKey: "2026-11-07", region: "", label: "Tag 16"},
+            {week: 2, dateStr: "So, 08. Nov", notesKey: "2026-11-08", region: "", label: "Tag 17"},
+            {week: 3, dateStr: "Mo, 09. Nov", notesKey: "2026-11-09", region: "", label: "Tag 18"},
+            {week: 3, dateStr: "Di, 10. Nov", notesKey: "2026-11-10", region: "", label: "Tag 19"},
+            {week: 3, dateStr: "Mi, 11. Nov", notesKey: "2026-11-11", region: "", label: "Tag 20"},
+            {week: 3, dateStr: "Do, 12. Nov", notesKey: "2026-11-12", region: "", label: "Tag 21"},
+            {week: 3, dateStr: "Fr, 13. Nov", notesKey: "2026-11-13", region: "", label: "Tag 22"},
+            {week: 3, dateStr: "Sa, 14. Nov", notesKey: "2026-11-14", region: "", label: "Tag 23"},
+            {week: 3, dateStr: "So, 15. Nov", notesKey: "2026-11-15", region: "", label: "Tag 24"},
+            {week: 4, dateStr: "Mo, 16. Nov", notesKey: "2026-11-16", region: "", label: "Tag 25"},
+            {week: 4, dateStr: "Di, 17. Nov", notesKey: "2026-11-17", region: "", label: "Tag 26"},
+            {week: 4, dateStr: "Mi, 18. Nov", notesKey: "2026-11-18", region: "", label: "Tag 27"},
+            {week: 4, dateStr: "Do, 19. Nov", notesKey: "2026-11-19", region: "", label: "Tag 28"},
+            {week: 4, dateStr: "Fr, 20. Nov", notesKey: "2026-11-20", region: "", label: "Tag 29"},
+            {week: 4, dateStr: "Sa, 21. Nov", notesKey: "2026-11-21", region: "", label: "Tag 30"},
+            {week: 4, dateStr: "So, 22. Nov", notesKey: "2026-11-22", region: "", label: "Tag 31"},
+            {week: 5, dateStr: "Mo, 23. Nov", notesKey: "2026-11-23", region: "", label: "Tag 32"},
+            {week: 5, dateStr: "Di, 24. Nov", notesKey: "2026-11-24", region: "", label: "Tag 33"},
+            {week: 5, dateStr: "Mi, 25. Nov", notesKey: "2026-11-25", region: "", label: "Tag 34"},
+            {week: 5, dateStr: "Do, 26. Nov", notesKey: "2026-11-26", region: "", label: "Tag 35"},
+            {week: 5, dateStr: "Fr, 27. Nov", notesKey: "2026-11-27", region: "", label: "Tag 36"},
+            {week: 5, dateStr: "Sa, 28. Nov", notesKey: "2026-11-28", region: "", label: "Tag 37"}
         ];
 
         // --- DYNAMIC BLOB COLOR PALETTES (THEMES) ---
@@ -2433,7 +2505,7 @@
         };
 
         let selectedWeek = 1;
-        let selectedDayKey = "2026-10-26";
+        let selectedDayKey = "2026-10-23";
         let calendarData = {};
         let map = null;
         let mapMarkersLayer = null;
@@ -2465,28 +2537,28 @@
         });
 
         // --- DYNAMIC BACKGROUND PARTICLE GENERATOR ---
-            function createAmbientParticles () {
-                const autumnBg = document.getElementById('bg-autumn');
-                for (let i = 0; i < 15; i++) {
-                    let leaf = document.createElement('div');
-                    leaf.className = 'autumn-leaf';
-                    leaf.style.left = Math.random() * 100 + 'vw';
-                    leaf.style.animationDuration = (Math.random() * 8 + 10) + 's';
-                    leaf.style.animationDelay = (Math.random() * 5) + 's';
-                    if (autumnBg) autumnBg.appendChild(leaf);
-                }
-
-                const bambooBg = document.getElementById('bg-kyushu');
-                for (let i = 0; i < 12; i++) {
-                    let leaf = document.createElement('div');
-                    leaf.className = 'bamboo-leaf';
-                    leaf.style.left = Math.random() * 100 + 'vw';
-                    leaf.style.top = Math.random() * 100 + 'vh';
-                    leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                    leaf.style.animationDelay = (Math.random() * 3) + 's';
-                    if (bambooBg) bambooBg.appendChild(leaf);
-                }
+        function createAmbientParticles () {
+            const autumnBg = document.getElementById('bg-autumn');
+            for (let i = 0; i < 15; i++) {
+                let leaf = document.createElement('div');
+                leaf.className = 'autumn-leaf';
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                leaf.style.animationDelay = (Math.random() * 5) + 's';
+                if (autumnBg) autumnBg.appendChild(leaf);
             }
+
+            const bambooBg = document.getElementById('bg-kyushu');
+            for (let i = 0; i < 12; i++) {
+                let leaf = document.createElement('div');
+                leaf.className = 'bamboo-leaf';
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.top = Math.random() * 100 + 'vh';
+                leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                leaf.style.animationDelay = (Math.random() * 3) + 's';
+                if (bambooBg) bambooBg.appendChild(leaf);
+            }
+        }
 
         // --- DYNAMIC THUMBNAILS IN PLANNER ---
         function initThumbnails () {
@@ -2681,7 +2753,7 @@
 
         // LIVE COUNTDOWN TIMER
         function initCountdown () {
-            const targetDate = new Date("2026-10-24T00:00:00").getTime();
+            const targetDate = new Date("2026-10-23T00:00:00").getTime();
             const updateTimer = () => {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
@@ -2735,7 +2807,7 @@
         function initTabs () {
             const tabBtns = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
-        
+
             // Mapping von Tabs zu den neuen Hintergründen
             const bgMapping = {
                 'overview': 'bg-blobs',
@@ -2746,16 +2818,16 @@
                 'interactive-planner': 'bg-blobs',
                 'map-view': 'bg-blobs'
             };
-        
+
             tabBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
-        
+
                     updateTabIndicator(btn);
-        
+
                     const targetId = btn.getAttribute("data-target");
-                    
+
                     // Content Umschaltung
                     tabContents.forEach(content => {
                         if (content.id === targetId) {
@@ -2766,7 +2838,7 @@
                             content.classList.add("hidden");
                         }
                     });
-        
+
                     // 🎨 NEU: HINTERGRUND-UMSCHALTUNG
                     // Alle Hintergrund-Container ausblenden
                     document.querySelectorAll('.ambient-bg').forEach(bg => {
@@ -2776,7 +2848,7 @@
                     const activeBgId = bgMapping[targetId];
                     const targetBg = document.getElementById(activeBgId);
                     if (targetBg) targetBg.style.opacity = '1';
-        
+
                     // Farb-Paletten Update für Blobs (falls der Planner / Map aktiv ist)
                     if (activeBgId === 'bg-blobs') {
                         const palette = blobPalettes[targetId] || blobPalettes['overview'];
@@ -2786,7 +2858,7 @@
                         document.documentElement.style.setProperty('--blob-4', palette[3]);
                         document.documentElement.style.setProperty('--blob-5', palette[4]);
                     }
-        
+
                     // Init Map if needed
                     if (targetId === "map-view") {
                         initJapanMap();
@@ -2939,7 +3011,7 @@
                     matchesPlannerWeek = isPlanned && plannerInfo.weeks.has(weekNum);
                 }
 
-        const reaction = userReactions[entry.key] || null;
+                const reaction = userReactions[entry.key] || null;
                 let matchesReaction = true;
                 if (mapFilterState.reaction === 'none') matchesReaction = !reaction;
                 else if (mapFilterState.reaction !== 'all') matchesReaction = reaction === mapFilterState.reaction;
@@ -3218,6 +3290,10 @@
                 const card = document.createElement("div");
                 card.className = `p-4 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer backdrop-blur-md ${isSelected ? 'border-autumn bg-orange-50/70 shadow-md ring-2 ring-autumn/30' : 'border-white bg-white/40 hover:bg-white/60 hover:shadow-sm'}`;
                 card.onclick = () => selectDay(day.notesKey);
+                card.ondragover = handleDragOver;
+                card.ondragenter = handleDragEnter;
+                card.ondragleave = handleDragLeave;
+                card.ondrop = (e) => handleDropOnDay(e, day.notesKey);
 
                 let festBadge = "";
                 if (day.region.includes("🏮") || day.region.includes("🎈") || day.region.includes("🎆") || day.region.includes("🏆") || day.region.includes("🍂")) {
@@ -3230,8 +3306,18 @@
                     dayObj.items.forEach((item, index) => {
                         const itemLabel = getPlannerItemName(item);
                         itemsHTML += `
-                            <div class="flex items-center justify-between bg-white/80 p-2 rounded-xl border border-white text-xs shadow-sm">
-                                <span class="font-semibold text-earth flex items-center gap-1.5"><i class="fa-solid fa-circle-dot text-[7px] text-autumn"></i> ${itemLabel}</span>
+                            <div class="flex items-center justify-between bg-white/80 hover:bg-white p-2 rounded-xl border border-white text-xs shadow-sm cursor-grab active:cursor-grabbing transition-all group/item"
+                                draggable="true"
+                                ondragstart="handleDragStart(event, '${day.notesKey}', ${index})"
+                                ondragend="handleDragEnd(event)"
+                                ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)"
+                                ondragleave="handleDragLeave(event)"
+                                ondrop="handleDropItem(event, '${day.notesKey}', ${index})">
+                                <span class="font-semibold text-earth flex items-center gap-2">
+                                    <i class="fa-solid fa-grip-vertical text-stone-300 group-hover/item:text-autumn transition-colors text-xs"></i>
+                                    <span>${itemLabel}</span>
+                                </span>
                                 <button onclick="removeItem('${day.notesKey}', ${index}); event.stopPropagation();" class="text-stone-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-all">
                                     <i class="fa-regular fa-trash-can text-xs"></i>
                                 </button>
@@ -3253,7 +3339,17 @@
                         ${festBadge}
                         ${itemsHTML}
                     </div>
-                    <div class="mt-4 pt-3 border-t border-white/50">
+                    <div class="mt-3 pt-2 border-t border-white/50 space-y-2">
+                        <div class="flex gap-1.5 items-center">
+                            <input type="text" id="inlineInput-${day.notesKey}" placeholder="+ Eigene Aktivität eingeben..."
+                                class="w-full text-xs bg-white/60 focus:bg-white border border-stone-200/80 rounded-xl px-2.5 py-1.5 font-medium focus:outline-none focus:ring-1 focus:ring-autumn shadow-inner"
+                                onclick="event.stopPropagation();"
+                                onkeypress="if(event.key === 'Enter') { addInlineCustomEvent('${day.notesKey}'); event.stopPropagation(); }" />
+                            <button onclick="addInlineCustomEvent('${day.notesKey}'); event.stopPropagation();" 
+                                class="bg-autumn hover:bg-orange-600 text-white font-bold px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-center flex-shrink-0 shadow-sm transition-all" title="Aktivität hinzufügen">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
                         <textarea placeholder="Hinterlasse Notizen (Hotel, Restaurants)..." 
                             class="w-full text-xs bg-white/50 focus:bg-white/80 backdrop-blur-md border border-white rounded-xl p-2 resize-none h-12 focus:outline-none focus:ring-1 focus:ring-autumn transition-all shadow-inner"
                             onclick="event.stopPropagation();"
@@ -3263,6 +3359,142 @@
 
                 grid.appendChild(card);
             });
+        }
+
+        // DRAG AND DROP HANDLERS FOR PLANNER ITEMS
+        let draggedItemInfo = null;
+
+        function handleDragStart (event, dateKey, index) {
+            draggedItemInfo = {dateKey, index};
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', JSON.stringify({dateKey, index}));
+            event.currentTarget.classList.add('opacity-40');
+        }
+
+        function handleDragEnd (event) {
+            event.currentTarget.classList.remove('opacity-40');
+            document.querySelectorAll('.border-t-2, .border-b-2, .drag-over-target').forEach(el => {
+                el.classList.remove('border-t-2', 'border-b-2', 'drag-over-target', 'border-autumn');
+            });
+            draggedItemInfo = null;
+        }
+
+        function handleDragOver (event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+
+            const itemEl = event.currentTarget.closest('.group\\/item');
+            if (itemEl) {
+                const rect = itemEl.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                if (event.clientY < midY) {
+                    itemEl.classList.add('border-t-2', 'border-autumn');
+                    itemEl.classList.remove('border-b-2');
+                } else {
+                    itemEl.classList.add('border-b-2', 'border-autumn');
+                    itemEl.classList.remove('border-t-2');
+                }
+            }
+        }
+
+        function handleDragEnter (event) {
+            event.preventDefault();
+            const itemEl = event.currentTarget.closest('.group\\/item');
+            if (!itemEl) {
+                event.currentTarget.classList.add('drag-over-target', 'border-autumn');
+            }
+        }
+
+        function handleDragLeave (event) {
+            const itemEl = event.currentTarget.closest('.group\\/item');
+            if (itemEl) {
+                itemEl.classList.remove('border-t-2', 'border-b-2', 'border-autumn');
+            } else {
+                event.currentTarget.classList.remove('drag-over-target', 'border-autumn');
+            }
+        }
+
+        function handleDropItem (event, targetDateKey, targetIndex) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll('.border-t-2, .border-b-2, .drag-over-target').forEach(el => {
+                el.classList.remove('border-t-2', 'border-b-2', 'drag-over-target', 'border-autumn');
+            });
+
+            if (!draggedItemInfo) return;
+
+            const {dateKey: sourceDateKey, index: sourceIndex} = draggedItemInfo;
+            if (!calendarData[sourceDateKey] || !calendarData[sourceDateKey].items) return;
+
+            if (!calendarData[targetDateKey]) {
+                calendarData[targetDateKey] = {notes: "", items: []};
+            }
+
+            const itemEl = event.currentTarget.closest('.group\\/item');
+            let insertAfter = false;
+            if (itemEl) {
+                const rect = itemEl.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                if (event.clientY >= midY) {
+                    insertAfter = true;
+                }
+            }
+
+            const sourceItems = calendarData[sourceDateKey].items;
+            const [movedItem] = sourceItems.splice(sourceIndex, 1);
+
+            let destinationIndex = targetIndex;
+            if (sourceDateKey === targetDateKey) {
+                if (sourceIndex < targetIndex) {
+                    destinationIndex = targetIndex - 1;
+                }
+            }
+
+            if (insertAfter) {
+                destinationIndex += 1;
+            }
+
+            const targetItems = calendarData[targetDateKey].items;
+            if (destinationIndex < 0) destinationIndex = 0;
+            if (destinationIndex > targetItems.length) destinationIndex = targetItems.length;
+
+            targetItems.splice(destinationIndex, 0, movedItem);
+
+            saveCalendarToStorage();
+            renderCalendarDays();
+            draggedItemInfo = null;
+            showToast("Aktivität umsortiert! 🔄");
+        }
+
+        function handleDropOnDay (event, targetDateKey) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll('.border-t-2, .border-b-2, .drag-over-target').forEach(el => {
+                el.classList.remove('border-t-2', 'border-b-2', 'drag-over-target', 'border-autumn');
+            });
+
+            if (!draggedItemInfo) return;
+
+            const {dateKey: sourceDateKey, index: sourceIndex} = draggedItemInfo;
+            if (sourceDateKey === targetDateKey) return;
+
+            if (!calendarData[sourceDateKey] || !calendarData[sourceDateKey].items) return;
+
+            if (!calendarData[targetDateKey]) {
+                calendarData[targetDateKey] = {notes: "", items: []};
+            }
+
+            const sourceItems = calendarData[sourceDateKey].items;
+            const [movedItem] = sourceItems.splice(sourceIndex, 1);
+
+            calendarData[targetDateKey].items.push(movedItem);
+
+            saveCalendarToStorage();
+            renderCalendarDays();
+            draggedItemInfo = null;
+            showToast("Aktivität verschoben! 🔄");
         }
 
         // PLANNING MANAGEMENT INTERACTIONS
@@ -3289,6 +3521,31 @@
             saveCalendarToStorage();
             renderCalendarDays();
             showToast(`"${itemName}" hinzugefügt!`);
+        }
+
+        function addCustomEventFromSidebar () {
+            const input = document.getElementById("customEventInput");
+            const categorySelect = document.getElementById("customEventCategory");
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) {showToast("Bitte gib einen Namen für das Event ein!"); return;}
+            const categoryEmoji = categorySelect ? categorySelect.value : "📍";
+            const fullItemName = `${categoryEmoji} ${text}`;
+            quickAdd(fullItemName);
+            input.value = "";
+        }
+
+        function addInlineCustomEvent (dayKey) {
+            const input = document.getElementById(`inlineInput-${dayKey}`);
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) {showToast("Bitte gib einen Text ein!"); return;}
+
+            if (!calendarData[dayKey]) {calendarData[dayKey] = {notes: "", items: []};}
+            calendarData[dayKey].items.push(text);
+            saveCalendarToStorage();
+            renderCalendarDays();
+            showToast(`"${text}" hinzugefügt!`);
         }
 
         function removeItem (key, index) {
