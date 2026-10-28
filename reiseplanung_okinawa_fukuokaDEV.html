@@ -3019,9 +3019,9 @@
 
             map = L.map('japan-map').setView([33.590, 130.401], 6);
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO',
-                subdomains: 'abcd',
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                subdomains: 'abc',
                 maxZoom: 19
             }).addTo(map);
 
